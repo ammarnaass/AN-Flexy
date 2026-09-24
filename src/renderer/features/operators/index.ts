@@ -1,2 +1,10 @@
 // الواجهة العامة لخاصية المتعاملين في الـ renderer.
-export { useOperators, useActiveOperators, operatorsKeys } from './hooks'
+export {
+  useOperators,
+  useActiveOperators,
+  useCreateOperator,
+  useUpdateOperatorMargin,
+  useDisableOperator,
+  operatorsKeys,
+} from './hooks'
+export { operatorsApi } from './api'

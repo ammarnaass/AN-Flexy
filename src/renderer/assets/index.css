@@ -1,8 +1,14 @@
 @import 'tailwindcss';
 
-/* الخطوط محلية عبر أسماء خطوط النظام فقط (RULES 8.2/10.9): لا تحميل من الإنترنت. */
+/* نظام الألوان والتصميم الداكن عالي التباين (OLED / Dark Mode) */
 :root {
   color-scheme: dark;
+  --bg-app: #030712;
+  --bg-surface: #0b1120;
+  --bg-card: #0f172a;
+  --border-subtle: #1e293b;
+  --border-hover: #334155;
+  --accent-emerald: #10b981;
 }
 
 html,
@@ -10,14 +16,81 @@ body,
 #root {
   height: 100%;
   margin: 0;
+  background-color: var(--bg-app);
+  color: #f8fafc;
 }
 
 body {
   font-family:
     'Segoe UI', 'Tajawal', 'Cairo', 'Noto Naskh Arabic', 'Tahoma', system-ui, -apple-system,
     'Helvetica Neue', Arial, sans-serif;
-  background-color: #0a0a0a;
-  color: #f5f5f5;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+  user-select: none;
+}
+
+/* تخصيص أشرطة التمرير لمظهر عصري وناعم */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #060b18;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1e293b;
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #334155;
+}
+
+::selection {
+  background-color: #059669;
+  color: #ffffff;
+}
+
+/* انتقالات سلسة ومريحة للأزرار وعناصر الإدخال */
+button,
+a,
+input,
+select {
+  transition:
+    color 150ms ease,
+    background-color 150ms ease,
+    border-color 150ms ease,
+    box-shadow 150ms ease,
+    transform 100ms ease;
+}
+
+button:active {
+  transform: scale(0.98);
+}
+
+/* تأثيرات التوهج البصري للبطاقات */
+.glow-emerald {
+  box-shadow: 0 0 25px -5px rgba(16, 185, 129, 0.2);
+}
+
+.glow-amber {
+  box-shadow: 0 0 25px -5px rgba(245, 158, 11, 0.2);
+}
+
+.glow-red {
+  box-shadow: 0 0 25px -5px rgba(239, 68, 68, 0.2);
+}
+
+/* إمكانية الوصول: احترام تفضيل تقليل الحركة */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

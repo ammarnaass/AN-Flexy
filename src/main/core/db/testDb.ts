@@ -13,6 +13,7 @@ const MIGRATIONS_FOLDER = fileURLToPath(new URL('./migrations', import.meta.url)
 
 export type TestDb = {
   db: DB
+  sqlite: Database.Database
   audit: Audit
   logger: Logger
   close(): void
@@ -25,6 +26,7 @@ export function openTestDb(): TestDb {
   migrate(db, { migrationsFolder: MIGRATIONS_FOLDER })
   return {
     db,
+    sqlite,
     audit: createAudit(),
     logger: createLogger(),
     close: () => sqlite.close(),

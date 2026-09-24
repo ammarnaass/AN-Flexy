@@ -1,0 +1,20 @@
+// نصوص خاصية الديون بالعربية (RULES 10.2).
+export const debtsMessages = {
+  title: 'الزبائن والديون',
+  debtors: 'المدينون',
+  customer: 'الزبون',
+  totalDebt: 'إجمالي الدين',
+  oldestDebt: 'أقدم دين',
+  addPayment: 'تسجيل دفعة',
+  paymentAmount: 'مبلغ الدفعة',
+  payFull: 'الدين كاملًا',
+  confirm: 'تأكيد',
+  confirming: 'جارٍ التسجيل…',
+  success: 'تم تسجيل الدفعة.',
+  noDebtors: 'لا يوجد ديون مستحقة.',
+  noPayments: 'لا توجد دفعات.',
+  paymentExceedsDebt: 'المبلغ يتجاوز الدين الحالي.',
+  customerNotFound: 'الزبون غير موجود.',
+  payments: 'سجل الدفعات',
+  search: 'بحث…',
+} as const

@@ -1,13 +1,15 @@
 import { createHashRouter } from 'react-router-dom'
 import { AuthGate } from './AuthGate'
 import { Layout } from './Layout'
-import { PagePlaceholder } from '@renderer/shared/ui/PagePlaceholder'
+import { DashboardScreen } from '@renderer/pages/DashboardScreen'
 import { SaleScreen } from '@renderer/pages/SaleScreen'
 import { StockScreen } from '@renderer/pages/StockScreen'
-import { ui } from '@renderer/shared/messages.ar'
+import { CustomersDebtsScreen } from '@renderer/pages/CustomersDebtsScreen'
+import { ReportsScreen } from '@renderer/pages/ReportsScreen'
+import { SettingsScreen } from '@renderer/pages/SettingsScreen'
 
 // موجّه hash: مناسب لملفات file:// في الإنتاج وللاتصال بـ dev server في التطوير.
-// البيع والمخزون حقيقيّان الآن (المرحلة 2)؛ بقيّة الشاشات تُستكمل في المراحل 3–4.
+// جميع شاشات التطبيق الأساسية مكتملة ومربوطة: لوحة التحكم، البيع، المخزون، الزبائن والديون، التقارير، والإعدادات.
 export const router = createHashRouter([
   {
     element: <AuthGate />,
@@ -15,15 +17,15 @@ export const router = createHashRouter([
       {
         element: <Layout />,
         children: [
-          { index: true, element: <PagePlaceholder title={ui.nav.dashboard} /> },
+          { index: true, element: <DashboardScreen /> },
           { path: 'sale', element: <SaleScreen /> },
           { path: 'stock', element: <StockScreen /> },
-          { path: 'customers', element: <PagePlaceholder title={ui.nav.customers} /> },
-          { path: 'debts', element: <PagePlaceholder title={ui.nav.debts} /> },
-          { path: 'reports', element: <PagePlaceholder title={ui.nav.reports} /> },
-          { path: 'settings', element: <PagePlaceholder title={ui.nav.settings} /> },
+          { path: 'customers', element: <CustomersDebtsScreen /> },
+          { path: 'reports', element: <ReportsScreen /> },
+          { path: 'settings', element: <SettingsScreen /> },
         ],
       },
     ],
   },
 ])
+

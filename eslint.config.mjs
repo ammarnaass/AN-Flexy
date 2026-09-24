@@ -5,7 +5,7 @@ import globals from 'globals'
 
 export default tseslint.config(
   {
-    ignores: ['out', 'dist', 'release', 'node_modules', 'coverage', 'src/main/core/db/migrations'],
+    ignores: ['out', 'dist', 'release', 'node_modules', 'coverage', 'src/main/core/db/migrations', 'skills'],
   },
   js.configs.recommended,
   ...tseslint.configs.recommended,

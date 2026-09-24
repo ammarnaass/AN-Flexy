@@ -1,0 +1,20 @@
+// نصوص خاصية الزبائن بالعربية (RULES 10.2).
+export const customersMessages = {
+  title: 'الزبائن',
+  addNew: 'زبون جديد',
+  search: 'بحث بالاسم أو الرقم…',
+  name: 'الاسم',
+  phone: 'رقم الهاتف',
+  note: 'ملاحظة',
+  debt: 'الدين',
+  noDebt: 'لا دين',
+  noResults: 'لا نتائج.',
+  addWithName: 'إضافة زبون جديد بهذا الاسم',
+  save: 'حفظ',
+  saving: 'جارٍ الحفظ…',
+  success: 'تم بنجاح.',
+  empty: 'لا يوجد زبائن بعد.',
+  profile: 'ملف الزبون',
+  purchases: 'المشتريات',
+  payments: 'الدفعات',
+} as const

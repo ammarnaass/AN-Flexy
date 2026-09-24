@@ -22,3 +22,7 @@ npm-debug.log*
 # نظام التشغيل
 .DS_Store
 Thumbs.db
+
+# أدوات الوكلاء
+skills/
+

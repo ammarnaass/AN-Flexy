@@ -45,9 +45,10 @@ export function startApp(): void {
       ? join(process.resourcesPath, 'migrations')
       : join(app.getAppPath(), 'src/main/core/db/migrations')
 
-    const { db } = openDatabase({ file, migrationsFolder })
+    const { db, sqlite } = openDatabase({ file, migrationsFolder })
     const session = createSession()
-    compose({ db, session, logger })
+    const backupDir = join(app.getPath('userData'), 'backups')
+    compose({ db, sqlite, session, logger, backupDir, activeDbPath: file })
 
     createWindow()
     app.on('activate', () => {

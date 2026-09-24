@@ -14,9 +14,10 @@ export const SETTINGS_ERRORS = {
 // مفاتيح الإعدادات المعروفة (المورد العام في PRD §13/F1).
 export const SETTING_KEYS = {
   shopName: 'shop_name',
+  shopPhone: 'shop_phone',
 } as const
 
-export const settingKeySchema = z.enum(['shop_name'])
+export const settingKeySchema = z.enum(['shop_name', 'shop_phone'])
 export type SettingKey = z.infer<typeof settingKeySchema>
 
 export const getSettingInput = z.object({ key: settingKeySchema })

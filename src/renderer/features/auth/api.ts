@@ -13,4 +13,6 @@ export const authApi = {
     invoke<LoginResult>(authChannels.setupOwner, input),
   session: (): Promise<SessionResult> => invoke<SessionResult>(authChannels.session),
   logout: (): Promise<null> => invoke<null>(authChannels.logout),
+  listUsers: (): Promise<Array<{ id: number; name: string; role: 'admin' | 'cashier'; active: boolean }>> =>
+    invoke(authChannels.listUsers),
 }
