@@ -1,6 +1,6 @@
 // قواعد فرض المعمارية آليًا (RULES 4.4). كل خاصية جديدة تُسجَّل هنا وفي جدول المستويات في RULES.md.
 const levels = {
-  auth: 1, settings: 1, operators: 1, customers: 1,
+  auth: 1, settings: 1, operators: 1, customers: 1, modem: 1,
   stock: 2, sales: 3, debts: 4,
   dashboard: 5, reports: 5, backup: 5, telegram: 5,
 }

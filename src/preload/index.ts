@@ -3,6 +3,7 @@ import { authChannels } from '@shared/contracts/auth'
 import { backupChannels } from '@shared/contracts/backup'
 import { customersChannels } from '@shared/contracts/customers'
 import { debtsChannels } from '@shared/contracts/debts'
+import { modemChannels } from '@shared/contracts/modem'
 import { operatorsChannels } from '@shared/contracts/operators'
 import { reportsChannels } from '@shared/contracts/reports'
 import { salesChannels } from '@shared/contracts/sales'
@@ -17,6 +18,7 @@ const ALLOWED_CHANNELS: ReadonlySet<string> = new Set([
   ...Object.values(backupChannels),
   ...Object.values(customersChannels),
   ...Object.values(debtsChannels),
+  ...Object.values(modemChannels),
   ...Object.values(operatorsChannels),
   ...Object.values(reportsChannels),
   ...Object.values(salesChannels),

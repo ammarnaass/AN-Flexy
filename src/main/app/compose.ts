@@ -2,6 +2,7 @@ import { createAudit } from '@main/core/audit'
 import { createIpcRegistry } from '@main/core/ipc/handle'
 import { createAuthFeature } from '@main/features/auth'
 import { createSettingsFeature } from '@main/features/settings'
+import { createModemFeature } from '@main/features/modem'
 import { createOperatorsFeature } from '@main/features/operators'
 import { createCustomersFeature } from '@main/features/customers'
 import { createStockFeature } from '@main/features/stock'
@@ -35,6 +36,7 @@ export function compose(deps: AppDeps): { ipc: IpcRegistry } {
   // المستوى 1: بلا اعتماديات.
   const operators = createOperatorsFeature({ db, audit })
   const settings = createSettingsFeature({ db, audit })
+  const modem = createModemFeature({ db, audit, logger })
   const customers = createCustomersFeature({ db, audit })
   // المستوى 2: stock يعتمد operators للتحقق من وجود المتعامل.
   const stock = createStockFeature({ db, audit, operators: operators.api })
@@ -64,6 +66,7 @@ export function compose(deps: AppDeps): { ipc: IpcRegistry } {
   auth.registerIpc(ipc)
   operators.registerIpc(ipc)
   settings.registerIpc(ipc)
+  modem.registerIpc(ipc)
   customers.registerIpc(ipc)
   stock.registerIpc(ipc)
   sales.registerIpc(ipc)
