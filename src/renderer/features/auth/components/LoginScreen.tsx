@@ -517,8 +517,6 @@ function SetupForm({ onNavigateToLogin }: { onNavigateToLogin?: () => void }) {
   const [showPassword, setShowPassword] = useState(false)
   const [pin, setPin] = useState('')
   const [termsAgreed, setTermsAgreed] = useState(true)
-  const [storeName, setStoreName] = useState('')
-  const [storeNif, setStoreNif] = useState('')
   const [isDone, setIsDone] = useState(false)
 
   const register = useRegister()
@@ -557,56 +555,25 @@ function SetupForm({ onNavigateToLogin }: { onNavigateToLogin?: () => void }) {
 
   return (
     <AuthShell>
-      <div className="bg-surface-container-lowest rounded-2xl shadow-xl overflow-hidden border border-outline-variant/30 flex flex-col">
+      <div className="bg-surface-container-lowest rounded-2xl shadow-xl overflow-hidden border border-outline-variant/30 flex flex-col max-w-2xl w-full mx-auto">
         {/* Wizard Header Bar */}
         <div className="bg-surface-container-low px-space-lg py-space-md flex flex-wrap items-center justify-between gap-space-md border-b border-outline-variant/20">
           <div className="flex items-center gap-space-sm">
             <div className="w-10 h-10 rounded-xl bg-primary-container text-on-primary flex items-center justify-center shadow-xs">
-              <span className="material-symbols-outlined text-[22px]">storefront</span>
+              <span className="material-symbols-outlined text-[22px]">person_add</span>
             </div>
             <div>
               <h1 className="font-headline-md text-headline-md text-on-surface font-cairo font-bold">
-                إعداد المحطة وتسجيل نقطة البيع
+                تسجيل نقطة البيع والحساب
               </h1>
               <p className="font-body-sm text-body-sm text-on-surface-variant">
-                التهيئة الأولية لنظام AN-Flexy POS المعتمد
+                تسجيل المعلومات الأساسية للمشغل وبدء العمل
               </p>
             </div>
           </div>
           <span className="px-2.5 py-1 rounded-full bg-surface-container-high text-primary font-mono text-[11px] font-bold">
-            SQLITE LOCAL ENCRYPTED
+            SQLITE LOCAL
           </span>
-        </div>
-
-        {/* 3 Steps Progress Bar */}
-        <div className="grid grid-cols-3 bg-surface-container-lowest border-b border-outline-variant/20 text-center font-cairo py-space-sm px-space-lg">
-          <div className="flex items-center justify-center gap-2 text-primary font-bold">
-            <span className="w-6 h-6 rounded-full bg-primary-container text-on-primary flex items-center justify-center text-[12px] font-mono">
-              1
-            </span>
-            <div className="flex flex-col text-right">
-              <span className="text-body-md leading-none">بيانات المسؤول</span>
-              <span className="text-[10px] text-primary">الخطوة الحالية</span>
-            </div>
-          </div>
-          <div className="flex items-center justify-center gap-2 text-on-surface-variant">
-            <span className="w-6 h-6 rounded-full bg-surface-container text-on-surface-variant flex items-center justify-center text-[12px] font-mono">
-              2
-            </span>
-            <div className="flex flex-col text-right">
-              <span className="text-body-md leading-none">معلومات المتجر</span>
-              <span className="text-[10px] text-on-surface-variant">الفرع والصندوق</span>
-            </div>
-          </div>
-          <div className="flex items-center justify-center gap-2 text-on-surface-variant">
-            <span className="w-6 h-6 rounded-full bg-surface-container text-on-surface-variant flex items-center justify-center text-[12px] font-mono">
-              3
-            </span>
-            <div className="flex flex-col text-right">
-              <span className="text-body-md leading-none">منافذ GSM & Flexy</span>
-              <span className="text-[10px] text-on-surface-variant">المودمات والشرائح</span>
-            </div>
-          </div>
         </div>
 
         {/* Success Confirmation Animation */}
@@ -623,306 +590,240 @@ function SetupForm({ onNavigateToLogin }: { onNavigateToLogin?: () => void }) {
             </p>
           </div>
         ) : (
-          <form onSubmit={submit} className="p-space-lg grid grid-cols-1 lg:grid-cols-12 gap-space-lg">
-            {/* Left 7 cols: Form fields */}
-            <div className="lg:col-span-7 flex flex-col gap-space-md">
-              <div>
-                <h2 className="font-headline-md text-headline-md text-on-surface font-cairo font-bold">
-                  إنشاء حساب المسؤول الرئيسي
-                </h2>
-                <p className="font-body-sm text-body-sm text-on-surface-variant">
-                  سجل بيانات الإدارة للوصول إلى لوحة التحكم وأرصدة المشغلين والصندوق.
-                </p>
-              </div>
+          <form onSubmit={submit} className="p-space-lg flex flex-col gap-space-md">
+            <div>
+              <h2 className="font-headline-md text-headline-md text-on-surface font-cairo font-bold">
+                المعلومات الأساسية للحساب
+              </h2>
+              <p className="font-body-sm text-body-sm text-on-surface-variant">
+                سجل بيانات المشغل للوصول إلى محطة البيع وإجراء العمليات.
+              </p>
+            </div>
 
-              {/* Role Selector */}
-              <div className="flex flex-col gap-1.5">
-                <label className="text-[12px] font-bold text-on-surface-variant">
-                  نوع الحساب والصلاحيات
-                </label>
-                <div className="grid grid-cols-2 gap-space-sm">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      playBeep('click')
-                      setRole('admin')
-                    }}
-                    className={`p-space-sm rounded-xl border text-right transition-all cursor-pointer ${
-                      role === 'admin'
-                        ? 'bg-surface-container-high border-primary text-primary shadow-xs'
-                        : 'bg-surface-container-lowest border-outline-variant/30 hover:bg-surface-container-low text-on-surface'
-                    }`}
-                  >
-                    <div className="flex items-center gap-2">
-                      <span className="material-symbols-outlined text-[20px]">admin_panel_settings</span>
-                      <span className="font-headline-sm text-body-md font-cairo font-bold">مسؤول متجر كامل</span>
-                    </div>
-                    <p className="text-[11px] text-on-surface-variant mt-1">إشراف، تقارير، وإدارة عامة</p>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => {
-                      playBeep('click')
-                      setRole('cashier')
-                    }}
-                    className={`p-space-sm rounded-xl border text-right transition-all cursor-pointer ${
-                      role === 'cashier'
-                        ? 'bg-surface-container-high border-primary text-primary shadow-xs'
-                        : 'bg-surface-container-lowest border-outline-variant/30 hover:bg-surface-container-low text-on-surface'
-                    }`}
-                  >
-                    <div className="flex items-center gap-2">
-                      <span className="material-symbols-outlined text-[20px]">badge</span>
-                      <span className="font-headline-sm text-body-md font-cairo font-bold">بائع وردية / كاشير</span>
-                    </div>
-                    <p className="text-[11px] text-on-surface-variant mt-1">فليكسي، شحن أرصدة، وفواتير</p>
-                  </button>
-                </div>
-              </div>
-
-              {/* Name & Username Inputs */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-space-sm">
-                <div className="flex flex-col gap-1">
-                  <label className="text-[12px] font-bold text-on-surface-variant">
-                    الاسم الكامل للمسؤول <span className="text-tertiary">*</span>
-                  </label>
-                  <div className="flex items-center gap-2 bg-surface-container-low rounded-lg px-3 border border-outline-variant/30 pos-focus">
-                    <span className="material-symbols-outlined text-[18px] text-on-surface-variant">person</span>
-                    <input
-                      type="text"
-                      value={fullName}
-                      onChange={(e) => setFullName(e.target.value)}
-                      placeholder="الاسم واللقب"
-                      required
-                      className="w-full h-10 bg-transparent text-on-surface font-body-md outline-none"
-                    />
-                  </div>
-                </div>
-
-                <div className="flex flex-col gap-1">
-                  <label className="text-[12px] font-bold text-on-surface-variant">
-                    اسم المستخدم (Username) <span className="text-tertiary">*</span>
-                  </label>
-                  <div className="flex items-center gap-2 bg-surface-container-low rounded-lg px-3 border border-outline-variant/30 pos-focus">
-                    <span className="material-symbols-outlined text-[18px] text-on-surface-variant">alternate_email</span>
-                    <input
-                      type="text"
-                      value={username}
-                      onChange={(e) => setUsername(e.target.value)}
-                      placeholder="أدخل اسم الدخول"
-                      required
-                      className="w-full h-10 bg-transparent text-on-surface font-body-md outline-none font-mono"
-                    />
-                  </div>
-                </div>
-              </div>
-
-              {/* Phone & Wilaya */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-space-sm">
-                <div className="flex flex-col gap-1">
-                  <label className="text-[12px] font-bold text-on-surface-variant">
-                    رقم هاتف الإشعار والفليكسي
-                  </label>
-                  <div className="flex items-center bg-surface-container-low rounded-lg px-2 border border-outline-variant/30 pos-focus" dir="ltr">
-                    <span className="text-[14px] mr-1">🇩🇿 +213</span>
-                    <input
-                      type="tel"
-                      value={phone}
-                      onChange={(e) => setPhone(e.target.value.replace(/\D/g, '').slice(0, 10))}
-                      placeholder="05 / 06 / 07..."
-                      className="w-full h-10 bg-transparent text-on-surface font-mono outline-none text-left"
-                    />
-                    {detectedOperator && (
-                      <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-primary-container text-on-primary">
-                        {detectedOperator}
-                      </span>
-                    )}
-                  </div>
-                </div>
-
-                <div className="flex flex-col gap-1">
-                  <label className="text-[12px] font-bold text-on-surface-variant">الولاية</label>
-                  <div className="flex items-center bg-surface-container-low rounded-lg px-2 border border-outline-variant/30">
-                    <span className="material-symbols-outlined text-[18px] text-on-surface-variant ml-1">location_on</span>
-                    <select
-                      value={wilaya}
-                      onChange={(e) => setWilaya(e.target.value)}
-                      className="w-full h-10 bg-transparent text-on-surface font-body-md outline-none text-[12px]"
-                    >
-                      {WILAYAS.map((w) => (
-                        <option key={w} value={w}>
-                          {w}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                </div>
-              </div>
-
-              {/* Password & PIN */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-space-sm">
-                <div className="flex flex-col gap-1">
-                  <div className="flex items-center justify-between">
-                    <label className="text-[12px] font-bold text-on-surface-variant">
-                      كلمة المرور الرئيسية <span className="text-tertiary">*</span>
-                    </label>
-                  </div>
-                  <div className="flex items-center bg-surface-container-low rounded-lg px-2 border border-outline-variant/30 pos-focus">
-                    <span className="material-symbols-outlined text-[18px] text-on-surface-variant ml-1">lock</span>
-                    <input
-                      type={showPassword ? 'text' : 'password'}
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      placeholder="••••••••"
-                      className="w-full h-10 bg-transparent text-on-surface font-body-md outline-none"
-                    />
-                    <button
-                      type="button"
-                      onClick={() => setShowPassword(!showPassword)}
-                      className="text-on-surface-variant p-1 cursor-pointer"
-                    >
-                      <span className="material-symbols-outlined text-[18px]">
-                        {showPassword ? 'visibility_off' : 'visibility'}
-                      </span>
-                    </button>
-                  </div>
-                </div>
-
-                <div className="flex flex-col gap-1">
-                  <div className="flex items-center justify-between">
-                    <label className="text-[12px] font-bold text-on-surface-variant">
-                      رمز PIN سريع للكاشير (4 أرقام) <span className="text-tertiary">*</span>
-                    </label>
-                  </div>
-                  <div className="flex items-center bg-surface-container-low rounded-lg px-2 border border-outline-variant/30 pos-focus">
-                    <span className="material-symbols-outlined text-[18px] text-primary ml-1">dialpad</span>
-                    <input
-                      type="password"
-                      value={pin}
-                      onChange={(e) => setPin(e.target.value.replace(/\D/g, '').slice(0, 4))}
-                      placeholder="1234"
-                      maxLength={4}
-                      className="w-full h-10 bg-transparent text-primary font-mono text-center text-label-lg tracking-widest font-bold outline-none"
-                      dir="ltr"
-                    />
-                  </div>
-                  <span className="text-[11px] text-on-surface-variant">
-                    يستخدم للتبديل والدخول السريع من شاشة اللمس
-                  </span>
-                </div>
-              </div>
-
-              {/* Terms Checkbox */}
-              <label className="flex items-start gap-2 pt-1 cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={termsAgreed}
-                  onChange={(e) => setTermsAgreed(e.target.checked)}
-                  className="mt-1 rounded text-primary focus:ring-primary"
-                />
-                <span className="text-[11px] text-on-surface-variant leading-relaxed">
-                  أوافق على سياسة تشفير المعاملات المحلية وحفظ السجلات في قاعدة بيانات المحطة المشفرة.
-                </span>
+            {/* Role Selector */}
+            <div className="flex flex-col gap-1.5">
+              <label className="text-[12px] font-bold text-on-surface-variant">
+                نوع الحساب والصلاحيات
               </label>
-
-              {/* Error Banner */}
-              {register.isError && (
-                <div className="pt-2">
-                  <ErrorBanner message={translateAuthError(register.error)} />
-                </div>
-              )}
-
-              {/* Submit Button */}
-              <button
-                type="submit"
-                disabled={register.isPending || !termsAgreed || !fullName || !username || pin.length < 4}
-                className="w-full h-12 flex items-center justify-center gap-2 rounded-xl bg-primary hover:bg-primary-container text-on-primary font-headline-sm text-headline-sm font-cairo font-bold shadow-md transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed active:scale-95"
-              >
-                <span>إنشاء الحساب وتفعيل المحطة</span>
-                <span className="material-symbols-outlined text-[20px]">bolt</span>
-                <span className="bg-on-primary-container text-on-primary-fixed font-label-sm text-label-sm px-1.5 py-0.5 rounded font-mono font-bold" dir="ltr">
-                  [Enter]
-                </span>
-              </button>
-
-              {onNavigateToLogin && (
+              <div className="grid grid-cols-2 gap-space-sm">
                 <button
                   type="button"
                   onClick={() => {
                     playBeep('click')
-                    onNavigateToLogin()
+                    setRole('admin')
                   }}
-                  className="w-full py-2.5 text-center text-primary hover:text-primary-container font-headline-sm text-body-md font-cairo font-bold transition-colors cursor-pointer flex items-center justify-center gap-1.5 border border-outline-variant/30 rounded-xl bg-surface-container-low hover:bg-surface-container"
+                  className={`p-space-sm rounded-xl border text-right transition-all cursor-pointer ${
+                    role === 'admin'
+                      ? 'bg-surface-container-high border-primary text-primary shadow-xs'
+                      : 'bg-surface-container-lowest border-outline-variant/30 hover:bg-surface-container-low text-on-surface'
+                  }`}
                 >
-                  <span className="material-symbols-outlined text-[18px]">login</span>
-                  <span>لديك حساب بالفعل؟ تسجيل الدخول</span>
+                  <div className="flex items-center gap-2">
+                    <span className="material-symbols-outlined text-[20px]">admin_panel_settings</span>
+                    <span className="font-headline-sm text-body-md font-cairo font-bold">مسؤول متجر كامل</span>
+                  </div>
+                  <p className="text-[11px] text-on-surface-variant mt-1">إشراف، تقارير، وإدارة عامة</p>
                 </button>
-              )}
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    playBeep('click')
+                    setRole('cashier')
+                  }}
+                  className={`p-space-sm rounded-xl border text-right transition-all cursor-pointer ${
+                    role === 'cashier'
+                      ? 'bg-surface-container-high border-primary text-primary shadow-xs'
+                      : 'bg-surface-container-lowest border-outline-variant/30 hover:bg-surface-container-low text-on-surface'
+                  }`}
+                >
+                  <div className="flex items-center gap-2">
+                    <span className="material-symbols-outlined text-[20px]">badge</span>
+                    <span className="font-headline-sm text-body-md font-cairo font-bold">بائع وردية / كاشير</span>
+                  </div>
+                  <p className="text-[11px] text-on-surface-variant mt-1">فليكسي، شحن أرصدة، وفواتير</p>
+                </button>
+              </div>
             </div>
 
-            {/* Right 5 cols: Station Settings */}
-            <div className="lg:col-span-5 flex flex-col gap-space-md border-t lg:border-t-0 lg:border-s lg:ps-space-lg border-outline-variant/20">
-              <div className="bg-surface-container-low p-space-md rounded-xl border border-outline-variant/20 flex flex-col gap-space-sm">
-                <div className="flex items-center justify-between pb-space-xs border-b border-outline-variant/20">
-                  <div className="flex items-center gap-2">
-                    <span className="material-symbols-outlined text-primary text-[20px]">domain</span>
-                    <h3 className="font-headline-sm text-body-md font-cairo font-bold text-on-surface">
-                      إعدادات نقطة البيع
-                    </h3>
-                  </div>
-                </div>
-
-                <div className="flex flex-col gap-1">
-                  <label className="text-[11px] font-bold text-on-surface-variant">اسم المتجر التجاري:</label>
+            {/* Name & Username Inputs */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-space-sm">
+              <div className="flex flex-col gap-1">
+                <label className="text-[12px] font-bold text-on-surface-variant">
+                  الاسم الكامل <span className="text-tertiary">*</span>
+                </label>
+                <div className="flex items-center gap-2 bg-surface-container-low rounded-lg px-3 border border-outline-variant/30 pos-focus">
+                  <span className="material-symbols-outlined text-[18px] text-on-surface-variant">person</span>
                   <input
                     type="text"
-                    value={storeName}
-                    onChange={(e) => setStoreName(e.target.value)}
-                    placeholder="اسم المحل أو نقطة البيع"
-                    className="h-9 px-2 bg-surface-container-lowest rounded-lg border border-outline-variant/30 text-on-surface font-body-sm text-[12px] outline-none"
+                    value={fullName}
+                    onChange={(e) => setFullName(e.target.value)}
+                    placeholder="الاسم واللقب"
+                    required
+                    className="w-full h-10 bg-transparent text-on-surface font-body-md outline-none"
                   />
                 </div>
+              </div>
 
-                <div className="flex flex-col gap-1">
-                  <label className="text-[11px] font-bold text-on-surface-variant">
-                    رقم السجل التجاري / NIF (اختياري):
-                  </label>
+              <div className="flex flex-col gap-1">
+                <label className="text-[12px] font-bold text-on-surface-variant">
+                  اسم المستخدم (Username) <span className="text-tertiary">*</span>
+                </label>
+                <div className="flex items-center gap-2 bg-surface-container-low rounded-lg px-3 border border-outline-variant/30 pos-focus">
+                  <span className="material-symbols-outlined text-[18px] text-on-surface-variant">alternate_email</span>
                   <input
                     type="text"
-                    value={storeNif}
-                    onChange={(e) => setStoreNif(e.target.value)}
-                    placeholder="رقم السجل أو التعريف الجبائي"
-                    className="h-9 px-2 bg-surface-container-lowest rounded-lg border border-outline-variant/30 text-on-surface font-mono text-[12px] outline-none"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    placeholder="أدخل اسم الدخول"
+                    required
+                    className="w-full h-10 bg-transparent text-on-surface font-body-md outline-none font-mono"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Phone & Wilaya */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-space-sm">
+              <div className="flex flex-col gap-1">
+                <label className="text-[12px] font-bold text-on-surface-variant">
+                  رقم هاتف الإشعار والفليكسي
+                </label>
+                <div className="flex items-center bg-surface-container-low rounded-lg px-2 border border-outline-variant/30 pos-focus" dir="ltr">
+                  <span className="text-[14px] mr-1">🇩🇿 +213</span>
+                  <input
+                    type="tel"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value.replace(/\D/g, '').slice(0, 10))}
+                    placeholder="05 / 06 / 07..."
+                    className="w-full h-10 bg-transparent text-on-surface font-mono outline-none text-left"
+                  />
+                  {detectedOperator && (
+                    <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-primary-container text-on-primary">
+                      {detectedOperator}
+                    </span>
+                  )}
+                </div>
+              </div>
+
+              <div className="flex flex-col gap-1">
+                <label className="text-[12px] font-bold text-on-surface-variant">الولاية</label>
+                <div className="flex items-center bg-surface-container-low rounded-lg px-2 border border-outline-variant/30">
+                  <span className="material-symbols-outlined text-[18px] text-on-surface-variant ml-1">location_on</span>
+                  <select
+                    value={wilaya}
+                    onChange={(e) => setWilaya(e.target.value)}
+                    className="w-full h-10 bg-transparent text-on-surface font-body-md outline-none text-[12px]"
+                  >
+                    {WILAYAS.map((w) => (
+                      <option key={w} value={w}>
+                        {w}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            {/* Password & PIN */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-space-sm">
+              <div className="flex flex-col gap-1">
+                <div className="flex items-center justify-between">
+                  <label className="text-[12px] font-bold text-on-surface-variant">
+                    كلمة المرور الرئيسية <span className="text-tertiary">*</span>
+                  </label>
+                </div>
+                <div className="flex items-center bg-surface-container-low rounded-lg px-2 border border-outline-variant/30 pos-focus">
+                  <span className="material-symbols-outlined text-[18px] text-on-surface-variant ml-1">lock</span>
+                  <input
+                    type={showPassword ? 'text' : 'password'}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="••••••••"
+                    className="w-full h-10 bg-transparent text-on-surface font-body-md outline-none"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="text-on-surface-variant p-1 cursor-pointer"
+                  >
+                    <span className="material-symbols-outlined text-[18px]">
+                      {showPassword ? 'visibility_off' : 'visibility'}
+                    </span>
+                  </button>
+                </div>
+              </div>
+
+              <div className="flex flex-col gap-1">
+                <div className="flex items-center justify-between">
+                  <label className="text-[12px] font-bold text-on-surface-variant">
+                    رمز PIN سريع للكاشير (4 أرقام) <span className="text-tertiary">*</span>
+                  </label>
+                </div>
+                <div className="flex items-center bg-surface-container-low rounded-lg px-2 border border-outline-variant/30 pos-focus">
+                  <span className="material-symbols-outlined text-[18px] text-primary ml-1">dialpad</span>
+                  <input
+                    type="password"
+                    value={pin}
+                    onChange={(e) => setPin(e.target.value.replace(/\D/g, '').slice(0, 4))}
+                    placeholder="1234"
+                    maxLength={4}
+                    className="w-full h-10 bg-transparent text-primary font-mono text-center text-label-lg tracking-widest font-bold outline-none"
                     dir="ltr"
                   />
                 </div>
-              </div>
-
-              {/* Hardware & System Summary Card */}
-              <div className="bg-surface-container-low p-space-md rounded-xl border border-outline-variant/20 flex flex-col gap-space-xs text-[11px]">
-                <div className="flex items-center gap-2 pb-1 border-b border-outline-variant/20 font-bold text-on-surface">
-                  <span className="material-symbols-outlined text-primary text-[18px]">developer_board</span>
-                  <span>حالة النظام والعتاد</span>
-                </div>
-                <div className="flex items-center justify-between pt-1">
-                  <span className="text-on-surface-variant">قاعدة البيانات:</span>
-                  <span className="font-mono font-bold text-primary">SQLite Local WAL</span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-on-surface-variant">منافذ الفلاشة:</span>
-                  <span className="font-mono font-bold text-primary">3G / GSM Ready</span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-on-surface-variant">الطابعات المدعومة:</span>
-                  <span className="font-mono font-bold text-primary">ESC/POS 80mm / 58mm</span>
-                </div>
-                <div className="mt-1 pt-1 border-t border-outline-variant/15 flex items-center gap-1 text-primary">
-                  <span className="material-symbols-outlined text-[14px]">verified</span>
-                  <span>نظام تشغيل محلي معتمد دون انقطاع</span>
-                </div>
+                <span className="text-[11px] text-on-surface-variant">
+                  يستخدم للتبديل والدخول السريع من شاشة اللمس
+                </span>
               </div>
             </div>
+
+            {/* Terms Checkbox */}
+            <label className="flex items-start gap-2 pt-1 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={termsAgreed}
+                onChange={(e) => setTermsAgreed(e.target.checked)}
+                className="mt-1 rounded text-primary focus:ring-primary"
+              />
+              <span className="text-[11px] text-on-surface-variant leading-relaxed">
+                أوافق على سياسة تشفير المعاملات المحلية وحفظ السجلات في قاعدة بيانات المحطة المشفرة.
+              </span>
+            </label>
+
+            {/* Error Banner */}
+            {register.isError && (
+              <div className="pt-2">
+                <ErrorBanner message={translateAuthError(register.error)} />
+              </div>
+            )}
+
+            {/* Submit Button */}
+            <button
+              type="submit"
+              disabled={register.isPending || !termsAgreed || !fullName || !username || pin.length < 4}
+              className="w-full h-12 flex items-center justify-center gap-2 rounded-xl bg-primary hover:bg-primary-container text-on-primary font-headline-sm text-headline-sm font-cairo font-bold shadow-md transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed active:scale-95"
+            >
+              <span>إنشاء الحساب وتفعيل المحطة</span>
+              <span className="material-symbols-outlined text-[20px]">bolt</span>
+              <span className="bg-on-primary-container text-on-primary-fixed font-label-sm text-label-sm px-1.5 py-0.5 rounded font-mono font-bold" dir="ltr">
+                [Enter]
+              </span>
+            </button>
+
+            {onNavigateToLogin && (
+              <button
+                type="button"
+                onClick={() => {
+                  playBeep('click')
+                  onNavigateToLogin()
+                }}
+                className="w-full py-2.5 text-center text-primary hover:text-primary-container font-headline-sm text-body-md font-cairo font-bold transition-colors cursor-pointer flex items-center justify-center gap-1.5 border border-outline-variant/30 rounded-xl bg-surface-container-low hover:bg-surface-container"
+              >
+                <span className="material-symbols-outlined text-[18px]">login</span>
+                <span>لديك حساب بالفعل؟ تسجيل الدخول</span>
+              </button>
+            )}
           </form>
         )}
       </div>

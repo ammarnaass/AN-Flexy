@@ -17,10 +17,10 @@ export function SettingsScreen() {
   const setSetting = useSetSetting()
 
   // General & Printer settings state
-  const [storeName, setStoreName] = useState('متجر الوفاء للاتصالات')
-  const [storeSubtitle, setStoreSubtitle] = useState('فليكسي، بطاقات تعبئة، خدمات الهاتف النقال')
-  const [storeTax, setStoreTax] = useState('RC: 16/00-1284560B21 | NIF: 002116012845678')
-  const [storePhone, setStorePhone] = useState('0550 12 34 56')
+  const [storeName, setStoreName] = useState('')
+  const [storeSubtitle, setStoreSubtitle] = useState('')
+  const [storeTax, setStoreTax] = useState('')
+  const [storePhone, setStorePhone] = useState('')
   const [footerNote, setFooterNote] = useState('شكراً لثقتكم بنا • يرجى الاحتفاظ بالوصل في حال تأخر وصول الرصيد')
   const [printerDevice, setPrinterDevice] = useState('Xprinter XP-N160II USB')
   const [paperWidth, setPaperWidth] = useState<'80mm' | '58mm'>('80mm')
@@ -28,14 +28,14 @@ export function SettingsScreen() {
   const [cashDrawerPulse, setCashDrawerPulse] = useState(true)
 
   // Sync state
-  const [syncEndpoint, setSyncEndpoint] = useState('api.an-flexypos.dz/v2/sync-agent')
+  const [syncEndpoint, setSyncEndpoint] = useState('')
   const [syncInterval, setSyncInterval] = useState('5')
-  const [syncToken, setSyncToken] = useState('an_live_tok_99182374619472')
+  const [syncToken, setSyncToken] = useState('')
   const [isSyncing, setIsSyncing] = useState(false)
   const [syncStatus, setSyncStatus] = useState<string | null>(null)
 
   // Security state
-  const [supervisorPin, setSupervisorPin] = useState('7849')
+  const [supervisorPin, setSupervisorPin] = useState('')
   const [showSupervisorPin, setShowSupervisorPin] = useState(false)
   const [cashDrawerLimit, setCashDrawerLimit] = useState('50000')
   const [autoLockTimeout, setAutoLockTimeout] = useState('5')
@@ -443,6 +443,7 @@ export function SettingsScreen() {
                   type="text"
                   value={storeName}
                   onChange={(e) => setStoreName(e.target.value)}
+                  placeholder="مثال: نقطة بيع الفليكسي السريع"
                   className="bg-surface-container-low text-on-surface font-headline-sm p-2 rounded-xl border border-outline-variant/20 focus:border-primary outline-none"
                 />
               </div>
@@ -455,6 +456,7 @@ export function SettingsScreen() {
                   type="text"
                   value={storeSubtitle}
                   onChange={(e) => setStoreSubtitle(e.target.value)}
+                  placeholder="فليكسي، بطاقات تعبئة، خدمات الهاتف النقال"
                   className="bg-surface-container-low text-on-surface font-body-md p-2 rounded-xl border border-outline-variant/20 focus:border-primary outline-none"
                 />
               </div>
@@ -467,6 +469,7 @@ export function SettingsScreen() {
                   type="text"
                   value={storeTax}
                   onChange={(e) => setStoreTax(e.target.value)}
+                  placeholder="RC: 16/00-... | NIF: 00..."
                   dir="ltr"
                   className="bg-surface-container-low text-on-surface font-mono text-label-sm p-2 rounded-xl border border-outline-variant/20 focus:border-primary outline-none"
                 />
@@ -480,6 +483,7 @@ export function SettingsScreen() {
                   type="text"
                   value={storePhone}
                   onChange={(e) => setStorePhone(e.target.value)}
+                  placeholder="0550 00 00 00"
                   dir="ltr"
                   className="bg-surface-container-low text-on-surface font-mono text-label-md p-2 rounded-xl border border-outline-variant/20 focus:border-primary outline-none text-left"
                 />
@@ -575,13 +579,15 @@ export function SettingsScreen() {
               {/* Header details */}
               <div className="text-center flex flex-col items-center gap-0.5">
                 <span className="font-bold text-[14px] text-gray-950 font-cairo" dir="rtl">
-                  {storeName}
+                  {storeName || 'اسم المحل التجاري'}
                 </span>
                 <span className="text-[11px] text-gray-600 font-tajawal" dir="rtl">
-                  {storeSubtitle}
+                  {storeSubtitle || 'خدمات الهاتف النقال والفليكسي'}
                 </span>
-                <span className="text-[10px] text-gray-500">{storeTax}</span>
-                <span className="text-[11px] text-gray-700 font-bold">Tél: {storePhone}</span>
+                <span className="text-[10px] text-gray-500">{storeTax || 'RC: -- | NIF: --'}</span>
+                <span className="text-[11px] text-gray-700 font-bold">
+                  {storePhone ? `Tél: ${storePhone}` : 'Tél: --'}
+                </span>
               </div>
 
               <div className="border-t border-dashed border-gray-400 my-1" />
@@ -592,7 +598,7 @@ export function SettingsScreen() {
                 <span>26/09/2026 11:45</span>
               </div>
               <div className="text-[11px] text-gray-600" dir="rtl">
-                البائع: أمين بلقاسم (المالك)
+                البائع: المشغل / الكاشير
               </div>
 
               <div className="border-t border-dashed border-gray-300 my-1" />
