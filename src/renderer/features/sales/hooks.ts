@@ -29,10 +29,16 @@ function useInvalidateAfterSale() {
 
 export function useCreateSale() {
   const invalidate = useInvalidateAfterSale()
-  return useMutation({ mutationFn: (input: CreateSaleInput) => salesApi.create(input), onSuccess: invalidate })
+  return useMutation({
+    mutationFn: (input: CreateSaleInput) => salesApi.create(input),
+    onSuccess: invalidate,
+  })
 }
 
 export function useVoidSale() {
   const invalidate = useInvalidateAfterSale()
-  return useMutation({ mutationFn: (input: VoidSaleInput) => salesApi.void(input), onSuccess: invalidate })
+  return useMutation({
+    mutationFn: (input: VoidSaleInput) => salesApi.void(input),
+    onSuccess: invalidate,
+  })
 }

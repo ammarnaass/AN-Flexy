@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+
+<html dir="rtl" lang="ar"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_standard" name="shell-type"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Tajawal:wght@400;500;700;800&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;font-family:'Tajawal','Plus Jakarta Sans',sans-serif;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script><script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        "colors": {
+          "error-container": "#ffdad6",
+          "on-background": "#131b2e",
+          "on-secondary": "#ffffff",
+          "on-error": "#ffffff",
+          "tertiary": "#a15600",
+          "inverse-primary": "#80d5cb",
+          "tertiary-container": "#ffe6d5",
+          "surface-container-low": "#f8fafc",
+          "primary": "#0f766e",
+          "on-primary": "#ffffff",
+          "outline": "#64748b",
+          "on-tertiary": "#ffffff",
+          "on-surface": "#0f172a",
+          "on-primary-fixed-variant": "#00504a",
+          "on-tertiary-fixed-variant": "#6e3900",
+          "secondary-fixed-dim": "#6bd8cb",
+          "on-surface-variant": "#475569",
+          "surface-bright": "#ffffff",
+          "tertiary-fixed-dim": "#ffb77d",
+          "on-secondary-fixed": "#00201d",
+          "on-primary-container": "#ffffff",
+          "on-tertiary-container": "#7d4200",
+          "on-tertiary-fixed": "#2f1500",
+          "on-error-container": "#93000a",
+          "surface-dim": "#f1f5f9",
+          "on-secondary-container": "#006f66",
+          "tertiary-fixed": "#ffdcc3",
+          "primary-container": "#0f766e",
+          "secondary-fixed": "#89f5e7",
+          "inverse-on-surface": "#f8fafc",
+          "surface-container-lowest": "#ffffff",
+          "primary-fixed": "#9cf2e8",
+          "background": "#f8fafc",
+          "surface-container": "#ffffff",
+          "on-primary-fixed": "#00201d",
+          "surface-container-high": "#f1f5f9",
+          "surface-tint": "#0f766e",
+          "secondary": "#0d9488",
+          "on-secondary-fixed-variant": "#005049",
+          "outline-variant": "#e2e8f0",
+          "surface-variant": "#f8fafc",
+          "surface": "#ffffff",
+          "error": "#ba1a1a",
+          "primary-fixed-dim": "#80d5cb",
+          "secondary-container": "#ccfbf1",
+          "surface-container-highest": "#e2e8f0",
+          "inverse-surface": "#1e293b"
+        },
+        "borderRadius": {
+          "DEFAULT": "0.25rem",
+          "lg": "0.5rem",
+          "xl": "0.75rem",
+          "full": "9999px"
+        },
+        "spacing": {
+          "space-md": "1rem",
+          "gutter": "1rem",
+          "space-xl": "2rem",
+          "gutter-desktop": "1.5rem",
+          "margin-desktop": "2rem",
+          "space-xs": "0.25rem",
+          "margin": "1rem",
+          "margin-tablet": "1.5rem",
+          "space-sm": "0.5rem",
+          "space-lg": "1.5rem"
+        },
+        "fontFamily": {
+          "body-sm": ["Plus Jakarta Sans", "Tajawal", "sans-serif"],
+          "label-lg": ["Plus Jakarta Sans", "Tajawal", "sans-serif"],
+          "body-lg": ["Plus Jakarta Sans", "Tajawal", "sans-serif"],
+          "label-md": ["Plus Jakarta Sans", "Tajawal", "sans-serif"],
+          "headline-lg": ["Plus Jakarta Sans", "Tajawal", "sans-serif"],
+          "headline-xl": ["Plus Jakarta Sans", "Tajawal", "sans-serif"],
+          "body-md": ["Plus Jakarta Sans", "Tajawal", "sans-serif"],
+          "label-sm": ["Plus Jakarta Sans", "Tajawal", "sans-serif"],
+          "headline-md": ["Plus Jakarta Sans", "Tajawal", "sans-serif"],
+          "display-currency": ["Plus Jakarta Sans", "sans-serif"],
+          "label-numeric": ["Plus Jakarta Sans", "sans-serif"],
+          "currency-amount": ["Plus Jakarta Sans", "sans-serif"]
+        }
+      },
+    },
+  }
+</script></head><body class="bg-slate-50 font-body-md text-slate-800 antialiased selection:bg-teal-100 selection:text-teal-900"><header class="fixed top-0 w-full z-40 bg-white/95 backdrop-blur-md border-b border-slate-200/80 shadow-[0_1px_4px_rgba(0,0,0,0.04)]"><div class="h-20 w-full px-gutter flex items-center justify-between gap-space-md"><div class="flex items-center gap-space-lg"><div class="flex items-center gap-space-sm"><div class="w-10 h-10 rounded-xl bg-teal-50 border border-teal-200 flex items-center justify-center text-teal-700 shadow-sm"><span class="material-symbols-outlined text-[24px]">point_of_sale</span></div><div class="flex flex-col"><span class="font-headline-md text-slate-900 font-bold tracking-tight leading-none text-xl">فليكسي بلس</span><span class="text-xs text-slate-500 font-medium">محطة البيع والخدمات السريعة</span></div></div><div class="hidden xl:flex items-center gap-space-sm bg-slate-100/90 border border-slate-200/70 px-space-md py-1.5 rounded-xl"><div class="w-2.5 h-2.5 rounded-full bg-teal-600 animate-pulse"></div><span class="text-xs text-slate-600 font-medium">الخادم المركزي:</span><span class="text-xs text-teal-700 font-bold">متصل ومستقر</span></div><div class="hidden lg:flex items-center gap-space-sm bg-slate-100/90 border border-slate-200/70 px-space-md py-1.5 rounded-xl"><span class="text-xs text-slate-600 font-medium">صندوق المحطة:</span><span class="font-display-currency text-xl text-teal-800 tracking-tight font-bold">184,500.00</span><span class="text-xs text-slate-500 font-semibold">د.ج</span></div></div><nav class="hidden md:flex items-center gap-1 bg-slate-100 p-1 rounded-xl border border-slate-200"><a class="px-space-md py-2 text-slate-600 hover:text-slate-900 hover:bg-white/80 rounded-lg transition-all font-medium text-sm" data-path="new-sale-flexy" href="#">بيع جديد / فليكسي</a><a class="px-space-md py-2 text-slate-600 hover:text-slate-900 hover:bg-white/80 rounded-lg transition-all font-medium text-sm" data-path="transactions-log" href="#">سجل العمليات</a><a class="px-space-md py-2 text-slate-600 hover:text-slate-900 hover:bg-white/80 rounded-lg transition-all font-medium text-sm" data-path="debts-customers" href="#">الديون والزبائن</a><a class="px-space-md py-2 text-slate-600 hover:text-slate-900 hover:bg-white/80 rounded-lg transition-all font-medium text-sm" data-path="inventory-sims" href="#">المخزون والشرائح</a><a class="px-space-md py-2 text-slate-600 hover:text-slate-900 hover:bg-white/80 rounded-lg transition-all font-medium text-sm" data-path="analytics-dashboard" href="#">لوحة التحكم والإحصائيات</a></nav><div class="flex items-center gap-space-md"><button class="hidden sm:flex items-center gap-space-xs bg-slate-100 hover:bg-slate-200 border border-slate-200 text-slate-700 px-space-md py-1.5 rounded-lg transition-colors shadow-sm" type="button"><span class="material-symbols-outlined text-[18px]">keyboard</span><span class="text-xs font-bold font-label-numeric">F1 - F12</span></button><div class="flex items-center gap-space-sm bg-slate-100 border border-slate-200 px-3 py-1.5 rounded-xl"><div class="flex flex-col text-left"><span class="text-xs font-bold text-slate-900 leading-tight text-right">أمين بن مالك</span><span class="text-[11px] text-teal-700 font-semibold text-right">كاشير 01</span></div><div class="w-8 h-8 rounded-full bg-teal-700 flex items-center justify-center text-white shadow-sm"><span class="material-symbols-outlined text-[18px]">person</span></div></div></div></div></header><main class="w-full pt-20 bg-slate-50 min-h-[calc(100vh-4rem)]"><div class="flex flex-col w-full">
+<div class="w-full px-gutter-desktop py-space-lg flex flex-col gap-space-lg">
+<!-- Sub-header & Quick Filters -->
+<div class="w-full flex flex-col xl:flex-row items-start xl:items-center justify-between gap-space-md bg-surface-container-lowest p-space-md rounded-xl shadow-sm">
+<div class="flex items-center gap-space-md">
+<div class="w-12 h-12 rounded-xl bg-secondary-container flex items-center justify-center text-primary shadow-inner">
+<span class="material-symbols-outlined text-[28px]" style="font-variation-settings: 'FILL' 1;">monitoring</span>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center gap-space-xs">
+<span class="font-headline-lg text-headline-lg text-on-surface">إحصائيات المحطة المركزية</span>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-secondary-container text-primary font-label-sm text-label-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-primary animate-ping"></span>
+              تحديث مباشر
+            </span>
+</div>
+<span class="font-body-md text-body-md text-on-surface-variant">البيانات المالية ومراقبة سيولة شرائح الفليكسي ومخزون الأرصدة</span>
+</div>
+</div>
+<div class="flex flex-wrap items-center gap-space-sm w-full xl:w-auto justify-end">
+<div class="inline-flex p-1 bg-surface-container-low rounded-xl">
+<button class="px-space-md py-1.5 rounded-lg bg-surface-container-lowest text-primary font-label-md text-label-md shadow-sm transition-all" type="button">اليوم</button>
+<button class="px-space-md py-1.5 rounded-lg text-on-surface-variant hover:text-on-surface font-label-md text-label-md transition-all" type="button">أمس</button>
+<button class="px-space-md py-1.5 rounded-lg text-on-surface-variant hover:text-on-surface font-label-md text-label-md transition-all" type="button">آخر 7 أيام</button>
+<button class="px-space-md py-1.5 rounded-lg text-on-surface-variant hover:text-on-surface font-label-md text-label-md transition-all" type="button">مخصص</button>
+</div>
+<button class="flex items-center gap-space-xs bg-surface-container-low hover:bg-surface-container text-on-surface px-space-md py-2.5 rounded-xl font-label-md text-label-md transition-all shadow-sm" type="button">
+<span class="material-symbols-outlined text-[20px] text-on-surface-variant">download</span>
+<span>تصدير تقرير (PDF/Excel)</span>
+</button>
+<button class="flex items-center gap-space-xs bg-primary hover:bg-primary-container text-on-primary px-space-md py-2.5 rounded-xl font-label-md text-label-md transition-all shadow-md active:scale-95" type="button">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">receipt_long</span>
+<span>إغلاق الصندوق (Z-Report)</span>
+</button>
+</div>
+</div>
+<!-- Top KPI Cards -->
+<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-space-md">
+<!-- KPI 1: Sales -->
+<div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm relative overflow-hidden flex flex-col justify-between group hover:shadow-md transition-all">
+<div class="absolute -top-10 -right-10 w-28 h-28 rounded-full bg-secondary-container opacity-20 pointer-events-none"></div>
+<div class="flex items-center justify-between">
+<span class="font-label-lg text-label-lg text-on-surface-variant">إجمالي مبيعات اليوم</span>
+<div class="w-10 h-10 rounded-xl bg-surface-container-low flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[22px]">payments</span>
+</div>
+</div>
+<div class="mt-space-md flex flex-col">
+<div class="flex items-baseline gap-space-xs">
+<span class="font-display-currency text-display-currency text-on-surface">184,500.00</span>
+<span class="font-label-md text-label-md text-on-surface-variant">د.ج</span>
+</div>
+<div class="mt-space-sm flex items-center justify-between text-body-sm font-body-sm">
+<span class="inline-flex items-center text-primary font-bold gap-0.5">
+<span class="material-symbols-outlined text-[16px]">trending_up</span>
+              +14.2% مقارنة بالأمس
+            </span>
+<span class="text-on-surface-variant">182 عملية منفذة</span>
+</div>
+</div>
+</div>
+<!-- KPI 2: Net Profit -->
+<div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm relative overflow-hidden flex flex-col justify-between group hover:shadow-md transition-all">
+<div class="absolute -top-10 -right-10 w-28 h-28 rounded-full bg-secondary-fixed opacity-20 pointer-events-none"></div>
+<div class="flex items-center justify-between">
+<span class="font-label-lg text-label-lg text-on-surface-variant">صافي أرباح اليوم المقدرة</span>
+<div class="w-10 h-10 rounded-xl bg-surface-container-low flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[22px]">auto_graph</span>
+</div>
+</div>
+<div class="mt-space-md flex flex-col">
+<div class="flex items-baseline gap-space-xs">
+<span class="font-display-currency text-display-currency text-primary">11,070.00</span>
+<span class="font-label-md text-label-md text-on-surface-variant">د.ج</span>
+</div>
+<div class="mt-space-sm flex items-center justify-between text-body-sm font-body-sm">
+<span class="text-on-surface-variant">معدل العمولة المكتسب: <strong class="text-on-surface font-bold">6.0%</strong></span>
+<span class="text-primary font-bold">ممتاز</span>
+</div>
+</div>
+</div>
+<!-- KPI 3: Due Debts -->
+<div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm relative overflow-hidden flex flex-col justify-between group hover:shadow-md transition-all">
+<div class="absolute -top-10 -right-10 w-28 h-28 rounded-full bg-error-container opacity-30 pointer-events-none"></div>
+<div class="flex items-center justify-between">
+<span class="font-label-lg text-label-lg text-on-surface-variant">الديون غير المحصلة (اليوم)</span>
+<div class="w-10 h-10 rounded-xl bg-error-container flex items-center justify-center text-error">
+<span class="material-symbols-outlined text-[22px]">pending_actions</span>
+</div>
+</div>
+<div class="mt-space-md flex flex-col">
+<div class="flex items-baseline gap-space-xs">
+<span class="font-display-currency text-display-currency text-error">16,800.00</span>
+<span class="font-label-md text-label-md text-on-surface-variant">د.ج</span>
+</div>
+<div class="mt-space-sm flex items-center justify-between text-body-sm font-body-sm">
+<span class="inline-flex items-center text-error font-bold gap-0.5">
+<span class="material-symbols-outlined text-[16px]">error</span>
+              5 زبائن متأخرين
+            </span>
+<span class="text-on-surface-variant">من أصل 12 مدين</span>
+</div>
+</div>
+</div>
+<!-- KPI 4: Cash Drawer Balance -->
+<div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm relative overflow-hidden flex flex-col justify-between group hover:shadow-md transition-all">
+<div class="absolute -top-10 -right-10 w-28 h-28 rounded-full bg-secondary-container opacity-20 pointer-events-none"></div>
+<div class="flex items-center justify-between">
+<span class="font-label-lg text-label-lg text-on-surface-variant">صندوق النقد الفعلي (Cash Drawer)</span>
+<div class="w-10 h-10 rounded-xl bg-surface-container-low flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[22px]">point_of_sale</span>
+</div>
+</div>
+<div class="mt-space-md flex flex-col">
+<div class="flex items-baseline gap-space-xs">
+<span class="font-display-currency text-display-currency text-on-surface">122,400.00</span>
+<span class="font-label-md text-label-md text-on-surface-variant">د.ج</span>
+</div>
+<div class="mt-space-sm flex items-center justify-between text-body-sm font-body-sm">
+<span class="text-on-surface-variant">سيولة ورقية في الدرج</span>
+<span class="text-primary font-bold">مطابق للجرد</span>
+</div>
+</div>
+</div>
+</div>
+<!-- SIM Cards Health & Balance Monitor -->
+<div class="w-full flex flex-col gap-space-md">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[24px]" style="font-variation-settings: 'FILL' 1;">sim_card</span>
+<span class="font-headline-md text-headline-md text-on-surface">مراقبة سيولة شرائح الفليكسي اللحظية</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant">3 شرائح نشطة متصلة بمودم فليكسي بلس الفضائي</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-space-md">
+<!-- Mobilis -->
+<div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-sm">
+<div class="w-10 h-10 rounded-xl bg-secondary-container flex items-center justify-center text-primary font-bold font-headline-md text-headline-md">
+                  M
+                </div>
+<div class="flex flex-col">
+<span class="font-headline-md text-headline-md text-on-surface">موبيليس (Mobilis)</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">الشريحة 0661 • فليكسي جملة</span>
+</div>
+</div>
+<span class="px-2.5 py-1 rounded-full bg-secondary-container text-primary font-label-sm text-label-sm font-bold">
+                حالة ممتازة
+              </span>
+</div>
+<div class="mt-space-md bg-surface-container-low p-space-sm rounded-lg flex items-center justify-between">
+<span class="font-body-sm text-body-sm text-on-surface-variant">الرصيد المتبقي:</span>
+<div class="flex items-baseline gap-1">
+<span class="font-headline-md text-headline-md text-on-surface font-bold">45,000.00</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">د.ج</span>
+</div>
+</div>
+<div class="mt-space-sm space-y-1.5">
+<div class="flex items-center justify-between font-body-sm text-body-sm">
+<span class="text-on-surface-variant">استهلاك اليوم: 88,500 د.ج</span>
+<span class="text-primary font-bold">حصة المبيعات: 48%</span>
+</div>
+<div class="w-full h-2 rounded-full bg-surface-container-high overflow-hidden">
+<div class="h-full bg-primary rounded-full transition-all" style="width: 48%"></div>
+</div>
+</div>
+</div>
+<div class="mt-space-md pt-space-sm flex items-center justify-between">
+<span class="font-body-sm text-body-sm text-on-surface-variant">آخر تحديث: منذ دقيقتين</span>
+<button class="px-space-md py-1.5 bg-surface-container-low hover:bg-surface-container text-primary font-label-md text-label-md rounded-lg transition-all" type="button">
+              طلب تعبئة رصيد
+            </button>
+</div>
+</div>
+<!-- Djezzy (Critical Warning) -->
+<div class="bg-surface-container-lowest p-space-md rounded-xl shadow-md flex flex-col justify-between relative overflow-hidden">
+<div class="absolute top-0 right-0 left-0 h-1.5 bg-tertiary"></div>
+<div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-sm">
+<div class="w-10 h-10 rounded-xl bg-tertiary-container flex items-center justify-center text-on-tertiary font-bold font-headline-md text-headline-md">
+                  D
+                </div>
+<div class="flex flex-col">
+<span class="font-headline-md text-headline-md text-on-surface">جيزي (Djezzy)</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">الشريحة 0770 • فليكسي سريع</span>
+</div>
+</div>
+<span class="px-2.5 py-1 rounded-full bg-tertiary-container text-on-tertiary font-label-sm text-label-sm font-bold animate-pulse">
+                رصيد حرج جداً
+              </span>
+</div>
+<div class="mt-space-md bg-tertiary-fixed p-space-sm rounded-lg flex items-center justify-between">
+<span class="font-body-sm text-body-sm text-on-tertiary-fixed font-bold">الرصيد المتبقي:</span>
+<div class="flex items-baseline gap-1">
+<span class="font-headline-md text-headline-md text-tertiary font-bold">3,200.00</span>
+<span class="font-label-sm text-label-sm text-tertiary font-bold">د.ج</span>
+</div>
+</div>
+<div class="mt-space-sm space-y-1.5">
+<div class="flex items-center justify-between font-body-sm text-body-sm">
+<span class="text-on-surface-variant">استهلاك اليوم: 42,000 د.ج</span>
+<span class="text-tertiary font-bold">حصة المبيعات: 23%</span>
+</div>
+<div class="w-full h-2 rounded-full bg-surface-container-high overflow-hidden">
+<div class="h-full bg-tertiary rounded-full transition-all" style="width: 23%"></div>
+</div>
+</div>
+</div>
+<div class="mt-space-md pt-space-sm flex items-center justify-between">
+<span class="font-body-sm text-body-sm text-tertiary font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">priority_high</span>
+              يكفي لـ 3 عمليات فقط
+            </span>
+<button class="px-space-md py-1.5 bg-tertiary text-on-tertiary hover:opacity-90 font-label-md text-label-md rounded-lg shadow-sm transition-all" type="button">
+              شحن فلاش عاجل
+            </button>
+</div>
+</div>
+<!-- Ooredoo -->
+<div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-sm">
+<div class="w-10 h-10 rounded-xl bg-surface-container-high flex items-center justify-center text-on-surface font-bold font-headline-md text-headline-md">
+                  O
+                </div>
+<div class="flex flex-col">
+<span class="font-headline-md text-headline-md text-on-surface">أوريدو (Ooredoo)</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">الشريحة 0550 • ستورم وباقات</span>
+</div>
+</div>
+<span class="px-2.5 py-1 rounded-full bg-surface-container-high text-on-surface font-label-sm text-label-sm font-bold">
+                مستقر
+              </span>
+</div>
+<div class="mt-space-md bg-surface-container-low p-space-sm rounded-lg flex items-center justify-between">
+<span class="font-body-sm text-body-sm text-on-surface-variant">الرصيد المتبقي:</span>
+<div class="flex items-baseline gap-1">
+<span class="font-headline-md text-headline-md text-on-surface font-bold">28,500.00</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">د.ج</span>
+</div>
+</div>
+<div class="mt-space-sm space-y-1.5">
+<div class="flex items-center justify-between font-body-sm text-body-sm">
+<span class="text-on-surface-variant">استهلاك اليوم: 54,000 د.ج</span>
+<span class="text-on-surface font-bold">حصة المبيعات: 29%</span>
+</div>
+<div class="w-full h-2 rounded-full bg-surface-container-high overflow-hidden">
+<div class="h-full bg-on-surface rounded-full transition-all" style="width: 29%"></div>
+</div>
+</div>
+</div>
+<div class="mt-space-md pt-space-sm flex items-center justify-between">
+<span class="font-body-sm text-body-sm text-on-surface-variant">آخر شحن: 14:20 عصراً</span>
+<button class="px-space-md py-1.5 bg-surface-container-low hover:bg-surface-container text-on-surface font-label-md text-label-md rounded-lg transition-all" type="button">
+              طلب تعبئة رصيد
+            </button>
+</div>
+</div>
+</div>
+</div>
+<!-- Chart: Hourly Sales & Peak Load -->
+<div class="w-full bg-surface-container-lowest p-space-md rounded-xl shadow-sm flex flex-col gap-space-md">
+<div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-space-sm">
+<div>
+<span class="font-headline-md text-headline-md text-on-surface block">توزيع مبيعات اليوم وساعات الذروة</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">حجم العمليات بالدينار الجزائري على مدار الـ 24 ساعة (ذروة المساء: 17:00 - 20:30)</span>
+</div>
+<div class="flex items-center gap-space-md">
+<div class="flex items-center gap-space-xs text-body-sm font-body-sm text-on-surface-variant">
+<span class="w-3 h-3 rounded-full bg-primary"></span>
+<span>مبيعات ناجحة</span>
+</div>
+<div class="flex items-center gap-space-xs text-body-sm font-body-sm text-on-surface-variant">
+<span class="w-3 h-3 rounded-full bg-tertiary"></span>
+<span>ساعات الضغط المرتفع</span>
+</div>
+</div>
+</div>
+<!-- Clean Inline SVG Sales Histogram Chart -->
+<div class="w-full bg-surface-container-low p-space-md rounded-xl overflow-x-auto">
+<div class="min-w-[680px]">
+<svg class="w-full h-56 text-primary" fill="none" preserveaspectratio="none" viewbox="0 0 700 200" xmlns="http://www.w3.org/2000/svg">
+<line stroke="currentColor" stroke-opacity="0.1" stroke-width="1" x1="0" x2="700" y1="40" y2="40"></line>
+<line stroke="currentColor" stroke-opacity="0.1" stroke-width="1" x1="0" x2="700" y1="90" y2="90"></line>
+<line stroke="currentColor" stroke-opacity="0.1" stroke-width="1" x1="0" x2="700" y1="140" y2="140"></line>
+<line stroke="currentColor" stroke-opacity="0.1" stroke-width="1" x1="0" x2="700" y1="180" y2="180"></line>
+<!-- Hourly volume bars -->
+<!-- 09:00 -->
+<rect fill="currentColor" fill-opacity="0.3" height="40" rx="3" width="28" x="30" y="140"></rect>
+<!-- 10:00 -->
+<rect fill="currentColor" fill-opacity="0.4" height="65" rx="3" width="28" x="80" y="115"></rect>
+<!-- 11:00 -->
+<rect fill="currentColor" fill-opacity="0.5" height="90" rx="3" width="28" x="130" y="90"></rect>
+<!-- 12:00 -->
+<rect fill="currentColor" fill-opacity="0.45" height="80" rx="3" width="28" x="180" y="100"></rect>
+<!-- 13:00 -->
+<rect fill="currentColor" fill-opacity="0.3" height="50" rx="3" width="28" x="230" y="130"></rect>
+<!-- 14:00 -->
+<rect fill="currentColor" fill-opacity="0.5" height="85" rx="3" width="28" x="280" y="95"></rect>
+<!-- 15:00 -->
+<rect fill="currentColor" fill-opacity="0.6" height="110" rx="3" width="28" x="330" y="70"></rect>
+<!-- 16:00 -->
+<rect fill="currentColor" fill-opacity="0.75" height="135" rx="3" width="28" x="380" y="45"></rect>
+<!-- 17:00 (Peak) -->
+<rect fill="currentColor" height="160" rx="3" width="28" x="430" y="20"></rect>
+<!-- 18:00 (Peak 2) -->
+<rect fill="currentColor" height="170" rx="3" width="28" x="480" y="10"></rect>
+<!-- 19:00 (Peak 3) -->
+<rect fill="currentColor" height="150" rx="3" width="28" x="530" y="30"></rect>
+<!-- 20:00 -->
+<rect fill="currentColor" fill-opacity="0.7" height="120" rx="3" width="28" x="580" y="60"></rect>
+<!-- 21:00 -->
+<rect fill="currentColor" fill-opacity="0.4" height="70" rx="3" width="28" x="630" y="110"></rect>
+<!-- Trend Polyline -->
+<polyline fill="none" points="44,140 94,115 144,90 194,100 244,130 294,95 344,70 394,45 444,20 494,10 544,30 594,60 644,110" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"></polyline>
+<circle cx="494" cy="10" fill="#ffffff" r="4.5" stroke="currentColor" stroke-width="2.5"></circle>
+<circle cx="444" cy="20" fill="#ffffff" r="4.5" stroke="currentColor" stroke-width="2.5"></circle>
+</svg>
+<!-- X-Axis Labels -->
+<div class="flex items-center justify-between text-body-sm font-body-sm text-on-surface-variant px-4 pt-2">
+<span>09:00</span>
+<span>10:00</span>
+<span>11:00</span>
+<span>12:00</span>
+<span>13:00</span>
+<span>14:00</span>
+<span>15:00</span>
+<span>16:00</span>
+<span class="text-primary font-bold">17:00 (ذروة)</span>
+<span class="text-primary font-bold">18:00 (القمة)</span>
+<span>19:00</span>
+<span>20:00</span>
+<span>21:00</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Dual Layout: Live Stream vs Debts Collection -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-md">
+<!-- Right Pane: Real-Time Stream (7 Cols) -->
+<div class="lg:col-span-7 bg-surface-container-lowest p-space-md rounded-xl shadow-sm flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between pb-space-sm">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[24px]">history</span>
+<span class="font-headline-md text-headline-md text-on-surface">سجل العمليات اللحظية (Live)</span>
+</div>
+<span class="font-body-sm text-body-sm text-primary font-semibold flex items-center gap-1">
+<span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+              مباشر من نقاط البيع
+            </span>
+</div>
+<!-- Quick Filters by Operator -->
+<div class="flex items-center gap-space-xs py-space-sm overflow-x-auto">
+<button class="px-3 py-1 rounded-full bg-secondary-container text-primary font-label-md text-label-md" type="button">الكل (182)</button>
+<button class="px-3 py-1 rounded-full bg-surface-container-low hover:bg-surface-container text-on-surface-variant font-label-md text-label-md" type="button">موبيليس (84)</button>
+<button class="px-3 py-1 rounded-full bg-surface-container-low hover:bg-surface-container text-on-surface-variant font-label-md text-label-md" type="button">جيزي (48)</button>
+<button class="px-3 py-1 rounded-full bg-surface-container-low hover:bg-surface-container text-on-surface-variant font-label-md text-label-md" type="button">أوريدو (50)</button>
+</div>
+<!-- Transaction List -->
+<div class="flex flex-col gap-space-xs mt-space-sm">
+<!-- Item 1 -->
+<div class="p-space-sm rounded-xl bg-surface-container-low hover:bg-surface-container flex items-center justify-between transition-all">
+<div class="flex items-center gap-space-sm">
+<div class="w-10 h-10 rounded-lg bg-secondary-container text-primary flex items-center justify-center font-bold text-sm">
+                  موبيليس
+                </div>
+<div class="flex flex-col">
+<span class="font-headline-md text-sm text-on-surface font-bold tracking-wider" dir="ltr">0661 42 19 80</span>
+<div class="flex items-center gap-space-xs font-body-sm text-body-sm text-on-surface-variant">
+<span>فليكسي رصيد</span>
+<span>•</span>
+<span>17:42:10</span>
+<span>•</span>
+<span class="text-primary font-bold">نقداً</span>
+</div>
+</div>
+</div>
+<div class="flex flex-col items-end">
+<span class="font-headline-md text-headline-md text-on-surface font-bold">1,000.00 د.ج</span>
+<span class="font-label-sm text-label-sm text-primary font-bold flex items-center gap-0.5">
+<span class="material-symbols-outlined text-[14px]">check_circle</span>
+                  مكتملة ومؤكدة
+                </span>
+</div>
+</div>
+<!-- Item 2 -->
+<div class="p-space-sm rounded-xl bg-surface-container-low hover:bg-surface-container flex items-center justify-between transition-all">
+<div class="flex items-center gap-space-sm">
+<div class="w-10 h-10 rounded-lg bg-surface-container-high text-on-surface flex items-center justify-center font-bold text-sm">
+                  أوريدو
+                </div>
+<div class="flex flex-col">
+<span class="font-headline-md text-sm text-on-surface font-bold tracking-wider" dir="ltr">0552 88 14 02</span>
+<div class="flex items-center gap-space-xs font-body-sm text-body-sm text-on-surface-variant">
+<span>عرض هبا (Haba 2000)</span>
+<span>•</span>
+<span>17:39:45</span>
+<span>•</span>
+<span class="text-primary font-bold">نقداً</span>
+</div>
+</div>
+</div>
+<div class="flex flex-col items-end">
+<span class="font-headline-md text-headline-md text-on-surface font-bold">2,000.00 د.ج</span>
+<span class="font-label-sm text-label-sm text-primary font-bold flex items-center gap-0.5">
+<span class="material-symbols-outlined text-[14px]">check_circle</span>
+                  مكتملة ومؤكدة
+                </span>
+</div>
+</div>
+<!-- Item 3 -->
+<div class="p-space-sm rounded-xl bg-surface-container-low hover:bg-surface-container flex items-center justify-between transition-all">
+<div class="flex items-center gap-space-sm">
+<div class="w-10 h-10 rounded-lg bg-tertiary-container text-on-tertiary flex items-center justify-center font-bold text-sm">
+                  جيزي
+                </div>
+<div class="flex flex-col">
+<span class="font-headline-md text-sm text-on-surface font-bold tracking-wider" dir="ltr">0774 15 90 33</span>
+<div class="flex items-center gap-space-xs font-body-sm text-body-sm text-on-surface-variant">
+<span>فليكسي هايلة</span>
+<span>•</span>
+<span>17:31:02</span>
+<span>•</span>
+<span class="text-error font-bold">دين (مؤجل)</span>
+</div>
+</div>
+</div>
+<div class="flex flex-col items-end">
+<span class="font-headline-md text-headline-md text-error font-bold">1,500.00 د.ج</span>
+<span class="font-label-sm text-label-sm text-primary font-bold flex items-center gap-0.5">
+<span class="material-symbols-outlined text-[14px]">check_circle</span>
+                  مكتملة ومؤكدة
+                </span>
+</div>
+</div>
+<!-- Item 4 -->
+<div class="p-space-sm rounded-xl bg-surface-container-low hover:bg-surface-container flex items-center justify-between transition-all">
+<div class="flex items-center gap-space-sm">
+<div class="w-10 h-10 rounded-lg bg-secondary-container text-primary flex items-center justify-center font-bold text-sm">
+                  موبيليس
+                </div>
+<div class="flex flex-col">
+<span class="font-headline-md text-sm text-on-surface font-bold tracking-wider" dir="ltr">0669 00 12 55</span>
+<div class="flex items-center gap-space-xs font-body-sm text-body-sm text-on-surface-variant">
+<span>باقة سبيسيال 1500</span>
+<span>•</span>
+<span>17:28:18</span>
+<span>•</span>
+<span class="text-primary font-bold">نقداً</span>
+</div>
+</div>
+</div>
+<div class="flex flex-col items-end">
+<span class="font-headline-md text-headline-md text-on-surface font-bold">1,500.00 د.ج</span>
+<span class="font-label-sm text-label-sm text-primary font-bold flex items-center gap-0.5">
+<span class="material-symbols-outlined text-[14px]">check_circle</span>
+                  مكتملة ومؤكدة
+                </span>
+</div>
+</div>
+</div>
+</div>
+<div class="pt-space-md flex items-center justify-between">
+<span class="font-body-sm text-body-sm text-on-surface-variant">عرض 4 من أصل 182 عملية اليوم</span>
+<button class="font-label-md text-label-md text-primary font-bold hover:underline flex items-center gap-0.5" type="button">
+<span>فتح السجل الكامل للعمليات</span>
+<span class="material-symbols-outlined text-[16px]">arrow_back</span>
+</button>
+</div>
+</div>
+<!-- Left Pane: Top Debtors & Debt Collection (5 Cols) -->
+<div class="lg:col-span-5 bg-surface-container-lowest p-space-md rounded-xl shadow-sm flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between pb-space-sm">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-error text-[24px]">account_balance_wallet</span>
+<span class="font-headline-md text-headline-md text-on-surface">كبار المدينين والتحصيل السريع</span>
+</div>
+<span class="px-2 py-0.5 rounded-full bg-error-container text-error font-label-sm text-label-sm font-bold">
+              16,800 د.ج مطلوب
+            </span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant block mb-space-sm">
+            الزبائن أصحاب الذمم المؤجلة واجبة الاستحقاق لليوم
+          </span>
+<!-- Debtors List -->
+<div class="flex flex-col gap-space-sm">
+<!-- Debtor 1 -->
+<div class="p-space-sm rounded-xl bg-surface-container-low flex flex-col gap-space-xs">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<div class="w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center text-on-surface font-bold text-xs">
+                    ك.ع
+                  </div>
+<div>
+<span class="font-headline-md text-sm text-on-surface font-bold block">كريم عثماني (سوبرماركت النور)</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant" dir="ltr">0661 98 77 44</span>
+</div>
+</div>
+<div class="text-left">
+<span class="font-headline-md text-headline-md text-error font-bold block">6,500.00 د.ج</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">منذ 4 أيام</span>
+</div>
+</div>
+<div class="flex items-center gap-space-xs pt-space-xs">
+<button class="flex-1 py-1.5 rounded-lg bg-primary text-on-primary font-label-sm text-label-sm font-bold flex items-center justify-center gap-1 shadow-sm active:scale-95 transition-all" type="button">
+<span class="material-symbols-outlined text-[16px]">price_check</span>
+<span>تسجيل سداد</span>
+</button>
+<button class="px-space-md py-1.5 rounded-lg bg-surface-container-high hover:bg-surface-container-highest text-on-surface font-label-sm text-label-sm font-bold flex items-center gap-1 transition-all" type="button">
+<span class="material-symbols-outlined text-[16px]">sms</span>
+<span>تذكير SMS</span>
+</button>
+</div>
+</div>
+<!-- Debtor 2 -->
+<div class="p-space-sm rounded-xl bg-surface-container-low flex flex-col gap-space-xs">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<div class="w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center text-on-surface font-bold text-xs">
+                    م.ز
+                  </div>
+<div>
+<span class="font-headline-md text-sm text-on-surface font-bold block">مراد زروقي (مكتب أعمال)</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant" dir="ltr">0550 11 22 89</span>
+</div>
+</div>
+<div class="text-left">
+<span class="font-headline-md text-headline-md text-error font-bold block">4,200.00 د.ج</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">منذ يومين</span>
+</div>
+</div>
+<div class="flex items-center gap-space-xs pt-space-xs">
+<button class="flex-1 py-1.5 rounded-lg bg-primary text-on-primary font-label-sm text-label-sm font-bold flex items-center justify-center gap-1 shadow-sm active:scale-95 transition-all" type="button">
+<span class="material-symbols-outlined text-[16px]">price_check</span>
+<span>تسجيل سداد</span>
+</button>
+<button class="px-space-md py-1.5 rounded-lg bg-surface-container-high hover:bg-surface-container-highest text-on-surface font-label-sm text-label-sm font-bold flex items-center gap-1 transition-all" type="button">
+<span class="material-symbols-outlined text-[16px]">sms</span>
+<span>تذكير SMS</span>
+</button>
+</div>
+</div>
+<!-- Debtor 3 -->
+<div class="p-space-sm rounded-xl bg-surface-container-low flex flex-col gap-space-xs">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<div class="w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center text-on-surface font-bold text-xs">
+                    ف.ب
+                  </div>
+<div>
+<span class="font-headline-md text-sm text-on-surface font-bold block">فؤاد بلحاج</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant" dir="ltr">0771 55 40 19</span>
+</div>
+</div>
+<div class="text-left">
+<span class="font-headline-md text-headline-md text-error font-bold block">3,100.00 د.ج</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">اليوم (11:30)</span>
+</div>
+</div>
+<div class="flex items-center gap-space-xs pt-space-xs">
+<button class="flex-1 py-1.5 rounded-lg bg-primary text-on-primary font-label-sm text-label-sm font-bold flex items-center justify-center gap-1 shadow-sm active:scale-95 transition-all" type="button">
+<span class="material-symbols-outlined text-[16px]">price_check</span>
+<span>تسجيل سداد</span>
+</button>
+<button class="px-space-md py-1.5 rounded-lg bg-surface-container-high hover:bg-surface-container-highest text-on-surface font-label-sm text-label-sm font-bold flex items-center gap-1 transition-all" type="button">
+<span class="material-symbols-outlined text-[16px]">sms</span>
+<span>تذكير SMS</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<div class="pt-space-md flex items-center justify-between">
+<span class="font-body-sm text-body-sm text-on-surface-variant">إجمالي دفتر الديون: 48,200.00 د.ج</span>
+<button class="font-label-md text-label-md text-primary font-bold hover:underline flex items-center gap-0.5" type="button">
+<span>إدارة دفتر الديون كاملاً</span>
+<span class="material-symbols-outlined text-[16px]">arrow_back</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div></main><footer class="w-full bg-white border-t border-slate-200 py-space-md shadow-[0_-1px_4px_rgba(0,0,0,0.02)]"><div class="w-full px-gutter flex flex-col sm:flex-row items-center justify-between gap-space-sm text-slate-600 text-xs font-semibold"><div class="flex items-center gap-space-md"><span class="flex items-center gap-space-xs"><span class="w-2 h-2 rounded-full bg-teal-600"></span>موبيليس: 42,000 د.ج</span><span class="flex items-center gap-space-xs"><span class="w-2 h-2 rounded-full bg-amber-600"></span>جيزي: 65,400 د.ج</span><span class="flex items-center gap-space-xs"><span class="w-2 h-2 rounded-full bg-slate-700"></span>أوريدو: 78,100 د.ج</span></div><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-[16px] text-teal-700">verified_user</span><span>محطة معتمدة • إصدار النظام v4.2.0 الجزائر</span></div></div></footer></body></html>

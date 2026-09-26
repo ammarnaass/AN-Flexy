@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+
+<html dir="rtl" lang="ar"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_dashboard" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700&amp;family=JetBrains+Mono:wght@500;600;700&amp;family=Tajawal:wght@400;500;700&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{colors:{"surface-container":"#e5eeff","on-primary":"#ffffff","primary-container":"#0f766e","inverse-primary":"#80d5cb","surface-container-lowest":"#ffffff","on-surface-variant":"#3e4947","tertiary-container":"#d2093f","on-secondary-fixed-variant":"#004b73","on-secondary-fixed":"#001d31","on-primary-fixed-variant":"#00504a","surface-tint":"#006a63","error":"#ba1a1a","primary-fixed":"#9cf2e8","surface-dim":"#cbdbf5","inverse-surface":"#213145","surface-container-high":"#dce9ff","outline-variant":"#bdc9c6","on-tertiary-fixed":"#40000c","secondary":"#006398","tertiary-fixed-dim":"#ffb3b6","error-container":"#ffdad6","tertiary-fixed":"#ffdada","on-surface":"#0b1c30","on-background":"#0b1c30","background":"#f8f9ff","surface-variant":"#d3e4fe","surface":"#f8f9ff","surface-container-highest":"#d3e4fe","on-secondary-container":"#00476e","on-tertiary-container":"#ffe4e4","tertiary":"#a6002f","primary":"#005c55","on-tertiary":"#ffffff","primary-fixed-dim":"#80d5cb","on-primary-fixed":"#00201d","on-tertiary-fixed-variant":"#920028","on-error-container":"#93000a","outline":"#6e7977","inverse-on-surface":"#eaf1ff","secondary-fixed-dim":"#93ccff","secondary-fixed":"#cce5ff","on-secondary":"#ffffff","surface-bright":"#f8f9ff","surface-container-low":"#eff4ff","on-error":"#ffffff","on-primary-container":"#a3faef","secondary-container":"#5bb8fe"},borderRadius:{"DEFAULT":"0.25rem","lg":"0.5rem","xl":"0.75rem","full":"9999px"},spacing:{"space-md":"0.75rem","space-xl":"1.5rem","space-sm":"0.5rem","margin":"1rem","gutter":"0.75rem","space-xs":"0.25rem","space-lg":"1rem"},fontFamily:{"label-lg":["JetBrains Mono"],"body-sm":["Tajawal"],"currency-display":["JetBrains Mono"],"body-lg":["Tajawal"],"body-md":["Tajawal"],"headline-sm":["Cairo"],"headline-md":["Cairo"],"headline-lg":["Cairo"],"label-md":["JetBrains Mono"],"display-lg":["Cairo"],"label-sm":["JetBrains Mono"]},fontSize:{"label-lg":["15px",{lineHeight:"20px",letterSpacing:"0.02em",fontWeight:"600"}],"body-sm":["12px",{lineHeight:"16px",fontWeight:"400"}],"currency-display":["28px",{lineHeight:"32px",fontWeight:"700"}],"body-lg":["16px",{lineHeight:"24px",fontWeight:"500"}],"body-md":["14px",{lineHeight:"20px",fontWeight:"400"}],"headline-sm":["16px",{lineHeight:"24px",fontWeight:"600"}],"headline-md":["20px",{lineHeight:"28px",fontWeight:"600"}],"headline-lg":["24px",{lineHeight:"32px",fontWeight:"700"}],"label-md":["13px",{lineHeight:"16px",fontWeight:"500"}],"display-lg":["32px",{lineHeight:"40px",fontWeight:"700"}],"label-sm":["11px",{lineHeight:"14px",fontWeight:"500"}]}}}};</script></head><body class="bg-surface font-body-md text-body-md text-on-surface antialiased select-none"><aside class="fixed right-0 top-0 h-full w-72 bg-surface-container-low shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-50 flex flex-col justify-between p-space-md"><div class="flex flex-col gap-space-md"><div class="flex items-center gap-space-sm px-space-xs py-space-xs"><div class="w-9 h-9 rounded-lg bg-primary-container flex items-center justify-center text-on-primary shadow-sm"><span class="material-symbols-outlined text-[22px]">point_of_sale</span></div><div class="flex flex-col"><span class="font-headline-sm text-headline-sm text-on-surface tracking-tight leading-none">AN-Flexy POS</span><span class="font-label-sm text-label-sm text-on-surface-variant font-label-lg mt-0.5">نظام الاتصالات v2.4</span></div></div><div class="p-space-xs"><button class="w-full flex items-center justify-between px-space-md py-space-sm bg-primary-container text-on-primary rounded-lg font-headline-sm text-headline-sm shadow-sm hover:bg-primary transition-colors cursor-pointer"><div class="flex items-center gap-space-xs"><span class="material-symbols-outlined text-[20px]">add_circle</span><span>بيع جديد</span></div><span class="bg-on-primary-container text-on-primary-fixed font-label-sm text-label-sm px-space-xs py-0.5 rounded font-label-lg" dir="ltr">Ctrl+N</span></button></div><nav class="flex flex-col gap-1" data-active-classes="bg-surface-container-high text-primary font-bold rounded-lg"><a class="flex items-center justify-between px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container-highest hover:text-on-surface transition-colors" data-path="dashboard" href="#"><span class="font-body-md text-body-md">لوحة التحكم</span><span class="font-label-sm text-label-sm text-on-surface-variant" dir="ltr">F1</span></a><a class="flex items-center justify-between px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container-highest hover:text-on-surface transition-colors" data-path="new-sale" href="#"><span class="font-body-md text-body-md">بيع سريع (فليكسي)</span><span class="font-label-sm text-label-sm text-on-surface-variant" dir="ltr">Space</span></a><a class="flex items-center justify-between px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container-highest hover:text-on-surface transition-colors" data-path="inventory-and-balances" href="#"><span class="font-body-md text-body-md">المخزون والأرصدة</span><span class="font-label-sm text-label-sm text-on-surface-variant" dir="ltr">F3</span></a><a class="flex items-center justify-between px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container-highest hover:text-on-surface transition-colors" data-path="customers-and-debts" href="#"><span class="font-body-md text-body-md">الزبائن والديون</span><span class="font-label-sm text-label-sm text-on-surface-variant" dir="ltr">F2</span></a><a class="flex items-center justify-between px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container-highest hover:text-on-surface transition-colors" data-path="reports" href="#"><span class="font-body-md text-body-md">التقارير والمبيعات</span><span class="font-label-sm text-label-sm text-on-surface-variant" dir="ltr">F4</span></a><a class="flex items-center justify-between px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container-highest hover:text-on-surface transition-colors" data-path="settings" href="#"><span class="font-body-md text-body-md">الإعدادات والمزامنة</span><span class="font-label-sm text-label-sm text-on-surface-variant" dir="ltr">F9</span></a></nav></div><div class="bg-surface-container rounded-lg p-space-sm flex flex-col gap-space-xs"><div class="text-label-sm font-label-sm text-on-surface-variant font-bold">مفاتيح الوصول السريع:</div><div class="grid grid-cols-2 gap-space-xs text-label-sm font-label-sm"><div class="flex items-center justify-between bg-surface-container-lowest px-1.5 py-0.5 rounded"><span class="text-on-surface-variant">فليكسي</span><span class="text-primary font-bold" dir="ltr">F1</span></div><div class="flex items-center justify-between bg-surface-container-lowest px-1.5 py-0.5 rounded"><span class="text-on-surface-variant">ديون</span><span class="text-primary font-bold" dir="ltr">F2</span></div><div class="flex items-center justify-between bg-surface-container-lowest px-1.5 py-0.5 rounded"><span class="text-on-surface-variant">مخزون</span><span class="text-primary font-bold" dir="ltr">F3</span></div><div class="flex items-center justify-between bg-surface-container-lowest px-1.5 py-0.5 rounded"><span class="text-on-surface-variant">إعدادات</span><span class="text-primary font-bold" dir="ltr">F9</span></div></div></div></aside><div class="pr-72"><header class="fixed top-0 left-0 right-72 h-14 bg-surface/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-40 flex items-center justify-between px-space-lg"><div class="flex items-center gap-space-lg"><div class="flex items-center gap-space-xs"><span class="material-symbols-outlined text-primary text-[20px]">storefront</span><span class="font-headline-sm text-headline-sm text-on-surface font-bold">متجر الوفاء للاتصالات</span></div><div class="h-4 w-px bg-outline-variant"></div><div class="flex items-center gap-space-xs text-on-surface-variant"><span class="material-symbols-outlined text-[18px]">badge</span><span class="font-body-md text-body-md">البائع: <span class="text-on-surface font-bold">أمين بلقاسم (مالك)</span></span></div><div class="h-4 w-px bg-outline-variant"></div><div class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-surface-container-high text-primary font-label-sm text-label-sm"><span class="w-2 h-2 rounded-full bg-primary-container animate-pulse"></span><span>متصل محلياً (Offline-Ready)</span></div></div><div class="flex items-center gap-space-md"><div class="flex items-center gap-space-xs bg-surface-container-low px-space-sm py-1 rounded font-currency-display text-label-lg text-primary tracking-wider" dir="ltr"><span class="material-symbols-outlined text-[16px]">schedule</span><span>10:45:12</span></div><button class="flex items-center gap-1 px-space-sm py-1 bg-surface-container-highest hover:bg-surface-container text-on-surface rounded text-label-md font-label-md transition-colors cursor-pointer"><span class="material-symbols-outlined text-[18px]">lock_person</span><span>قفل الكاسة</span></button><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></header><main class="relative pt-14 w-full px-space-lg bg-surface"><div class="flex flex-col w-full gap-space-lg pb-space-xl">
+<!-- Toast Notification System -->
+<div class="fixed top-16 left-6 z-50 flex flex-col gap-2 pointer-events-none transition-all" id="toast-container"></div>
+<!-- Header Section with POS Breadcrumb & Actions -->
+<div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-space-md bg-surface-container-lowest p-space-lg rounded-xl shadow-sm">
+<div class="flex items-start gap-space-md">
+<div class="w-12 h-12 rounded-xl bg-primary-container text-on-primary flex items-center justify-center shadow-md flex-shrink-0">
+<span class="material-symbols-outlined text-[28px]">settings_ethernet</span>
+</div>
+<div class="flex flex-col gap-0.5">
+<div class="flex items-center gap-space-xs">
+<span class="text-primary font-label-md text-label-md px-2 py-0.5 rounded bg-surface-container-high font-bold" dir="ltr">HARDWARE // COM-PORTS</span>
+<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-surface-container text-primary font-label-sm text-label-sm">
+<span class="w-2 h-2 rounded-full bg-primary-container animate-pulse"></span>
+<span>AN-Flexy Daemon v2.4</span>
+</span>
+</div>
+<h1 class="font-headline-lg text-headline-lg text-on-surface">تهيئة وإعداد منافذ الشرائح والمودمات (GSM Modems / COM Ports)</h1>
+<p class="font-body-md text-body-md text-on-surface-variant">إدارة وتعيين منافذ USB التسلسلية ومودمات الفليكسي، اختبار جاهزية شرائح USSD، وضبط سرعة الاستجابة تلقائياً.</p>
+</div>
+</div>
+<!-- Quick Action Bar -->
+<div class="flex flex-wrap items-center gap-space-sm w-full md:w-auto">
+<button class="flex items-center gap-space-xs px-space-md py-2.5 bg-primary text-on-primary rounded-lg font-headline-sm text-headline-sm shadow hover:bg-surface-tint active:scale-95 transition-all cursor-pointer" id="btn-scan" onclick="simulateScan()">
+<span class="material-symbols-outlined text-[20px] transition-transform duration-700" id="scan-icon">sync</span>
+<span>فحص وتحديث المنافذ</span>
+<span class="bg-primary-container text-on-primary-container font-label-sm text-label-sm px-1.5 py-0.5 rounded font-label-lg" dir="ltr">F5</span>
+</button>
+<button class="flex items-center gap-space-xs px-space-md py-2.5 bg-surface-container-high text-on-surface hover:bg-surface-container-highest rounded-lg font-headline-sm text-headline-sm transition-all cursor-pointer" onclick="pingAllModems()">
+<span class="material-symbols-outlined text-[20px] text-secondary">network_check</span>
+<span>اختبار الإشارات</span>
+<span class="bg-surface-container text-on-surface-variant font-label-sm text-label-sm px-1.5 py-0.5 rounded font-label-lg" dir="ltr">F6</span>
+</button>
+<button class="flex items-center gap-space-xs px-space-md py-2.5 bg-surface-container-low text-primary hover:bg-surface-container rounded-lg font-headline-sm text-headline-sm transition-colors cursor-pointer" onclick="openAddModemModal()">
+<span class="material-symbols-outlined text-[20px]">add_circle</span>
+<span>إضافة مودم يدوي</span>
+</button>
+</div>
+</div>
+<!-- Hardware Telemetry KPIs -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-space-md">
+<!-- KPI 1: Active Modems -->
+<div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm flex items-center justify-between">
+<div class="flex flex-col gap-1">
+<span class="font-body-sm text-body-sm text-on-surface-variant font-bold">المنافذ المكتشفة النشطة</span>
+<div class="flex items-baseline gap-2">
+<span class="font-currency-display text-currency-display text-primary font-bold">3 / 3</span>
+<span class="font-label-sm text-label-sm text-primary bg-surface-container-high px-1.5 py-0.5 rounded">All Online</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-primary-container"></span>
+          Mobilis, Djezzy, Ooredoo
+        </span>
+</div>
+<div class="w-12 h-12 rounded-xl bg-surface-container flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[26px]">router</span>
+</div>
+</div>
+<!-- KPI 2: Daemon State -->
+<div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm flex items-center justify-between">
+<div class="flex flex-col gap-1">
+<span class="font-body-sm text-body-sm text-on-surface-variant font-bold">خدمة AN-Flexy Gateway</span>
+<div class="flex items-baseline gap-2">
+<span class="font-currency-display text-currency-display text-secondary font-bold" dir="ltr">100%</span>
+<span class="font-label-sm text-label-sm text-secondary bg-surface-container-high px-1.5 py-0.5 rounded">Active</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant">خدمة نظام POS الخلفية مستقرة</span>
+</div>
+<div class="w-12 h-12 rounded-xl bg-surface-container flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined text-[26px]">memory</span>
+</div>
+</div>
+<!-- KPI 3: USSD Latency -->
+<div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm flex items-center justify-between">
+<div class="flex flex-col gap-1">
+<span class="font-body-sm text-body-sm text-on-surface-variant font-bold">متوسط استجابة USSD</span>
+<div class="flex items-baseline gap-2">
+<span class="font-currency-display text-currency-display text-primary font-bold" dir="ltr">24 ms</span>
+<span class="font-label-sm text-label-sm text-primary bg-surface-container px-1.5 py-0.5 rounded">فائق السرعة</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant">الحد الأقصى المسموح به: 8000ms</span>
+</div>
+<div class="w-12 h-12 rounded-xl bg-surface-container flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[26px]">speed</span>
+</div>
+</div>
+<!-- KPI 4: Success Rate -->
+<div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm flex items-center justify-between">
+<div class="flex flex-col gap-1">
+<span class="font-body-sm text-body-sm text-on-surface-variant font-bold">معدل تنفيذ العمليات</span>
+<div class="flex items-baseline gap-2">
+<span class="font-currency-display text-currency-display text-on-surface font-bold" dir="ltr">99.8%</span>
+<span class="font-label-sm text-label-sm text-primary bg-surface-container-high px-1.5 py-0.5 rounded">0 Time-out</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant">إجمالي 418 عملية اليوم</span>
+</div>
+<div class="w-12 h-12 rounded-xl bg-surface-container flex items-center justify-center text-on-surface">
+<span class="material-symbols-outlined text-[26px]">verified</span>
+</div>
+</div>
+</div>
+<!-- Operator Modem Configuration Cards (The 3 Core Telco Carriers) -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-space-md">
+<!-- CARD 1: Mobilis (06) Arsselli -->
+<div class="bg-surface-container-lowest rounded-xl shadow-sm flex flex-col justify-between overflow-hidden">
+<!-- Card Header -->
+<div class="p-space-md bg-surface-container-low flex items-center justify-between">
+<div class="flex items-center gap-space-sm">
+<div class="w-10 h-10 rounded-lg bg-[#dcfce7] text-[#15803d] flex items-center justify-center font-bold text-headline-sm shadow-sm" dir="ltr">
+            06
+          </div>
+<div class="flex flex-col">
+<div class="flex items-center gap-1.5">
+<span class="font-headline-sm text-headline-sm text-on-surface">موبيليس - Mobilis</span>
+<span class="bg-[#dcfce7] text-[#15803d] font-label-sm text-label-sm px-1.5 py-0.2 rounded font-bold">Arsselli</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant font-bold" dir="ltr">Huawei E3372 4G Dongle</span>
+</div>
+</div>
+<div class="flex items-center gap-1 px-2 py-1 rounded bg-[#dcfce7] text-[#15803d]">
+<span class="w-2 h-2 rounded-full bg-[#15803d] animate-pulse"></span>
+<span class="font-label-sm text-label-sm font-bold">جاهز (COM3)</span>
+</div>
+</div>
+<!-- Card Body: Settings & State -->
+<div class="p-space-md flex flex-col gap-space-md">
+<!-- MSISDN & Service Info -->
+<div class="grid grid-cols-2 gap-space-sm">
+<div class="flex flex-col bg-surface-container-low p-space-sm rounded-lg">
+<span class="font-body-sm text-body-sm text-on-surface-variant">رقم شريحة الموزع:</span>
+<span class="font-label-lg text-label-lg text-on-surface tracking-wider font-bold" dir="ltr">0661 84 92 10</span>
+</div>
+<div class="flex flex-col bg-surface-container-low p-space-sm rounded-lg">
+<span class="font-body-sm text-body-sm text-on-surface-variant">الرصيد اللحظي:</span>
+<span class="font-label-lg text-label-lg text-primary font-bold" dir="ltr" id="bal-mobilis">38,400.00 DZD</span>
+</div>
+</div>
+<!-- Port Config Row -->
+<div class="grid grid-cols-2 gap-space-sm">
+<div>
+<label class="block font-body-sm text-body-sm text-on-surface-variant mb-1">المنفذ التسلسلي (COM):</label>
+<select class="w-full bg-surface-container-lowest p-2 rounded-lg font-label-md text-label-md text-on-surface shadow-sm focus:outline-none focus:bg-surface-container-low cursor-pointer">
+<option selected="" value="COM3">COM3 (USB Serial)</option>
+<option value="COM1">COM1 (Motherboard RS232)</option>
+<option value="COM2">COM2 (Virtual)</option>
+<option value="COM4">COM4 (ZTE Modem)</option>
+<option value="COM5">COM5 (Huawei E3531)</option>
+</select>
+</div>
+<div>
+<label class="block font-body-sm text-body-sm text-on-surface-variant mb-1">سرعة النقل (Baud Rate):</label>
+<select class="w-full bg-surface-container-lowest p-2 rounded-lg font-label-md text-label-md text-on-surface shadow-sm focus:outline-none focus:bg-surface-container-low cursor-pointer">
+<option selected="" value="115200">115200 bps (سريع)</option>
+<option value="57600">57600 bps</option>
+<option value="9600">9600 bps (افتراضي)</option>
+</select>
+</div>
+</div>
+<!-- Cellular Signal & Hardware Health -->
+<div class="bg-surface-container-low p-space-sm rounded-lg flex flex-col gap-1.5">
+<div class="flex items-center justify-between">
+<span class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px] text-primary">signal_cellular_alt</span>
+              قوة إشارة الشبكة (4G LTE):
+            </span>
+<span class="font-label-sm text-label-sm text-primary font-bold" dir="ltr">4/5 (-68 dBm)</span>
+</div>
+<!-- Signal Progress Meter -->
+<div class="w-full h-2 bg-surface-container rounded-full overflow-hidden flex">
+<div class="bg-primary h-full w-[80%] rounded-full"></div>
+</div>
+<div class="flex items-center justify-between text-label-sm font-label-sm text-on-surface-variant pt-1">
+<span>كود الشريحة: <span class="text-on-surface font-bold">**** (محفوظ)</span></span>
+<span>كود USSD: <span class="font-bold text-on-surface" dir="ltr">*600#</span></span>
+</div>
+</div>
+<!-- Quick Carrier Actions -->
+<div class="flex flex-col gap-2 pt-1">
+<button class="w-full flex items-center justify-center gap-2 py-2 bg-surface-container text-primary hover:bg-surface-container-high rounded-lg font-headline-sm text-headline-sm transition-colors cursor-pointer" onclick="queryUSSD('COM3', '*600#', 'Mobilis', 'bal-mobilis')">
+<span class="material-symbols-outlined text-[18px]">account_balance_wallet</span>
+<span>فحص الرصيد عبر USSD (*600#)</span>
+</button>
+<div class="flex items-center gap-2">
+<button class="flex-1 py-1.5 bg-surface-container-low hover:bg-surface-container text-on-surface-variant hover:text-on-surface rounded font-label-md text-label-md transition-colors cursor-pointer" onclick="quickTestPort('COM3', 'AT+CSQ')">
+              فحص جودة الهوائي (AT+CSQ)
+            </button>
+<button class="flex-1 py-1.5 bg-surface-container-low hover:bg-surface-container text-on-surface-variant hover:text-on-surface rounded font-label-md text-label-md transition-colors cursor-pointer" onclick="quickTestPort('COM3', 'AT+CPIN?')">
+              حالة الـ SIM (AT+CPIN)
+            </button>
+</div>
+</div>
+</div>
+<!-- Card Footer Status -->
+<div class="px-space-md py-2 bg-surface-container text-on-surface-variant font-label-sm text-label-sm flex items-center justify-between">
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">usb</span>
+<span>USB Bus 001 Device 004</span>
+</span>
+<span dir="ltr">IMEI: 862410048129482</span>
+</div>
+</div>
+<!-- CARD 2: Djezzy (07) Special Flexy -->
+<div class="bg-surface-container-lowest rounded-xl shadow-sm flex flex-col justify-between overflow-hidden">
+<!-- Card Header -->
+<div class="p-space-md bg-surface-container-low flex items-center justify-between">
+<div class="flex items-center gap-space-sm">
+<div class="w-10 h-10 rounded-lg bg-[#ffedd5] text-[#c2410c] flex items-center justify-center font-bold text-headline-sm shadow-sm" dir="ltr">
+            07
+          </div>
+<div class="flex flex-col">
+<div class="flex items-center gap-1.5">
+<span class="font-headline-sm text-headline-sm text-on-surface">جازي - Djezzy</span>
+<span class="bg-[#ffedd5] text-[#c2410c] font-label-sm text-label-sm px-1.5 py-0.2 rounded font-bold">Special Flexy</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant font-bold" dir="ltr">ZTE MF79U LTE Wingle</span>
+</div>
+</div>
+<div class="flex items-center gap-1 px-2 py-1 rounded bg-[#ffedd5] text-[#c2410c]">
+<span class="w-2 h-2 rounded-full bg-[#c2410c] animate-pulse"></span>
+<span class="font-label-sm text-label-sm font-bold">جاهز (COM4)</span>
+</div>
+</div>
+<!-- Card Body: Settings & State -->
+<div class="p-space-md flex flex-col gap-space-md">
+<!-- MSISDN & Service Info -->
+<div class="grid grid-cols-2 gap-space-sm">
+<div class="flex flex-col bg-surface-container-low p-space-sm rounded-lg">
+<span class="font-body-sm text-body-sm text-on-surface-variant">رقم شريحة الموزع:</span>
+<span class="font-label-lg text-label-lg text-on-surface tracking-wider font-bold" dir="ltr">0770 12 55 89</span>
+</div>
+<div class="flex flex-col bg-surface-container-low p-space-sm rounded-lg">
+<span class="font-body-sm text-body-sm text-on-surface-variant">الرصيد اللحظي:</span>
+<span class="font-label-lg text-label-lg text-secondary font-bold" dir="ltr" id="bal-djezzy">21,750.00 DZD</span>
+</div>
+</div>
+<!-- Port Config Row -->
+<div class="grid grid-cols-2 gap-space-sm">
+<div>
+<label class="block font-body-sm text-body-sm text-on-surface-variant mb-1">المنفذ التسلسلي (COM):</label>
+<select class="w-full bg-surface-container-lowest p-2 rounded-lg font-label-md text-label-md text-on-surface shadow-sm focus:outline-none focus:bg-surface-container-low cursor-pointer">
+<option selected="" value="COM4">COM4 (ZTE USB Modem)</option>
+<option value="COM1">COM1 (RS232)</option>
+<option value="COM2">COM2</option>
+<option value="COM3">COM3 (Huawei)</option>
+<option value="COM5">COM5</option>
+</select>
+</div>
+<div>
+<label class="block font-body-sm text-body-sm text-on-surface-variant mb-1">سرعة النقل (Baud Rate):</label>
+<select class="w-full bg-surface-container-lowest p-2 rounded-lg font-label-md text-label-md text-on-surface shadow-sm focus:outline-none focus:bg-surface-container-low cursor-pointer">
+<option selected="" value="115200">115200 bps (مستحسن)</option>
+<option value="57600">57600 bps</option>
+<option value="9600">9600 bps</option>
+</select>
+</div>
+</div>
+<!-- Cellular Signal & Hardware Health -->
+<div class="bg-surface-container-low p-space-sm rounded-lg flex flex-col gap-1.5">
+<div class="flex items-center justify-between">
+<span class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px] text-secondary">signal_cellular_alt</span>
+              قوة إشارة الشبكة (4G Full):
+            </span>
+<span class="font-label-sm text-label-sm text-secondary font-bold" dir="ltr">5/5 (-62 dBm)</span>
+</div>
+<div class="w-full h-2 bg-surface-container rounded-full overflow-hidden flex">
+<div class="bg-secondary h-full w-[95%] rounded-full"></div>
+</div>
+<div class="flex items-center justify-between text-label-sm font-label-sm text-on-surface-variant pt-1">
+<span>كود الشريحة: <span class="text-on-surface font-bold">**** (مفعل)</span></span>
+<span>كود USSD: <span class="font-bold text-on-surface" dir="ltr">*710#</span></span>
+</div>
+</div>
+<!-- Quick Carrier Actions -->
+<div class="flex flex-col gap-2 pt-1">
+<button class="w-full flex items-center justify-center gap-2 py-2 bg-surface-container text-secondary hover:bg-surface-container-high rounded-lg font-headline-sm text-headline-sm transition-colors cursor-pointer" onclick="queryUSSD('COM4', '*710#', 'Djezzy', 'bal-djezzy')">
+<span class="material-symbols-outlined text-[18px]">account_balance_wallet</span>
+<span>فحص الرصيد عبر USSD (*710#)</span>
+</button>
+<div class="flex items-center gap-2">
+<button class="flex-1 py-1.5 bg-surface-container-low hover:bg-surface-container text-on-surface-variant hover:text-on-surface rounded font-label-md text-label-md transition-colors cursor-pointer" onclick="quickTestPort('COM4', 'AT+CSQ')">
+              فحص الهوائي (AT+CSQ)
+            </button>
+<button class="flex-1 py-1.5 bg-surface-container-low hover:bg-surface-container text-on-surface-variant hover:text-on-surface rounded font-label-md text-label-md transition-colors cursor-pointer" onclick="quickTestPort('COM4', 'AT+COPS?')">
+              اسم المشغل (AT+COPS)
+            </button>
+</div>
+</div>
+</div>
+<!-- Card Footer Status -->
+<div class="px-space-md py-2 bg-surface-container text-on-surface-variant font-label-sm text-label-sm flex items-center justify-between">
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">usb</span>
+<span>USB Bus 001 Device 007</span>
+</span>
+<span dir="ltr">IMEI: 869018037162951</span>
+</div>
+</div>
+<!-- CARD 3: Ooredoo (05) Storm -->
+<div class="bg-surface-container-lowest rounded-xl shadow-sm flex flex-col justify-between overflow-hidden">
+<!-- Card Header -->
+<div class="p-space-md bg-surface-container-low flex items-center justify-between">
+<div class="flex items-center gap-space-sm">
+<div class="w-10 h-10 rounded-lg bg-[#fee2e2] text-[#b91c1c] flex items-center justify-center font-bold text-headline-sm shadow-sm" dir="ltr">
+            05
+          </div>
+<div class="flex flex-col">
+<div class="flex items-center gap-1.5">
+<span class="font-headline-sm text-headline-sm text-on-surface">أوريدو - Ooredoo</span>
+<span class="bg-[#fee2e2] text-[#b91c1c] font-label-sm text-label-sm px-1.5 py-0.2 rounded font-bold">Storm Flexy</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant font-bold" dir="ltr">Huawei E3531 HSPA+</span>
+</div>
+</div>
+<div class="flex items-center gap-1 px-2 py-1 rounded bg-[#fee2e2] text-[#b91c1c]">
+<span class="w-2 h-2 rounded-full bg-[#b91c1c] animate-pulse"></span>
+<span class="font-label-sm text-label-sm font-bold">جاهز (COM5)</span>
+</div>
+</div>
+<!-- Card Body: Settings & State -->
+<div class="p-space-md flex flex-col gap-space-md">
+<!-- MSISDN & Service Info -->
+<div class="grid grid-cols-2 gap-space-sm">
+<div class="flex flex-col bg-surface-container-low p-space-sm rounded-lg">
+<span class="font-body-sm text-body-sm text-on-surface-variant">رقم شريحة الموزع:</span>
+<span class="font-label-lg text-label-lg text-on-surface tracking-wider font-bold" dir="ltr">0550 99 44 21</span>
+</div>
+<div class="flex flex-col bg-surface-container-low p-space-sm rounded-lg">
+<span class="font-body-sm text-body-sm text-on-surface-variant">الرصيد اللحظي:</span>
+<span class="font-label-lg text-label-lg text-tertiary font-bold" dir="ltr" id="bal-ooredoo">45,120.00 DZD</span>
+</div>
+</div>
+<!-- Port Config Row -->
+<div class="grid grid-cols-2 gap-space-sm">
+<div>
+<label class="block font-body-sm text-body-sm text-on-surface-variant mb-1">المنفذ التسلسلي (COM):</label>
+<select class="w-full bg-surface-container-lowest p-2 rounded-lg font-label-md text-label-md text-on-surface shadow-sm focus:outline-none focus:bg-surface-container-low cursor-pointer">
+<option selected="" value="COM5">COM5 (Huawei E3531)</option>
+<option value="COM1">COM1</option>
+<option value="COM2">COM2</option>
+<option value="COM3">COM3</option>
+<option value="COM4">COM4</option>
+</select>
+</div>
+<div>
+<label class="block font-body-sm text-body-sm text-on-surface-variant mb-1">سرعة النقل (Baud Rate):</label>
+<select class="w-full bg-surface-container-lowest p-2 rounded-lg font-label-md text-label-md text-on-surface shadow-sm focus:outline-none focus:bg-surface-container-low cursor-pointer">
+<option selected="" value="115200">115200 bps</option>
+<option value="9600">9600 bps</option>
+</select>
+</div>
+</div>
+<!-- Cellular Signal & Hardware Health -->
+<div class="bg-surface-container-low p-space-sm rounded-lg flex flex-col gap-1.5">
+<div class="flex items-center justify-between">
+<span class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px] text-tertiary">signal_cellular_alt</span>
+              قوة إشارة الشبكة (3G+/4G):
+            </span>
+<span class="font-label-sm text-label-sm text-tertiary font-bold" dir="ltr">4/5 (-74 dBm)</span>
+</div>
+<div class="w-full h-2 bg-surface-container rounded-full overflow-hidden flex">
+<div class="bg-tertiary h-full w-[78%] rounded-full"></div>
+</div>
+<div class="flex items-center justify-between text-label-sm font-label-sm text-on-surface-variant pt-1">
+<span>كود الشريحة: <span class="text-on-surface font-bold">**** (محفوظ)</span></span>
+<span>كود USSD: <span class="font-bold text-on-surface" dir="ltr">*115#</span></span>
+</div>
+</div>
+<!-- Quick Carrier Actions -->
+<div class="flex flex-col gap-2 pt-1">
+<button class="w-full flex items-center justify-center gap-2 py-2 bg-surface-container text-tertiary hover:bg-surface-container-high rounded-lg font-headline-sm text-headline-sm transition-colors cursor-pointer" onclick="queryUSSD('COM5', '*115#', 'Ooredoo', 'bal-ooredoo')">
+<span class="material-symbols-outlined text-[18px]">account_balance_wallet</span>
+<span>فحص الرصيد عبر USSD (*115#)</span>
+</button>
+<div class="flex items-center gap-2">
+<button class="flex-1 py-1.5 bg-surface-container-low hover:bg-surface-container text-on-surface-variant hover:text-on-surface rounded font-label-md text-label-md transition-colors cursor-pointer" onclick="quickTestPort('COM5', 'AT+CSQ')">
+              فحص الهوائي (AT+CSQ)
+            </button>
+<button class="flex-1 py-1.5 bg-surface-container-low hover:bg-surface-container text-on-surface-variant hover:text-on-surface rounded font-label-md text-label-md transition-colors cursor-pointer" onclick="quickTestPort('COM5', 'ATZ')">
+              إعادة تهيئة (ATZ)
+            </button>
+</div>
+</div>
+</div>
+<!-- Card Footer Status -->
+<div class="px-space-md py-2 bg-surface-container text-on-surface-variant font-label-sm text-label-sm flex items-center justify-between">
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">usb</span>
+<span>USB Bus 002 Device 003</span>
+</span>
+<span dir="ltr">IMEI: 864512029381744</span>
+</div>
+</div>
+</div>
+<!-- Dual Split: Live Terminal Console & Failover Settings -->
+<div class="grid grid-cols-1 xl:grid-cols-12 gap-space-md">
+<!-- LEFT (8 Cols): Live AT & USSD Interactive Terminal -->
+<div class="xl:col-span-8 bg-inverse-surface rounded-xl shadow-md p-space-md flex flex-col justify-between text-inverse-on-surface">
+<div class="flex flex-col gap-space-sm">
+<!-- Terminal Header -->
+<div class="flex items-center justify-between bg-black/30 p-space-sm rounded-lg">
+<div class="flex items-center gap-space-sm">
+<div class="flex items-center gap-1.5">
+<span class="w-3 h-3 rounded-full bg-error inline-block"></span>
+<span class="w-3 h-3 rounded-full bg-secondary-container inline-block"></span>
+<span class="w-3 h-3 rounded-full bg-primary-container inline-block"></span>
+</div>
+<div class="h-4 w-px bg-outline/40"></div>
+<span class="font-label-md text-label-md text-inverse-on-surface font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-[18px] text-inverse-primary">terminal</span>
+              الطرفية المباشرة للمنافذ (Live AT / USSD Console)
+            </span>
+</div>
+<div class="flex items-center gap-2">
+<span class="font-label-sm text-label-sm text-inverse-primary px-2 py-0.5 rounded bg-black/40" dir="ltr">LOGGING: ACTIVE</span>
+<button class="text-inverse-on-surface/70 hover:text-inverse-on-surface font-label-sm text-label-sm flex items-center gap-1 px-2 py-1 rounded hover:bg-white/10 transition-colors" onclick="clearConsoleLog()">
+<span class="material-symbols-outlined text-[16px]">clear_all</span>
+<span>تفريغ</span>
+</button>
+<button class="text-inverse-on-surface/70 hover:text-inverse-on-surface font-label-sm text-label-sm flex items-center gap-1 px-2 py-1 rounded hover:bg-white/10 transition-colors" onclick="copyConsoleLog()">
+<span class="material-symbols-outlined text-[16px]">content_copy</span>
+<span>نسخ</span>
+</button>
+</div>
+</div>
+<!-- Terminal Log Scroll Window -->
+<div class="h-64 overflow-y-auto bg-black/40 p-space-sm rounded-lg font-label-sm text-label-sm flex flex-col gap-1 text-[#a3faef] select-text" dir="ltr" id="terminal-screen">
+<div class="text-inverse-on-surface/60">[SYSTEM INITIALIZE] AN-Flexy POS Serial Daemon v2.4 initialized.</div>
+<div class="text-inverse-on-surface/60">[SYSTEM INITIALIZE] Enumerating host ports: COM3, COM4, COM5 detected.</div>
+<div class="text-[#a3faef]"><span class="text-inverse-on-surface/60">[10:45:12]</span> <span class="text-[#ffdada] font-bold">COM3 -&gt;</span> AT+CUSD=1,"*600#",15</div>
+<div class="text-[#80d5cb]"><span class="text-inverse-on-surface/60">[10:45:13]</span> <span class="text-primary-fixed font-bold">COM3 &lt;-</span> +CUSD: 0,"Solde Flexy Arsselli: 38400.00 DZD. Validite: 31/12/2025",15</div>
+<div class="text-[#a3faef]"><span class="text-inverse-on-surface/60">[10:45:20]</span> <span class="text-[#ffdada] font-bold">COM4 -&gt;</span> AT+CSQ</div>
+<div class="text-[#80d5cb]"><span class="text-inverse-on-surface/60">[10:45:20]</span> <span class="text-primary-fixed font-bold">COM4 &lt;-</span> +CSQ: 28,99 (RSSI: -62 dBm, Excellent)</div>
+<div class="text-[#a3faef]"><span class="text-inverse-on-surface/60">[10:45:22]</span> <span class="text-[#ffdada] font-bold">COM5 -&gt;</span> AT+CPIN?</div>
+<div class="text-[#80d5cb]"><span class="text-inverse-on-surface/60">[10:45:22]</span> <span class="text-primary-fixed font-bold">COM5 &lt;-</span> +CPIN: READY</div>
+<div class="text-[#a3faef]"><span class="text-inverse-on-surface/60">[10:45:30]</span> <span class="text-inverse-primary">GATEWAY OK</span> [COM3, COM4, COM5] Ready for transactions.</div>
+</div>
+</div>
+<!-- Interactive Input Bar -->
+<div class="pt-space-sm flex flex-col sm:flex-row items-center gap-space-xs">
+<!-- Target Port Dropdown -->
+<select class="bg-black/50 text-inverse-primary px-3 py-2 rounded-lg font-label-md text-label-md focus:outline-none cursor-pointer w-full sm:w-auto" dir="ltr" id="target-terminal-port">
+<option value="COM3">COM3 (Mobilis)</option>
+<option value="COM4">COM4 (Djezzy)</option>
+<option value="COM5">COM5 (Ooredoo)</option>
+</select>
+<!-- Command Input Text -->
+<div class="relative flex-1 w-full">
+<input class="w-full bg-black/60 text-inverse-on-surface px-space-md py-2 rounded-lg font-label-md text-label-md focus:outline-none focus:ring-1 focus:ring-inverse-primary placeholder:text-inverse-on-surface/40" dir="ltr" id="terminal-input" onkeydown="handleTerminalKey(event)" placeholder='أدخل أمر AT أو USSD (مثال: AT+CSQ أو AT+CUSD=1,"*600#",15)' type="text"/>
+</div>
+<!-- Send Button -->
+<button class="w-full sm:w-auto flex items-center justify-center gap-1.5 px-space-md py-2 bg-primary-container text-on-primary rounded-lg font-headline-sm text-headline-sm hover:bg-primary transition-all cursor-pointer" onclick="executeTerminalCommand()">
+<span class="material-symbols-outlined text-[18px]">send</span>
+<span>إرسال [Enter]</span>
+</button>
+</div>
+</div>
+<!-- RIGHT (4 Cols): Failover & Port Timeout Settings -->
+<div class="xl:col-span-4 bg-surface-container-lowest rounded-xl shadow-sm p-space-md flex flex-col justify-between">
+<div class="flex flex-col gap-space-md">
+<div class="flex items-center gap-2 pb-2">
+<span class="material-symbols-outlined text-primary text-[22px]">tune</span>
+<h2 class="font-headline-sm text-headline-sm text-on-surface">إعدادات الأمان والتكرار التلقائي</h2>
+</div>
+<!-- Setting 1: Retry Attempts -->
+<div class="flex items-center justify-between bg-surface-container-low p-space-sm rounded-lg">
+<div class="flex flex-col">
+<span class="font-body-md text-body-md text-on-surface font-bold">الحد الأقصى للمحاولات (Retries)</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">عند ازدحام شبكة المشغل</span>
+</div>
+<select class="bg-surface-container-lowest p-1.5 rounded font-label-md text-label-md text-on-surface shadow-sm focus:outline-none cursor-pointer">
+<option value="1">محاولة واحدة (1x)</option>
+<option value="2">محاولتان (2x)</option>
+<option selected="" value="3">3 محاولات (مستحسن)</option>
+<option value="5">5 محاولات</option>
+</select>
+</div>
+<!-- Setting 2: USSD Timeout -->
+<div class="flex items-center justify-between bg-surface-container-low p-space-sm rounded-lg">
+<div class="flex flex-col">
+<span class="font-body-md text-body-md text-on-surface font-bold">مهلة انتظار الرد (Timeout)</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">قبل إلغاء العملية تلقائياً</span>
+</div>
+<select class="bg-surface-container-lowest p-1.5 rounded font-label-md text-label-md text-on-surface shadow-sm focus:outline-none cursor-pointer">
+<option value="5">5 ثوانٍ</option>
+<option selected="" value="8">8 ثوانٍ (افتراضي)</option>
+<option value="12">12 ثانية</option>
+<option value="20">20 ثانية</option>
+</select>
+</div>
+<!-- Setting 3: Auto-Reset on Port Hang -->
+<div class="flex items-center justify-between bg-surface-container-low p-space-sm rounded-lg">
+<div class="flex flex-col">
+<span class="font-body-md text-body-md text-on-surface font-bold">إعادة تشغيل المنفذ عند التعليق</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Auto Port Reset on Freeze</span>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-outline-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+<!-- Setting 4: SIM Failover -->
+<div class="flex items-center justify-between bg-surface-container-low p-space-sm rounded-lg">
+<div class="flex flex-col">
+<span class="font-body-md text-body-md text-on-surface font-bold">التبديل التلقائي للشريحة الاحتياطية</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">في حال نفاد رصيد الموزع</span>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-outline-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+<!-- Setting 5: Auto-Reboot Dongle on No Signal -->
+<div class="flex items-center justify-between bg-surface-container-low p-space-sm rounded-lg">
+<div class="flex flex-col">
+<span class="font-body-md text-body-md text-on-surface font-bold">إعادة تشغيل المودم عند انقطاع الشبكة</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">أمر AT+CFUN=1,1 التلقائي</span>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-outline-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+</div>
+<div class="pt-space-sm flex items-center justify-between text-on-surface-variant font-label-sm text-label-sm">
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px] text-primary">security</span>
+          التشفير المحلي لمفاتيح الشرائح مفعّل
+        </span>
+<button class="text-on-surface-variant hover:text-on-surface underline cursor-pointer" onclick="restoreDefaults()">استعادة الافتراضي</button>
+</div>
+</div>
+</div>
+<!-- Bottom Save Bar with Physical Keypad Shortcuts -->
+<div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm flex flex-col sm:flex-row items-center justify-between gap-space-md sticky bottom-3 z-30">
+<div class="flex items-center gap-space-sm">
+<div class="w-9 h-9 rounded-lg bg-surface-container flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[20px]">save</span>
+</div>
+<div class="flex flex-col">
+<span class="font-headline-sm text-headline-sm text-on-surface">جاهز لحفظ التكوين في قاعدة البيانات</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">سيتم تطبيق سرعات المنافذ تلقائياً دون الحاجة لإعادة تشغيل الكاسة.</span>
+</div>
+</div>
+<div class="flex items-center gap-space-sm w-full sm:w-auto">
+<button class="px-space-md py-2.5 bg-surface-container text-on-surface hover:bg-surface-container-high rounded-lg font-headline-sm text-headline-sm transition-colors cursor-pointer" onclick="restoreDefaults()">
+        إلغاء التغييرات
+      </button>
+<button class="flex-1 sm:flex-none flex items-center justify-center gap-space-xs px-space-lg py-2.5 bg-primary text-on-primary rounded-lg font-headline-sm text-headline-sm shadow-md hover:bg-surface-tint active:scale-95 transition-all cursor-pointer" onclick="saveAllConfigurations()">
+<span class="material-symbols-outlined text-[20px]">check_circle</span>
+<span>حفظ وتطبيق التغييرات</span>
+<span class="bg-primary-container text-on-primary-container font-label-sm text-label-sm px-1.5 py-0.5 rounded font-label-lg" dir="ltr">Ctrl+S</span>
+</button>
+</div>
+</div>
+<!-- Modal: Add Manual Port / Virtual SIM Simulator -->
+<div class="hidden fixed inset-0 z-50 bg-inverse-surface/40 backdrop-blur-sm flex items-center justify-center p-4" id="modal-add-modem">
+<div class="bg-surface-container-lowest w-full max-w-lg rounded-xl shadow-xl p-space-lg flex flex-col gap-space-md animate-in fade-in zoom-in-95 duration-200">
+<div class="flex items-center justify-between pb-2 border-b border-surface-container">
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 rounded-lg bg-primary-container text-on-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]">add_link</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface">إضافة منفذ جديد أو مودم افتراضي</h3>
+</div>
+<button class="text-on-surface-variant hover:text-on-surface" onclick="closeAddModemModal()">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<div class="flex flex-col gap-space-sm">
+<div>
+<label class="block font-body-sm text-body-sm text-on-surface-variant mb-1">اسم المودم / التسمية:</label>
+<input class="w-full bg-surface-container-low p-2 rounded-lg font-body-md text-body-md text-on-surface focus:outline-none focus:ring-1 focus:ring-primary" id="new-modem-name" placeholder="مثال: Dongle Mobilis 02 - الاحتياطي" type="text"/>
+</div>
+<div class="grid grid-cols-2 gap-space-sm">
+<div>
+<label class="block font-body-sm text-body-sm text-on-surface-variant mb-1">اسم المنفذ (COM Port):</label>
+<input class="w-full bg-surface-container-low p-2 rounded-lg font-label-md text-label-md text-on-surface focus:outline-none focus:ring-1 focus:ring-primary" dir="ltr" id="new-modem-port" placeholder="COM6" type="text"/>
+</div>
+<div>
+<label class="block font-body-sm text-body-sm text-on-surface-variant mb-1">المشغل (Carrier):</label>
+<select class="w-full bg-surface-container-low p-2 rounded-lg font-body-md text-body-md text-on-surface focus:outline-none cursor-pointer">
+<option value="mobilis">موبيليس (Mobilis 06)</option>
+<option value="djezzy">جازي (Djezzy 07)</option>
+<option value="ooredoo">أوريدو (Ooredoo 05)</option>
+<option value="virtual">محاكي افتراضي (Virtual SIM)</option>
+</select>
+</div>
+</div>
+<div>
+<label class="block font-body-sm text-body-sm text-on-surface-variant mb-1">رقم الشريحة (MSISDN):</label>
+<input class="w-full bg-surface-container-low p-2 rounded-lg font-label-md text-label-md text-on-surface focus:outline-none focus:ring-1 focus:ring-primary" dir="ltr" placeholder="06XX XX XX XX" type="text"/>
+</div>
+</div>
+<div class="flex items-center justify-end gap-2 pt-2 border-t border-surface-container">
+<button class="px-space-md py-2 bg-surface-container text-on-surface rounded-lg font-headline-sm text-headline-sm hover:bg-surface-container-high transition-colors" onclick="closeAddModemModal()">
+          إلغاء
+        </button>
+<button class="px-space-lg py-2 bg-primary text-on-primary rounded-lg font-headline-sm text-headline-sm hover:bg-surface-tint transition-all" onclick="confirmAddModem()">
+          إضافة المنفذ وتنشيطه
+        </button>
+</div>
+</div>
+</div>
+</div>
+<!-- Interactive Client-side Script for Live Terminal & Testing Simulation -->
+<script>
+  function showToast(message, type = 'success') {
+    const container = document.getElementById('toast-container');
+    const toast = document.createElement('div');
+    const bgClass = type === 'success' ? 'bg-primary-container text-on-primary' : 'bg-tertiary-container text-on-tertiary';
+    const icon = type === 'success' ? 'check_circle' : 'error';
+    
+    toast.className = `flex items-center gap-2 px-4 py-2.5 rounded-lg shadow-lg ${bgClass} font-body-md text-body-md transition-all duration-300 transform -translate-y-2 opacity-0 pointer-events-auto`;
+    toast.innerHTML = `
+      <span class="material-symbols-outlined text-[20px]">${icon}</span>
+      <span>${message}</span>
+    `;
+    
+    container.appendChild(toast);
+    setTimeout(() => {
+      toast.classList.remove('-translate-y-2', 'opacity-0');
+    }, 10);
+    
+    setTimeout(() => {
+      toast.classList.add('opacity-0', 'translate-y-2');
+      setTimeout(() => toast.remove(), 300);
+    }, 3200);
+  }
+
+  function appendTerminal(line, isIncoming = false, isAlert = false) {
+    const screen = document.getElementById('terminal-screen');
+    const row = document.createElement('div');
+    const time = new Date().toTimeString().split(' ')[0];
+    
+    if (isAlert) {
+      row.className = 'text-[#ffdada] font-bold';
+      row.innerHTML = `<span class="text-inverse-on-surface/60">[${time}]</span> ${line}`;
+    } else if (isIncoming) {
+      row.className = 'text-[#80d5cb]';
+      row.innerHTML = `<span class="text-inverse-on-surface/60">[${time}]</span> <span class="text-primary-fixed font-bold">&lt;-</span> ${line}`;
+    } else {
+      row.className = 'text-[#a3faef]';
+      row.innerHTML = `<span class="text-inverse-on-surface/60">[${time}]</span> <span class="text-[#ffdada] font-bold">-&gt;</span> ${line}`;
+    }
+    
+    screen.appendChild(row);
+    screen.scrollTop = screen.scrollHeight;
+  }
+
+  function handleTerminalKey(event) {
+    if (event.key === 'Enter') {
+      executeTerminalCommand();
+    }
+  }
+
+  function executeTerminalCommand() {
+    const input = document.getElementById('terminal-input');
+    const port = document.getElementById('target-terminal-port').value;
+    const cmd = input.value.trim();
+    if (!cmd) return;
+
+    appendTerminal(`${port} -> ${cmd}`);
+    input.value = '';
+
+    // Simulate smart AT modem responses
+    setTimeout(() => {
+      const upperCmd = cmd.toUpperCase();
+      if (upperCmd === 'AT') {
+        appendTerminal(`${port} <- OK`, true);
+      } else if (upperCmd.includes('+CSQ')) {
+        const rssi = Math.floor(Math.random() * 8) + 24;
+        appendTerminal(`${port} <- +CSQ: ${rssi},99 (RSSI: -${113 - rssi * 2} dBm)`, true);
+        appendTerminal(`${port} <- OK`, true);
+      } else if (upperCmd.includes('+CPIN?')) {
+        appendTerminal(`${port} <- +CPIN: READY`, true);
+        appendTerminal(`${port} <- OK`, true);
+      } else if (upperCmd.includes('*600#')) {
+        appendTerminal(`${port} <- +CUSD: 0,"Solde Flexy Arsselli: 38,400.00 DZD",15`, true);
+      } else if (upperCmd.includes('*710#')) {
+        appendTerminal(`${port} <- +CUSD: 0,"Solde Flexy Djezzy: 21,750.00 DZD",15`, true);
+      } else if (upperCmd.includes('*115#')) {
+        appendTerminal(`${port} <- +CUSD: 0,"Solde Storm Ooredoo: 45,120.00 DZD",15`, true);
+      } else if (upperCmd.includes('AT+COPS?')) {
+        appendTerminal(`${port} <- +COPS: 0,0,"DJAZZY 4G",7`, true);
+        appendTerminal(`${port} <- OK`, true);
+      } else if (upperCmd === 'ATZ') {
+        appendTerminal(`${port} <- Resetting modem state... OK`, true);
+      } else {
+        appendTerminal(`${port} <- OK`, true);
+      }
+    }, 280);
+  }
+
+  function quickTestPort(port, cmd) {
+    document.getElementById('target-terminal-port').value = port;
+    document.getElementById('terminal-input').value = cmd;
+    executeTerminalCommand();
+    showToast(`تم إرسال الأمر ${cmd} إلى ${port}`);
+  }
+
+  function queryUSSD(port, code, carrierName, targetBalId) {
+    appendTerminal(`${port} -> AT+CUSD=1,"${code}",15`);
+    showToast(`جاري استعلام رصيد ${carrierName} عبر ${code}...`);
+    
+    setTimeout(() => {
+      const fakeBalance = (Math.floor(Math.random() * 300) + 150) * 100;
+      const formatted = fakeBalance.toLocaleString('en-US', { minimumFractionDigits: 2 }) + ' DZD';
+      appendTerminal(`${port} <- +CUSD: 0,"Solde ${carrierName}: ${formatted}",15`, true);
+      
+      const balEl = document.getElementById(targetBalId);
+      if (balEl) {
+        balEl.innerText = formatted;
+        balEl.classList.add('scale-105', 'text-primary');
+        setTimeout(() => balEl.classList.remove('scale-105'), 400);
+      }
+      showToast(`تم تحديث رصيد ${carrierName}: ${formatted}`);
+    }, 450);
+  }
+
+  function simulateScan() {
+    const icon = document.getElementById('scan-icon');
+    icon.classList.add('rotate-180');
+    appendTerminal(`[SCANNER] Scanning serial hardware bus for USB modems...`);
+    
+    setTimeout(() => {
+      appendTerminal(`[SCANNER] Found Huawei E3372 at COM3 (VID: 12d1, PID: 14dc)`);
+      appendTerminal(`[SCANNER] Found ZTE MF79U at COM4 (VID: 19d2, PID: 1405)`);
+      appendTerminal(`[SCANNER] Found Huawei E3531 at COM5 (VID: 12d1, PID: 1001)`);
+      appendTerminal(`[SCANNER] 3 Ports synchronized successfully.`, false, false);
+      icon.classList.remove('rotate-180');
+      showToast('اكتمل فحص المنافذ: 3 مودمات متصلة وجاهزة للعمل');
+    }, 700);
+  }
+
+  function pingAllModems() {
+    quickTestPort('COM3', 'AT+CSQ');
+    setTimeout(() => quickTestPort('COM4', 'AT+CSQ'), 200);
+    setTimeout(() => quickTestPort('COM5', 'AT+CSQ'), 400);
+    showToast('جاري قياس جودة إشارة كافة بوابات الشرائح...');
+  }
+
+  function clearConsoleLog() {
+    const screen = document.getElementById('terminal-screen');
+    screen.innerHTML = '<div class="text-inverse-on-surface/50">[CONSOLE CLEARED] - Ready for telemetry stream.</div>';
+    showToast('تم تفريغ سجل الطرفية');
+  }
+
+  function copyConsoleLog() {
+    const screen = document.getElementById('terminal-screen');
+    navigator.clipboard.writeText(screen.innerText).then(() => {
+      showToast('تم نسخ سجلات الطرفية إلى الحافظة');
+    }).catch(() => {
+      showToast('تم نسخ السجل محلياً');
+    });
+  }
+
+  function saveAllConfigurations() {
+    showToast('تم حفظ إعدادات المنافذ وتطبيق التغييرات بنجاح');
+    appendTerminal(`[SYSTEM] Configurations saved to /etc/flexy/hardware.conf - Daemon reloaded.`);
+  }
+
+  function restoreDefaults() {
+    showToast('تمت استعادة الإعدادات الافتراضية للمنافذ');
+  }
+
+  // Modal handlers
+  function openAddModemModal() {
+    document.getElementById('modal-add-modem').classList.remove('hidden');
+  }
+  function closeAddModemModal() {
+    document.getElementById('modal-add-modem').classList.add('hidden');
+  }
+  function confirmAddModem() {
+    const name = document.getElementById('new-modem-name').value || 'مودم جديد';
+    const port = document.getElementById('new-modem-port').value || 'COM6';
+    closeAddModemModal();
+    appendTerminal(`[MANUAL ADD] Registered new port ${port} (${name})`);
+    showToast(`تمت إضافة ${name} على المنفذ ${port}`);
+  }
+
+  // Keyboard shortcut listener for F5, F6, and Ctrl+S
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'F5') {
+      e.preventDefault();
+      simulateScan();
+    } else if (e.key === 'F6') {
+      e.preventDefault();
+      pingAllModems();
+    } else if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 's') {
+      e.preventDefault();
+      saveAllConfigurations();
+    }
+  });
+</script></main></div></body></html>

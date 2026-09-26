@@ -1,0 +1,1153 @@
+<!DOCTYPE html>
+
+<html dir="rtl" lang="ar"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_dashboard" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700&amp;family=JetBrains+Mono:wght@500;600;700&amp;family=Tajawal:wght@400;500;700&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{colors:{"surface-container":"#e5eeff","on-primary":"#ffffff","primary-container":"#0f766e","inverse-primary":"#80d5cb","surface-container-lowest":"#ffffff","on-surface-variant":"#3e4947","tertiary-container":"#d2093f","on-secondary-fixed-variant":"#004b73","on-secondary-fixed":"#001d31","on-primary-fixed-variant":"#00504a","surface-tint":"#006a63","error":"#ba1a1a","primary-fixed":"#9cf2e8","surface-dim":"#cbdbf5","inverse-surface":"#213145","surface-container-high":"#dce9ff","outline-variant":"#bdc9c6","on-tertiary-fixed":"#40000c","secondary":"#006398","tertiary-fixed-dim":"#ffb3b6","error-container":"#ffdad6","tertiary-fixed":"#ffdada","on-surface":"#0b1c30","on-background":"#0b1c30","background":"#f8f9ff","surface-variant":"#d3e4fe","surface":"#f8f9ff","surface-container-highest":"#d3e4fe","on-secondary-container":"#00476e","on-tertiary-container":"#ffe4e4","tertiary":"#a6002f","primary":"#005c55","on-tertiary":"#ffffff","primary-fixed-dim":"#80d5cb","on-primary-fixed":"#00201d","on-tertiary-fixed-variant":"#920028","on-error-container":"#93000a","outline":"#6e7977","inverse-on-surface":"#eaf1ff","secondary-fixed-dim":"#93ccff","secondary-fixed":"#cce5ff","on-secondary":"#ffffff","surface-bright":"#f8f9ff","surface-container-low":"#eff4ff","on-error":"#ffffff","on-primary-container":"#a3faef","secondary-container":"#5bb8fe"},borderRadius:{"DEFAULT":"0.25rem","lg":"0.5rem","xl":"0.75rem","full":"9999px"},spacing:{"space-md":"0.75rem","space-xl":"1.5rem","space-sm":"0.5rem","margin":"1rem","gutter":"0.75rem","space-xs":"0.25rem","space-lg":"1rem"},fontFamily:{"label-lg":["JetBrains Mono"],"body-sm":["Tajawal"],"currency-display":["JetBrains Mono"],"body-lg":["Tajawal"],"body-md":["Tajawal"],"headline-sm":["Cairo"],"headline-md":["Cairo"],"headline-lg":["Cairo"],"label-md":["JetBrains Mono"],"display-lg":["Cairo"],"label-sm":["JetBrains Mono"]},fontSize:{"label-lg":["15px",{lineHeight:"20px",letterSpacing:"0.02em",fontWeight:"600"}],"body-sm":["12px",{lineHeight:"16px",fontWeight:"400"}],"currency-display":["28px",{lineHeight:"32px",fontWeight:"700"}],"body-lg":["16px",{lineHeight:"24px",fontWeight:"500"}],"body-md":["14px",{lineHeight:"20px",fontWeight:"400"}],"headline-sm":["16px",{lineHeight:"24px",fontWeight:"600"}],"headline-md":["20px",{lineHeight:"28px",fontWeight:"600"}],"headline-lg":["24px",{lineHeight:"32px",fontWeight:"700"}],"label-md":["13px",{lineHeight:"16px",fontWeight:"500"}],"display-lg":["32px",{lineHeight:"40px",fontWeight:"700"}],"label-sm":["11px",{lineHeight:"14px",fontWeight:"500"}]}}}};</script></head><body class="bg-surface font-body-md text-body-md text-on-surface antialiased select-none"><aside class="fixed right-0 top-0 h-full w-72 bg-surface-container-low shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-50 flex flex-col justify-between p-space-md"><div class="flex flex-col gap-space-md"><div class="flex items-center gap-space-sm px-space-xs py-space-xs"><div class="w-9 h-9 rounded-lg bg-primary-container flex items-center justify-center text-on-primary shadow-sm"><span class="material-symbols-outlined text-[22px]">point_of_sale</span></div><div class="flex flex-col"><span class="font-headline-sm text-headline-sm text-on-surface tracking-tight leading-none">AN-Flexy POS</span><span class="font-label-sm text-label-sm text-on-surface-variant font-label-lg mt-0.5">نظام الاتصالات v2.4</span></div></div><div class="p-space-xs"><button class="w-full flex items-center justify-between px-space-md py-space-sm bg-primary-container text-on-primary rounded-lg font-headline-sm text-headline-sm shadow-sm hover:bg-primary transition-colors cursor-pointer"><div class="flex items-center gap-space-xs"><span class="material-symbols-outlined text-[20px]">add_circle</span><span>بيع جديد</span></div><span class="bg-on-primary-container text-on-primary-fixed font-label-sm text-label-sm px-space-xs py-0.5 rounded font-label-lg" dir="ltr">Ctrl+N</span></button></div><nav class="flex flex-col gap-1" data-active-classes="bg-surface-container-high text-primary font-bold rounded-lg"><a class="flex items-center justify-between px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container-highest hover:text-on-surface transition-colors" data-path="dashboard" href="#"><div class="flex items-center gap-space-md"><span class="material-symbols-outlined text-[20px]">dashboard</span><span class="font-body-md text-body-md">لوحة التحكم</span></div><span class="font-label-sm text-label-sm text-on-surface-variant" dir="ltr">F1</span></a><a class="flex items-center justify-between px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container-highest hover:text-on-surface transition-colors" data-path="new-sale" href="#"><div class="flex items-center gap-space-md"><span class="material-symbols-outlined text-[20px]">flash_on</span><span class="font-body-md text-body-md">بيع سريع (فليكسي)</span></div><span class="font-label-sm text-label-sm text-on-surface-variant" dir="ltr">Space</span></a><a class="flex items-center justify-between px-space-md py-space-sm rounded-lg bg-surface-container-high text-primary font-bold transition-colors" data-path="inventory-and-balances" href="#"><div class="flex items-center gap-space-md"><span class="material-symbols-outlined text-[20px] text-primary">sim_card</span><span class="font-body-md text-body-md">المخزون والأرصدة</span></div><span class="font-label-sm text-label-sm text-on-surface-variant" dir="ltr">F3</span></a><a class="flex items-center justify-between px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container-highest hover:text-on-surface transition-colors" data-path="customers-and-debts" href="#"><div class="flex items-center gap-space-md"><span class="material-symbols-outlined text-[20px]">receipt_long</span><span class="font-body-md text-body-md">الزبائن والديون</span></div><span class="font-label-sm text-label-sm text-on-surface-variant" dir="ltr">F2</span></a><a class="flex items-center justify-between px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container-highest hover:text-on-surface transition-colors" data-path="reports" href="#"><div class="flex items-center gap-space-md"><span class="material-symbols-outlined text-[20px]">analytics</span><span class="font-body-md text-body-md">التقارير والمبيعات</span></div><span class="font-label-sm text-label-sm text-on-surface-variant" dir="ltr">F4</span></a><a class="flex items-center justify-between px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container-highest hover:text-on-surface transition-colors" data-path="settings" href="#"><div class="flex items-center gap-space-md"><span class="material-symbols-outlined text-[20px]">settings</span><span class="font-body-md text-body-md">الإعدادات والمزامنة</span></div><span class="font-label-sm text-label-sm text-on-surface-variant" dir="ltr">F9</span></a></nav></div><div class="bg-surface-container rounded-lg p-space-sm flex flex-col gap-space-xs"><div class="text-label-sm font-label-sm text-on-surface-variant font-bold">مفاتيح الوصول السريع:</div><div class="grid grid-cols-2 gap-space-xs text-label-sm font-label-sm"><div class="flex items-center justify-between bg-surface-container-lowest px-1.5 py-0.5 rounded"><span class="text-on-surface-variant">فليكسي</span><span class="text-primary font-bold" dir="ltr">F1</span></div><div class="flex items-center justify-between bg-surface-container-lowest px-1.5 py-0.5 rounded"><span class="text-on-surface-variant">ديون</span><span class="text-primary font-bold" dir="ltr">F2</span></div><div class="flex items-center justify-between bg-surface-container-lowest px-1.5 py-0.5 rounded"><span class="text-on-surface-variant">مخزون</span><span class="text-primary font-bold" dir="ltr">F3</span></div><div class="flex items-center justify-between bg-surface-container-lowest px-1.5 py-0.5 rounded"><span class="text-tertiary font-bold">إلغاء</span><span class="text-tertiary font-bold" dir="ltr">ESC</span></div></div></div></aside><div class="pr-72"><header class="fixed top-0 left-0 right-72 h-14 bg-surface/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-40 flex items-center justify-between px-space-lg"><div class="flex items-center gap-space-lg"><div class="flex items-center gap-space-xs"><span class="material-symbols-outlined text-primary text-[20px]">storefront</span><span class="font-headline-sm text-headline-sm text-on-surface font-bold">متجر الوفاء للاتصالات</span></div><div class="h-4 w-px bg-outline-variant"></div><div class="flex items-center gap-space-xs text-on-surface-variant"><span class="material-symbols-outlined text-[18px]">badge</span><span class="font-body-md text-body-md">البائع: <span class="text-on-surface font-bold">أمين بلقاسم (مالك)</span></span></div><div class="h-4 w-px bg-outline-variant"></div><div class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-surface-container-high text-primary font-label-sm text-label-sm"><span class="w-2 h-2 rounded-full bg-primary-container animate-pulse"></span><span>متصل محلياً (Offline-Ready)</span></div></div><div class="flex items-center gap-space-md"><div class="flex items-center gap-space-xs bg-surface-container-low px-space-sm py-1 rounded font-currency-display text-label-lg text-primary tracking-wider" dir="ltr"><span class="material-symbols-outlined text-[16px]">schedule</span><span id="liveClock">10:45:12</span></div><button class="flex items-center gap-1 px-space-sm py-1 bg-surface-container-highest hover:bg-surface-container text-on-surface rounded text-label-md font-label-md transition-colors cursor-pointer"><span class="material-symbols-outlined text-[18px]">lock_person</span><span>قفل الكاسة</span></button><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></header><main class="relative pt-14 w-full px-space-lg bg-surface"><div class="flex flex-col w-full pb-8">
+<!-- Floating Toast Container -->
+<div class="fixed top-16 left-8 z-50 flex flex-col gap-2 pointer-events-none" id="toastContainer"></div>
+<!-- Top Actions & Title Bar -->
+<div class="flex items-center justify-between py-space-md mb-space-sm border-b border-surface-container-high/40">
+<div class="flex items-center gap-space-md">
+<div class="flex items-center justify-center w-10 h-10 rounded-lg bg-surface-container-high text-primary shadow-sm">
+<span class="material-symbols-outlined text-[24px]">sim_card</span>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center gap-space-xs">
+<h1 class="font-headline-md text-headline-md text-on-surface font-bold leading-tight">إدارة المخزون وتوريد الأرصدة</h1>
+<span class="text-xs bg-surface-container-high text-primary font-label-sm px-2 py-0.5 rounded-full font-semibold">F3 النشط</span>
+</div>
+<div class="flex items-center gap-2 mt-0.5">
+<span class="w-2 h-2 rounded-full bg-primary-container animate-pulse" id="ussdPulseDot"></span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">مزامنة شبكة USSD المباشرة نشطة • آخر فحص آلي: <span class="font-label-sm font-semibold" dir="ltr" id="lastCheckTime">10:44:02</span></span>
+</div>
+</div>
+</div>
+<!-- Quick Action Bar -->
+<div class="flex items-center gap-space-sm">
+<button class="flex items-center gap-1.5 px-space-md py-2 rounded-lg bg-surface-container-low hover:bg-surface-container-high text-on-surface-variant hover:text-on-surface font-body-md shadow-sm transition-all cursor-pointer" id="refreshBalanceBtn">
+<span class="material-symbols-outlined text-[18px]" id="refreshIcon">sync</span>
+<span>تحديث USSD</span>
+<span class="font-label-sm text-label-sm bg-surface-container px-1 rounded text-on-surface-variant" dir="ltr">F9</span>
+</button>
+<button class="flex items-center gap-1.5 px-space-md py-2 rounded-lg bg-surface-container-highest hover:bg-surface-container text-on-surface font-body-md shadow-sm transition-all cursor-pointer" id="openReconcileBtn">
+<span class="material-symbols-outlined text-[18px]">balance</span>
+<span>تسوية فارق الرصيد</span>
+<span class="font-label-sm text-label-sm bg-surface-container-lowest px-1.5 py-0.5 rounded text-secondary font-bold" dir="ltr">F6</span>
+</button>
+<button class="flex items-center gap-2 px-space-lg py-2 rounded-lg bg-primary-container hover:bg-primary text-on-primary font-headline-sm text-headline-sm shadow-md transition-all cursor-pointer" id="openTopupBtn">
+<span class="material-symbols-outlined text-[20px]">add_circle</span>
+<span>شحنة رصيد جديدة</span>
+<span class="bg-on-primary-container text-on-primary-fixed font-label-sm text-label-sm px-1.5 py-0.5 rounded font-bold" dir="ltr">F5</span>
+</button>
+</div>
+</div>
+<!-- Operator Tabs (Carrier Selector) -->
+<div class="grid grid-cols-3 gap-space-md mb-space-md" id="carrierTabsContainer">
+<!-- Mobilis Card -->
+<div class="carrier-card relative rounded-xl p-space-md shadow-sm flex flex-col justify-between cursor-pointer transition-all border-2 border-primary bg-primary-container/5" data-sim="mobilis">
+<div class="sim-badge-container absolute -top-1.5 left-4">
+<span class="bg-primary text-on-primary font-label-sm text-label-sm px-2.5 py-0.5 rounded-full shadow-sm">نشط حالياً</span>
+</div>
+<div class="flex items-center justify-between mb-space-xs">
+<div class="flex items-center gap-space-sm">
+<div class="w-8 h-8 rounded-lg bg-primary-container/15 text-primary flex items-center justify-center font-bold font-label-lg">
+  06
+</div>
+<div>
+<div class="flex items-center gap-1.5">
+<span class="font-headline-sm text-headline-sm font-bold text-on-surface">Mobilis</span>
+<span class="w-2 h-2 rounded-full bg-primary-container"></span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant tracking-wider" dir="ltr">0660 00 12 34</span>
+</div>
+</div>
+<div class="text-right">
+<span class="font-body-sm text-body-sm text-on-surface-variant block">الرصيد المتاح</span>
+<span class="carrier-balance-val font-currency-display text-label-lg font-bold text-primary" data-val="45000" dir="ltr">45,000.00 DA</span>
+</div>
+</div>
+<div class="flex items-center justify-between pt-space-xs bg-surface-container-low px-space-sm py-1 rounded">
+<span class="font-body-sm text-body-sm text-on-surface-variant">الحد الأدنى: <span class="font-label-sm font-semibold" dir="ltr">10,000 DA</span></span>
+<span class="font-label-sm text-label-sm text-primary font-bold">مستقر (+350%)</span>
+</div>
+</div>
+<!-- Djezzy Card -->
+<div class="carrier-card relative rounded-xl p-space-md shadow-sm flex flex-col justify-between cursor-pointer transition-all border-2 border-transparent bg-surface-container-lowest hover:bg-surface-container-low/40" data-sim="djezzy">
+<div class="sim-badge-container absolute -top-1.5 left-4">
+<span class="bg-tertiary text-on-tertiary font-label-sm text-label-sm px-2.5 py-0.5 rounded-full shadow-sm animate-pulse">رصيد منخفض</span>
+</div>
+<div class="flex items-center justify-between mb-space-xs">
+<div class="flex items-center gap-space-sm">
+<div class="w-8 h-8 rounded-lg bg-surface-container-high text-on-surface-variant flex items-center justify-center font-bold font-label-lg">
+  07
+</div>
+<div>
+<div class="flex items-center gap-1.5">
+<span class="font-headline-sm text-headline-sm font-bold text-on-surface">Djezzy</span>
+<span class="w-2 h-2 rounded-full bg-tertiary"></span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant tracking-wider" dir="ltr">0770 11 99 82</span>
+</div>
+</div>
+<div class="text-right">
+<span class="font-body-sm text-body-sm text-on-surface-variant block">الرصيد المتاح</span>
+<span class="carrier-balance-val font-currency-display text-label-lg font-bold text-tertiary" data-val="3200" dir="ltr">3,200.00 DA</span>
+</div>
+</div>
+<div class="flex items-center justify-between pt-space-xs bg-surface-container-high/40 px-space-sm py-1 rounded">
+<span class="font-body-sm text-body-sm text-on-surface-variant">الحد الأدنى: <span class="font-label-sm font-semibold" dir="ltr">15,000 DA</span></span>
+<span class="font-label-sm text-label-sm text-tertiary font-bold">دون العتبة الحرجة (-78%)</span>
+</div>
+</div>
+<!-- Ooredoo Card -->
+<div class="carrier-card relative rounded-xl p-space-md shadow-sm flex flex-col justify-between cursor-pointer transition-all border-2 border-transparent bg-surface-container-lowest hover:bg-surface-container-low/40" data-sim="ooredoo">
+<div class="sim-badge-container absolute -top-1.5 left-4"></div>
+<div class="flex items-center justify-between mb-space-xs">
+<div class="flex items-center gap-space-sm">
+<div class="w-8 h-8 rounded-lg bg-surface-container-high text-on-surface-variant flex items-center justify-center font-bold font-label-lg">
+  05
+</div>
+<div>
+<div class="flex items-center gap-1.5">
+<span class="font-headline-sm text-headline-sm font-bold text-on-surface">Ooredoo</span>
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant tracking-wider" dir="ltr">0555 88 44 21</span>
+</div>
+</div>
+<div class="text-right">
+<span class="font-body-sm text-body-sm text-on-surface-variant block">الرصيد المتاح</span>
+<span class="carrier-balance-val font-currency-display text-label-lg font-bold text-on-surface" data-val="78500" dir="ltr">78,500.00 DA</span>
+</div>
+</div>
+<div class="flex items-center justify-between pt-space-xs bg-surface-container-low px-space-sm py-1 rounded">
+<span class="font-body-sm text-body-sm text-on-surface-variant">الحد الأدنى: <span class="font-label-sm font-semibold" dir="ltr">12,000 DA</span></span>
+<span class="font-label-sm text-label-sm text-secondary font-bold">مستقر (+554%)</span>
+</div>
+</div>
+</div>
+<!-- Active Operator Detailed Overview Strip -->
+<div class="grid grid-cols-4 gap-space-md mb-space-md">
+<!-- Big Balance Metric -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex flex-col justify-between">
+<div class="flex items-center justify-between">
+<span class="font-body-sm text-body-sm text-on-surface-variant" id="activeCarrierMetricLabel">الرصيد الفعلي الحالي (موبيليس)</span>
+<span class="material-symbols-outlined text-primary text-[20px]">account_balance_wallet</span>
+</div>
+<div class="my-space-xs">
+<div class="font-currency-display text-display-lg font-bold text-primary tracking-tight leading-none" dir="ltr" id="statActualBalance">
+  45,000.00 <span class="text-headline-sm text-on-surface-variant font-headline-sm font-normal">DA</span>
+</div>
+</div>
+<div class="flex items-center gap-1 font-label-sm text-label-sm text-primary">
+<span class="material-symbols-outlined text-[15px]">verified</span>
+<span id="statStatusSubtitle">مطابق تماماً لكشف USSD الأخير</span>
+</div>
+</div>
+<!-- Monthly Top-up Volume -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex flex-col justify-between">
+<div class="flex items-center justify-between">
+<span class="font-body-sm text-body-sm text-on-surface-variant">شحنات التوريد (هذا الشهر)</span>
+<span class="material-symbols-outlined text-secondary text-[20px]">download</span>
+</div>
+<div class="my-space-xs">
+<div class="font-currency-display text-headline-lg font-bold text-on-surface" dir="ltr" id="statMonthlyTopup">
+  350,000.00 <span class="text-label-md text-on-surface-variant font-label-md font-normal">DA</span>
+</div>
+</div>
+<div class="flex items-center justify-between text-body-sm font-body-sm text-on-surface-variant">
+<span id="statMonthlyTopupCount">7 شحنات معتمدة</span>
+<span class="text-primary font-label-sm font-bold" dir="ltr" id="statMonthlyProfit">+14,000 DA ربح</span>
+</div>
+</div>
+<!-- Today Sales -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex flex-col justify-between">
+<div class="flex items-center justify-between">
+<span class="font-body-sm text-body-sm text-on-surface-variant">مبيعات الفليكسي اليوم</span>
+<span class="material-symbols-outlined text-tertiary-container text-[20px]">trending_up</span>
+</div>
+<div class="my-space-xs">
+<div class="font-currency-display text-headline-lg font-bold text-on-surface" dir="ltr" id="statTodaySales">
+  18,400.00 <span class="text-label-md text-on-surface-variant font-label-md font-normal">DA</span>
+</div>
+</div>
+<div class="flex items-center justify-between text-body-sm font-body-sm text-on-surface-variant">
+<span id="statTodayCount">38 عملية بيع للزبائن</span>
+<span class="text-secondary font-label-sm font-bold" id="statAvgSale">معدل: 484 DA</span>
+</div>
+</div>
+<!-- Safety & Margin -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex flex-col justify-between">
+<div class="flex items-center justify-between">
+<span class="font-body-sm text-body-sm text-on-surface-variant">مؤشر أمان السيولة</span>
+<span class="material-symbols-outlined text-primary text-[20px]">format_image_left</span>
+</div>
+<div class="my-space-xs">
+<div class="flex items-baseline gap-1">
+<span class="font-headline-lg text-headline-lg font-bold text-primary" id="liquidityStatusText">آمن ومستقر</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant" id="liquidityMultiplier">(3.5x العتبة)</span>
+</div>
+</div>
+<div class="w-full bg-surface-container-high h-2 rounded-full overflow-hidden">
+<div class="bg-primary h-full rounded-full transition-all duration-500" id="liquidityBar" style="width: 78%;"></div>
+</div>
+</div>
+</div>
+<!-- Main Content Layout: Data Grid Ledger & Live Drawer Panel -->
+<div class="grid grid-cols-12 gap-space-md items-start">
+<!-- Detailed Ledger Table (7 Columns) -->
+<div class="col-span-7 bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex flex-col">
+<!-- Table Header & Controls -->
+<div class="flex items-center justify-between mb-space-md">
+<div class="flex items-center gap-space-sm">
+<span class="font-headline-sm text-headline-sm text-on-surface font-bold" id="ledgerTitle">سجل حركات رصيد Mobilis</span>
+<span class="bg-surface-container px-2 py-0.5 rounded text-label-sm font-label-sm text-on-surface-variant" id="ledgerMovementCount">42 حركة اليوم</span>
+</div>
+<!-- Filter Pills -->
+<div class="flex items-center gap-1 bg-surface-container-low p-1 rounded-lg" id="filterPillsContainer">
+<button class="filter-tab px-space-sm py-1 rounded bg-surface-container-lowest font-body-sm text-body-sm font-bold text-primary shadow-sm cursor-pointer transition-all" data-type="all">الكل</button>
+<button class="filter-tab px-space-sm py-1 rounded hover:bg-surface-container font-body-sm text-body-sm text-on-surface-variant cursor-pointer transition-all" data-type="topup">شحن وتوريد</button>
+<button class="filter-tab px-space-sm py-1 rounded hover:bg-surface-container font-body-sm text-body-sm text-on-surface-variant cursor-pointer transition-all" data-type="sale">مبيعات فليكسي</button>
+<button class="filter-tab px-space-sm py-1 rounded hover:bg-surface-container font-body-sm text-body-sm text-on-surface-variant cursor-pointer transition-all" data-type="adjust">تسويات</button>
+</div>
+</div>
+<!-- Ledger Table -->
+<div class="overflow-x-auto min-h-[320px]">
+<table class="w-full text-right text-body-sm font-body-sm">
+<thead>
+<tr class="bg-surface-container-low text-on-surface-variant font-label-md text-label-sm">
+<th class="py-2.5 px-space-sm rounded-r">الوقت / التاريخ</th>
+<th class="py-2.5 px-space-sm">نوع الحركة</th>
+<th class="py-2.5 px-space-sm">المبلغ</th>
+<th class="py-2.5 px-space-sm">الرصيد بعد الحركة</th>
+<th class="py-2.5 px-space-sm">المرجع / البيان</th>
+<th class="py-2.5 px-space-sm">المستخدم</th>
+<th class="py-2.5 px-space-sm rounded-l text-center">إجراءات</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-surface-container-high/40" id="ledgerTableBody">
+<!-- Rendered Dynamically via JS -->
+</tbody>
+</table>
+</div>
+<!-- Ledger Summary Footer -->
+<div class="flex items-center justify-between pt-space-md mt-space-md border-t border-surface-container-high/60">
+<div class="flex items-center gap-space-md">
+<div class="flex items-center gap-1 text-body-sm text-on-surface-variant">
+<span>عدد العمليات المعروضة:</span>
+<span class="font-label-sm font-bold text-on-surface" dir="ltr" id="footerDisplayCount">5 / 42</span>
+</div>
+<div class="h-3 w-px bg-outline-variant"></div>
+<div class="flex items-center gap-1 text-body-sm text-on-surface-variant">
+<span>صافي التغير التراكمي:</span>
+<span class="font-currency-display text-label-md font-bold text-primary" dir="ltr" id="footerNetTotal">+48,100.00 DA</span>
+</div>
+</div>
+<div class="flex items-center gap-1">
+<button class="px-2 py-1 rounded bg-surface-container-high text-on-surface-variant hover:text-on-surface text-label-sm cursor-pointer disabled:opacity-40" disabled="">السابق</button>
+<span class="px-2 font-label-sm text-label-sm font-bold text-primary">1</span>
+<button class="px-2 py-1 rounded bg-surface-container-high text-on-surface-variant hover:text-on-surface text-label-sm cursor-pointer">التالي</button>
+</div>
+</div>
+</div>
+<!-- Active Side Panel / Embedded Top-up Drawer (5 Columns) -->
+<div class="col-span-5 bg-surface-container-lowest rounded-xl p-space-md shadow-sm border border-primary/20 flex flex-col relative">
+<!-- Drawer Header -->
+<div class="flex items-center justify-between pb-space-sm mb-space-sm border-b border-surface-container-high">
+<div class="flex items-center gap-space-xs">
+<div class="w-7 h-7 rounded bg-primary-container text-on-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]">add_task</span>
+</div>
+<div>
+<h2 class="font-headline-sm text-headline-sm font-bold text-on-surface">تسجيل شحنة رصيد جديدة</h2>
+<span class="font-body-sm text-body-sm text-primary font-bold" id="drawerSimSubtitle">شريحة موبيليس المركزية (0660 00 12 34)</span>
+</div>
+</div>
+<span class="font-label-sm text-label-sm bg-surface-container px-2 py-0.5 rounded text-on-surface-variant font-bold" dir="ltr">F5</span>
+</div>
+<!-- Drawer Form -->
+<form class="flex flex-col gap-space-sm" id="topupForm" onsubmit="event.preventDefault();">
+<!-- Input: Purchased Cash Amount -->
+<div>
+<label class="block font-body-sm text-body-sm font-bold text-on-surface mb-1">
+المبلغ المشترى / المسلّم للموزع (كاش):
+</label>
+<div class="relative">
+<input class="w-full bg-surface-container-low text-on-surface font-currency-display text-headline-sm px-space-md py-2 rounded-lg text-left focus:outline-none focus:bg-surface-container-lowest focus:ring-2 focus:ring-primary font-bold" dir="ltr" id="cashInput" placeholder="0" type="text" value="50,000"/>
+<span class="absolute right-3 top-2.5 font-label-md text-label-md text-on-surface-variant">DA</span>
+</div>
+<div class="flex items-center gap-1 mt-1">
+<span class="text-[11px] font-body-sm text-on-surface-variant">اختيار سريع:</span>
+<button class="quick-cash-btn px-1.5 py-0.5 rounded bg-surface-container text-label-sm font-label-sm hover:bg-surface-container-high cursor-pointer transition-colors" data-amt="20000" type="button">20K</button>
+<button class="quick-cash-btn px-1.5 py-0.5 rounded bg-surface-container-high text-primary font-bold text-label-sm font-label-sm cursor-pointer transition-colors" data-amt="50000" type="button">50K</button>
+<button class="quick-cash-btn px-1.5 py-0.5 rounded bg-surface-container text-label-sm font-label-sm hover:bg-surface-container-high cursor-pointer transition-colors" data-amt="100000" type="button">100K</button>
+<button class="quick-cash-btn px-1.5 py-0.5 rounded bg-surface-container text-label-sm font-label-sm hover:bg-surface-container-high cursor-pointer transition-colors" data-amt="200000" type="button">200K</button>
+</div>
+</div>
+<!-- Calculated: Actual Balance Received & Profit Card -->
+<div class="bg-primary-container/10 p-space-sm rounded-lg flex flex-col gap-1.5">
+<div class="flex items-center justify-between">
+<span class="font-body-sm text-body-sm text-on-surface font-bold">الرصيد الفعلي المستلم بالشريحة:</span>
+<span class="font-currency-display text-headline-sm font-bold text-primary" dir="ltr" id="receivedDisplay">52,000.00 DA</span>
+</div>
+<div class="flex items-center justify-between text-body-sm">
+<span class="text-on-surface-variant">بونيس / عمولة الموزع التلقائية:</span>
+<div class="flex items-center gap-1 text-primary font-bold font-label-sm">
+<span id="bonusRateLabel">+4.0%</span>
+<span id="bonusGainLabel">(= +2,000 DA ربح صافي)</span>
+</div>
+</div>
+</div>
+<!-- Input: Distributor Select -->
+<div>
+<label class="block font-body-sm text-body-sm font-bold text-on-surface mb-1">
+الموزع المعتمد / الوكيل التجاري:
+</label>
+<div class="relative">
+<select class="w-full bg-surface-container-low text-on-surface font-body-md px-space-md py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary appearance-none cursor-pointer" id="distributorSelect">
+<option value="وكيل موبيليس المعتمد - بوزريعة (الرئيسي)">وكيل موبيليس المعتمد - بوزريعة (الرئيسي)</option>
+<option value="موزع الجملة - سيدي يحيى (الوسيط)">موزع الجملة - سيدي يحيى (الوسيط)</option>
+<option value="المديرية الجهوية للاتصالات - بن عكنون">المديرية الجهوية للاتصالات - بن عكنون</option>
+</select>
+<span class="material-symbols-outlined absolute left-2.5 top-2.5 text-on-surface-variant pointer-events-none text-[20px]">expand_more</span>
+</div>
+</div>
+<!-- Payment Method Grid -->
+<div>
+<label class="block font-body-sm text-body-sm font-bold text-on-surface mb-1">
+طريقة سداد قيمة الشحنة للموزع:
+</label>
+<div class="grid grid-cols-2 gap-space-sm" id="paymentOptionsGroup">
+<label class="payment-option-label flex items-center gap-2 p-space-sm rounded-lg bg-surface-container-high text-primary font-bold cursor-pointer transition-all border border-primary/30">
+<input checked="" class="accent-primary" name="paymentType" type="radio" value="cash"/>
+<div class="flex flex-col">
+<span class="font-body-md text-body-md leading-tight">نقداً (كاش)</span>
+<span class="font-body-sm text-[11px] text-on-surface-variant">سحب من الكاسة فوراً</span>
+</div>
+</label>
+<label class="payment-option-label flex items-center gap-2 p-space-sm rounded-lg bg-surface-container-low text-on-surface hover:bg-surface-container cursor-pointer transition-all border border-transparent">
+<input class="accent-primary" name="paymentType" type="radio" value="debt"/>
+<div class="flex flex-col">
+<span class="font-body-md text-body-md leading-tight">آجل (دين للموزع)</span>
+<span class="font-body-sm text-[11px] text-on-surface-variant">تسجيل في دفتر ديون المورد</span>
+</div>
+</label>
+</div>
+</div>
+<!-- Confirmation Reference Number -->
+<div>
+<label class="block font-body-sm text-body-sm font-bold text-on-surface mb-1">
+رقم إشعار الحوالة أو الرسالة التأكيدية (SMS Reference):
+</label>
+<input class="w-full bg-surface-container-low text-on-surface font-label-md px-space-md py-2 rounded-lg text-left focus:outline-none focus:ring-2 focus:ring-primary uppercase tracking-wide" dir="ltr" id="refInput" placeholder="مثال: MOB-99412582" type="text" value="MOB-88912-ALG"/>
+</div>
+<!-- Notes / Observation -->
+<div>
+<label class="block font-body-sm text-body-sm font-bold text-on-surface mb-1">
+ملاحظات إضافية (اختياري):
+</label>
+<input class="w-full bg-surface-container-low text-on-surface font-body-sm px-space-md py-1.5 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" id="notesInput" placeholder="تم تسليم المبلغ لمندوب التوزيع أحمد..." type="text"/>
+</div>
+<!-- Drawer Action Buttons -->
+<div class="flex items-center gap-space-sm pt-space-xs mt-space-xs">
+<button class="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg bg-primary-container hover:bg-primary text-on-primary font-headline-sm text-headline-sm shadow-md transition-all cursor-pointer active:scale-95" id="submitTopupBtn" type="button">
+<span class="material-symbols-outlined text-[20px]">check_circle</span>
+<span>تأكيد وحفظ الشحنة</span>
+<span class="bg-on-primary-container text-on-primary-fixed font-label-sm text-label-sm px-1.5 py-0.5 rounded font-bold" dir="ltr">Ctrl+Enter</span>
+</button>
+<button class="px-space-md py-2.5 rounded-lg bg-surface-container-highest hover:bg-surface-container text-on-surface-variant hover:text-on-surface font-body-md transition-colors cursor-pointer" id="resetTopupFormBtn" type="button">
+<span>إلغاء</span>
+<span class="font-label-sm text-label-sm bg-surface-container-lowest px-1 rounded ml-1" dir="ltr">Esc</span>
+</button>
+</div>
+</form>
+</div>
+</div>
+<!-- Bottom Fast Keyboard Status & Shortcuts Helper Capsule -->
+<div class="mt-space-md bg-surface-container-low rounded-xl px-space-lg py-space-sm flex items-center justify-between shadow-sm">
+<div class="flex items-center gap-space-lg">
+<div class="flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px] text-primary">keyboard</span>
+<span class="font-body-sm text-body-sm font-bold text-on-surface">مساعد الاختصارات السريعة (POS Express Keys):</span>
+</div>
+<div class="flex items-center gap-space-sm">
+<span class="inline-flex items-center gap-1 bg-surface-container-lowest px-2 py-0.5 rounded font-label-sm text-label-sm shadow-xs">
+<span class="font-body-sm text-on-surface-variant">لوحة التحكم:</span>
+<kbd class="text-primary font-bold" dir="ltr">F1</kbd>
+</span>
+<span class="inline-flex items-center gap-1 bg-surface-container-lowest px-2 py-0.5 rounded font-label-sm text-label-sm shadow-xs">
+<span class="font-body-sm text-on-surface-variant">بيع سريع:</span>
+<kbd class="text-primary font-bold" dir="ltr">Space</kbd>
+</span>
+<span class="inline-flex items-center gap-1 bg-surface-container-high px-2 py-0.5 rounded font-label-sm text-label-sm shadow-xs border border-primary/30">
+<span class="font-body-sm text-primary font-bold">المخزون (الحالي):</span>
+<kbd class="text-primary font-bold" dir="ltr">F3</kbd>
+</span>
+<span class="inline-flex items-center gap-1 bg-surface-container-lowest px-2 py-0.5 rounded font-label-sm text-label-sm shadow-xs cursor-pointer hover:bg-surface-container transition-colors" onclick="focusCashInput()">
+<span class="font-body-sm text-on-surface-variant">شحنة جديدة:</span>
+<kbd class="text-primary-container font-bold" dir="ltr">F5</kbd>
+</span>
+<span class="inline-flex items-center gap-1 bg-surface-container-lowest px-2 py-0.5 rounded font-label-sm text-label-sm shadow-xs cursor-pointer hover:bg-surface-container transition-colors" onclick="openReconciliationModal()">
+<span class="font-body-sm text-on-surface-variant">تسوية فارق:</span>
+<kbd class="text-secondary font-bold" dir="ltr">F6</kbd>
+</span>
+</div>
+</div>
+<!-- Active Terminal Telemetry -->
+<div class="flex items-center gap-space-md text-on-surface-variant font-label-sm text-label-sm" dir="ltr">
+<div class="flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-primary-container animate-pulse"></span>
+<span>Modem Port: COM4 (USB-SIM800C)</span>
+</div>
+<span>•</span>
+<div>Latency: 18ms</div>
+</div>
+</div>
+<!-- Modal: Reconciliation Dialogue (F6) -->
+<div class="fixed inset-0 z-50 bg-inverse-surface/50 backdrop-blur-xs flex items-center justify-center hidden opacity-0 transition-opacity duration-200" id="reconcileModalBackdrop">
+<div class="bg-surface-container-lowest w-full max-w-lg rounded-2xl shadow-2xl border border-surface-container-high overflow-hidden transform scale-95 transition-transform duration-200" id="reconcileModalCard">
+<div class="flex items-center justify-between px-space-lg py-space-md border-b border-surface-container-high bg-surface-container-low">
+<div class="flex items-center gap-space-sm">
+<div class="w-8 h-8 rounded-lg bg-secondary/10 text-secondary flex items-center justify-center font-bold">
+<span class="material-symbols-outlined text-[20px]">balance</span>
+</div>
+<div>
+<h3 class="font-headline-sm text-headline-sm font-bold text-on-surface">تسوية فارق الرصيد الفعلي (USSD)</h3>
+<span class="font-body-sm text-body-sm text-on-surface-variant">مطابقة مخزون الشريحة الرقمي مع رد شبكة الاتصالات</span>
+</div>
+</div>
+<button class="w-7 h-7 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-container-high transition-colors cursor-pointer" onclick="closeReconciliationModal()">
+<span class="material-symbols-outlined text-[20px]">close</span>
+</button>
+</div>
+<form class="p-space-lg flex flex-col gap-space-md" id="reconciliationForm" onsubmit="event.preventDefault();">
+<div>
+<label class="block font-body-sm text-body-sm font-bold text-on-surface mb-1">اختر الشريحة المطلوب تسويتها:</label>
+<select class="w-full bg-surface-container-low text-on-surface font-body-md px-space-md py-2 rounded-lg border border-transparent focus:outline-none focus:ring-2 focus:ring-primary appearance-none cursor-pointer" id="modalSimSelect">
+<option value="mobilis">Mobilis 0660 00 12 34 (*600#)</option>
+<option value="djezzy">Djezzy 0770 11 99 82 (*710#)</option>
+<option value="ooredoo">Ooredoo 0555 88 44 21 (*200#)</option>
+</select>
+</div>
+<div class="grid grid-cols-2 gap-space-md">
+<div>
+<label class="block font-body-sm text-body-sm font-bold text-on-surface mb-1">الرصيد الحالي بالنظام:</label>
+<div class="bg-surface-container-low px-space-md py-2 rounded-lg font-currency-display text-label-lg font-bold text-on-surface text-left" dir="ltr" id="modalSystemBalance">
+45,000.00 DA
+</div>
+</div>
+<div>
+<label class="block font-body-sm text-body-sm font-bold text-on-surface mb-1">الرصيد الفعلي في الهاتف (USSD):</label>
+<input class="w-full bg-surface-container-lowest text-on-surface font-currency-display text-label-lg px-space-md py-2 rounded-lg border-2 border-primary/40 text-left focus:outline-none focus:ring-2 focus:ring-primary font-bold" dir="ltr" id="modalActualInput" placeholder="0.00" step="0.01" type="number"/>
+</div>
+</div>
+<div class="p-space-sm rounded-lg bg-surface-container-low flex items-center justify-between border border-surface-container-high">
+<span class="font-body-sm text-body-sm text-on-surface-variant font-bold">الفارق المحسوب (تسوية التوازن):</span>
+<span class="font-currency-display text-label-lg font-bold text-on-surface" dir="ltr" id="modalDiffDisplay">0.00 DA</span>
+</div>
+<div>
+<label class="block font-body-sm text-body-sm font-bold text-on-surface mb-1">سبب التسوية / البيان الإيضاحي:</label>
+<input class="w-full bg-surface-container-low text-on-surface font-body-sm px-space-md py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" id="modalReasonInput" placeholder="مثال: تسوية فتح الصندوق الصباحية مع كود USSD" type="text" value="تسوية فارق كشف USSD المباشر"/>
+</div>
+<div class="flex items-center justify-end gap-space-sm pt-space-xs border-t border-surface-container-high">
+<button class="px-space-md py-2 rounded-lg bg-surface-container-highest hover:bg-surface-container text-on-surface-variant font-body-md transition-colors cursor-pointer" onclick="closeReconciliationModal()" type="button">إلغاء</button>
+<button class="px-space-lg py-2 rounded-lg bg-secondary text-on-secondary font-headline-sm text-headline-sm shadow-md hover:bg-secondary/90 transition-all cursor-pointer flex items-center gap-1.5" onclick="submitReconciliation()" type="button">
+<span class="material-symbols-outlined text-[18px]">done_all</span>
+<span>اعتماد وحفظ التسوية</span>
+</button>
+</div>
+</form>
+</div>
+</div>
+</div></main></div>
+<!-- Core Interactive Application Logic -->
+<script>
+  // State Machine
+  const state = {
+    activeSim: 'mobilis', // 'mobilis' | 'djezzy' | 'ooredoo'
+    activeFilter: 'all',  // 'all' | 'topup' | 'sale' | 'adjust'
+    carriers: {
+      mobilis: {
+        id: 'mobilis',
+        name: 'Mobilis',
+        prefix: '06',
+        phone: '0660 00 12 34',
+        balance: 45000.00,
+        minThreshold: 10000.00,
+        color: 'primary',
+        bonusRate: 0.04,
+        monthlyTopup: 350000.00,
+        monthlyTopupCount: 7,
+        monthlyProfit: 14000.00,
+        todaySales: 18400.00,
+        todaySalesCount: 38,
+        ussdCode: '*600#',
+        distributor: 'وكيل موبيليس المعتمد - بوزريعة (الرئيسي)'
+      },
+      djezzy: {
+        id: 'djezzy',
+        name: 'Djezzy',
+        prefix: '07',
+        phone: '0770 11 99 82',
+        balance: 3200.00,
+        minThreshold: 15000.00,
+        color: 'tertiary',
+        bonusRate: 0.045,
+        monthlyTopup: 210000.00,
+        monthlyTopupCount: 5,
+        monthlyProfit: 9450.00,
+        todaySales: 8900.00,
+        todaySalesCount: 22,
+        ussdCode: '*710#',
+        distributor: 'موزع جيزي المعتمد - بن عكنون'
+      },
+      ooredoo: {
+        id: 'ooredoo',
+        name: 'Ooredoo',
+        prefix: '05',
+        phone: '0555 88 44 21',
+        balance: 78500.00,
+        minThreshold: 12000.00,
+        color: 'secondary',
+        bonusRate: 0.04,
+        monthlyTopup: 480000.00,
+        monthlyTopupCount: 9,
+        monthlyProfit: 19200.00,
+        todaySales: 24300.00,
+        todaySalesCount: 46,
+        ussdCode: '*200#',
+        distributor: 'وكيل أوريدو - سيدي يحيى (الوسيط)'
+      }
+    },
+    // Ledger Ledger items store per sim
+    ledger: {
+      mobilis: [
+        { id: 1, time: '10:15:20', date: 'اليوم 19/10', type: 'topup', typeLabel: 'توريد [ + ]', amount: 52000.00, balanceAfter: 45000.00, note: 'شحنة #4412 - وكيل بوزريعة', ref: 'MOB-88912-ALG', user: 'أمين بلقاسم' },
+        { id: 2, time: '09:58:14', date: 'اليوم 19/10', type: 'sale', typeLabel: 'بيع فليكسي [ - ]', amount: -1000.00, balanceAfter: -7000.00, note: 'تعبئة زبون تجزئة', ref: 'To: 0661 45 99 10', user: 'أمين بلقاسم' },
+        { id: 3, time: '09:42:01', date: 'اليوم 19/10', type: 'sale', typeLabel: 'بيع فليكسي [ - ]', amount: -2500.00, balanceAfter: -6000.00, note: 'عرض ترويجي PixX 2000', ref: 'To: 0698 12 33 00', user: 'أمين بلقاسم' },
+        { id: 4, time: '08:30:11', date: 'اليوم 19/10', type: 'adjust', typeLabel: 'تسوية رصيد [⚠]', amount: 100.00, balanceAfter: -3500.00, note: 'تسوية فتح الصندوق الصباحية', ref: 'تطابق مع USSD *600#', user: 'أمين بلقاسم' },
+        { id: 5, time: '18:45:00', date: 'أمس 18/10', type: 'sale', typeLabel: 'بيع فليكسي [ - ]', amount: -500.00, balanceAfter: -3600.00, note: 'تعبئة عادية', ref: 'To: 0662 89 77 12', user: 'أمين بلقاسم' }
+      ],
+      djezzy: [
+        { id: 101, time: '10:02:15', date: 'اليوم 19/10', type: 'sale', typeLabel: 'بيع فليكسي [ - ]', amount: -1500.00, balanceAfter: 3200.00, note: 'تعبئة هايلة ماكس Djezzy Hayla', ref: 'To: 0771 90 22 14', user: 'أمين بلقاسم' },
+        { id: 102, time: '09:12:30', date: 'اليوم 19/10', type: 'sale', typeLabel: 'بيع فليكسي [ - ]', amount: -500.00, balanceAfter: 4700.00, note: 'فليكسي تجزئة 500 دج', ref: 'To: 0792 11 00 45', user: 'أمين بلقاسم' },
+        { id: 103, time: '08:00:00', date: 'اليوم 19/10', type: 'adjust', typeLabel: 'تسوية رصيد [⚠]', amount: -200.00, balanceAfter: 5200.00, note: 'تسوية خصم خدمة تحويل الموزع', ref: 'USSD *710# Ref: DJ-109', user: 'أمين بلقاسم' }
+      ],
+      ooredoo: [
+        { id: 201, time: '10:30:00', date: 'اليوم 19/10', type: 'topup', typeLabel: 'توريد [ + ]', amount: 50000.00, balanceAfter: 78500.00, note: 'شحنة وكيل العاصمة المعتمد', ref: 'OOR-99120-OK', user: 'أمين بلقاسم' },
+        { id: 202, time: '09:20:10', date: 'اليوم 19/10', type: 'sale', typeLabel: 'بيع فليكسي [ - ]', amount: -2000.00, balanceAfter: 28500.00, note: 'اشتراك شهري LaGold', ref: 'To: 0550 44 99 88', user: 'أمين بلقاسم' },
+        { id: 203, time: '08:45:00', date: 'اليوم 19/10', type: 'sale', typeLabel: 'بيع فليكسي [ - ]', amount: -1200.00, balanceAfter: 30500.00, note: 'تعبئة جواز أنترنت', ref: 'To: 0558 77 12 33', user: 'أمين بلقاسم' }
+      ]
+    }
+  };
+
+  // Helper Formatter
+  function formatMoney(n) {
+    return Number(n).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' DA';
+  }
+
+  // Toast Notification Generator
+  function showToast(message, type = 'success') {
+    const container = document.getElementById('toastContainer');
+    if (!container) return;
+
+    const toast = document.createElement('div');
+    const isSuccess = type === 'success';
+    const isInfo = type === 'info';
+    const isWarn = type === 'warn';
+
+    let bgClass = 'bg-primary text-on-primary';
+    let iconName = 'check_circle';
+    if (isInfo) {
+      bgClass = 'bg-secondary text-on-secondary';
+      iconName = 'info';
+    } else if (isWarn) {
+      bgClass = 'bg-tertiary text-on-tertiary';
+      iconName = 'warning';
+    }
+
+    toast.className = `flex items-center gap-2.5 px-4 py-2.5 rounded-xl shadow-xl pointer-events-auto transform translate-y-2 opacity-0 transition-all duration-300 ${bgClass}`;
+    toast.innerHTML = `
+      <span class="material-symbols-outlined text-[20px]">${iconName}</span>
+      <span class="font-body-md text-sm font-semibold">${message}</span>
+    `;
+
+    container.appendChild(toast);
+    requestAnimationFrame(() => {
+      toast.classList.remove('translate-y-2', 'opacity-0');
+    });
+
+    setTimeout(() => {
+      toast.classList.add('opacity-0', 'translate-y-2');
+      setTimeout(() => toast.remove(), 300);
+    }, 3500);
+  }
+
+  // Carrier Switcher
+  function selectCarrier(simKey) {
+    state.activeSim = simKey;
+    const sim = state.carriers[simKey];
+
+    // Update Carrier Top Cards Styles
+    document.querySelectorAll('.carrier-card').forEach(card => {
+      const cardSim = card.getAttribute('data-sim');
+      const badgeContainer = card.querySelector('.sim-badge-container');
+      if (cardSim === simKey) {
+        card.classList.remove('border-transparent', 'bg-surface-container-lowest');
+        card.classList.add('border-primary', 'bg-primary-container/5');
+        if (badgeContainer) {
+          badgeContainer.innerHTML = '<span class="bg-primary text-on-primary font-label-sm text-label-sm px-2.5 py-0.5 rounded-full shadow-sm">نشط حالياً</span>';
+        }
+      } else {
+        card.classList.remove('border-primary', 'bg-primary-container/5');
+        card.classList.add('border-transparent', 'bg-surface-container-lowest');
+        if (badgeContainer) {
+          if (cardSim === 'djezzy' && state.carriers.djezzy.balance < state.carriers.djezzy.minThreshold) {
+            badgeContainer.innerHTML = '<span class="bg-tertiary text-on-tertiary font-label-sm text-label-sm px-2.5 py-0.5 rounded-full shadow-sm animate-pulse">رصيد منخفض</span>';
+          } else {
+            badgeContainer.innerHTML = '';
+          }
+        }
+      }
+    });
+
+    // Update Overview Stats Cards
+    const metricLabel = document.getElementById('activeCarrierMetricLabel');
+    if (metricLabel) metricLabel.innerText = `الرصيد الفعلي الحالي (${sim.name})`;
+
+    const statActual = document.getElementById('statActualBalance');
+    if (statActual) {
+      statActual.innerHTML = `${Number(sim.balance).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} <span class="text-headline-sm text-on-surface-variant font-headline-sm font-normal">DA</span>`;
+    }
+
+    const statMonthly = document.getElementById('statMonthlyTopup');
+    if (statMonthly) {
+      statMonthly.innerHTML = `${Number(sim.monthlyTopup).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} <span class="text-label-md text-on-surface-variant font-label-md font-normal">DA</span>`;
+    }
+    const statMonthlyCount = document.getElementById('statMonthlyTopupCount');
+    if (statMonthlyCount) statMonthlyCount.innerText = `${sim.monthlyTopupCount} شحنات معتمدة`;
+    const statMonthlyProfit = document.getElementById('statMonthlyProfit');
+    if (statMonthlyProfit) statMonthlyProfit.innerText = `+${Number(sim.monthlyProfit).toLocaleString('en-US')} DA ربح`;
+
+    const statToday = document.getElementById('statTodaySales');
+    if (statToday) {
+      statToday.innerHTML = `${Number(sim.todaySales).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} <span class="text-label-md text-on-surface-variant font-label-md font-normal">DA</span>`;
+    }
+    const statTodayCount = document.getElementById('statTodayCount');
+    if (statTodayCount) statTodayCount.innerText = `${sim.todaySalesCount} عملية بيع للزبائن`;
+    const statAvg = document.getElementById('statAvgSale');
+    if (statAvg) {
+      const avg = Math.round(sim.todaySales / (sim.todaySalesCount || 1));
+      statAvg.innerText = `معدل: ${avg} DA`;
+    }
+
+    // Safety gauge
+    const safetyRatio = sim.balance / sim.minThreshold;
+    const safetyText = document.getElementById('liquidityStatusText');
+    const safetyMul = document.getElementById('liquidityMultiplier');
+    const safetyBar = document.getElementById('liquidityBar');
+    if (safetyRatio >= 1) {
+      if (safetyText) { safetyText.innerText = 'آمن ومستقر'; safetyText.className = 'font-headline-lg text-headline-lg font-bold text-primary'; }
+      if (safetyMul) safetyMul.innerText = `(${safetyRatio.toFixed(1)}x العتبة)`;
+      if (safetyBar) { safetyBar.className = 'bg-primary h-full rounded-full transition-all duration-500'; safetyBar.style.width = `${Math.min(100, Math.round(safetyRatio * 25))}%`; }
+    } else {
+      if (safetyText) { safetyText.innerText = 'حرج دون العتبة'; safetyText.className = 'font-headline-lg text-headline-lg font-bold text-tertiary'; }
+      if (safetyMul) safetyMul.innerText = `(${Math.round(safetyRatio * 100)}% من الحد)`;
+      if (safetyBar) { safetyBar.className = 'bg-tertiary h-full rounded-full transition-all duration-500'; safetyBar.style.width = `${Math.max(10, Math.round(safetyRatio * 100))}%`; }
+    }
+
+    // Update Drawer Panel Title & Context
+    const drawerSub = document.getElementById('drawerSimSubtitle');
+    if (drawerSub) drawerSub.innerText = `شريحة ${sim.name} (${sim.phone})`;
+
+    const refInput = document.getElementById('refInput');
+    if (refInput && !refInput.value.trim().startsWith(sim.name.substring(0, 3).toUpperCase())) {
+      refInput.value = `${sim.name.substring(0, 3).toUpperCase()}-${Math.floor(10000 + Math.random() * 90000)}-ALG`;
+    }
+
+    // Update Ledger Title & Movements
+    const ledgerTitle = document.getElementById('ledgerTitle');
+    if (ledgerTitle) ledgerTitle.innerText = `سجل حركات رصيد ${sim.name}`;
+
+    // Recalculate Refill Preview with the new sim's bonus rate
+    updateCalculations();
+
+    // Render Ledger Table
+    renderLedger();
+  }
+
+  // Render Ledger Table rows
+  function renderLedger() {
+    const tbody = document.getElementById('ledgerTableBody');
+    if (!tbody) return;
+
+    const list = state.ledger[state.activeSim] || [];
+    const filtered = list.filter(item => {
+      if (state.activeFilter === 'all') return true;
+      return item.type === state.activeFilter;
+    });
+
+    const countElem = document.getElementById('ledgerMovementCount');
+    if (countElem) countElem.innerText = `${list.length} حركة اليوم`;
+
+    const displayCountElem = document.getElementById('footerDisplayCount');
+    if (displayCountElem) displayCountElem.innerText = `${filtered.length} / ${list.length}`;
+
+    // Cumulative sum
+    const totalSum = list.reduce((acc, cur) => acc + cur.amount, 0);
+    const netTotalElem = document.getElementById('footerNetTotal');
+    if (netTotalElem) {
+      const sign = totalSum >= 0 ? '+' : '';
+      netTotalElem.innerText = `${sign}${formatMoney(totalSum)}`;
+      netTotalElem.className = totalSum >= 0
+        ? 'font-currency-display text-label-md font-bold text-primary'
+        : 'font-currency-display text-label-md font-bold text-tertiary';
+    }
+
+    if (filtered.length === 0) {
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="7" class="py-8 text-center text-on-surface-variant font-body-md">
+            <span class="material-symbols-outlined text-[32px] block mb-1 opacity-50">folder_open</span>
+            لا توجد حركات مسجلة تحت هذا التصنيف حالياً.
+          </td>
+        </tr>
+      `;
+      return;
+    }
+
+    tbody.innerHTML = filtered.map(row => {
+      let badgeHtml = '';
+      let amountColor = 'text-on-surface';
+      let amountSign = row.amount > 0 ? '+' : '';
+
+      if (row.type === 'topup') {
+        badgeHtml = `
+          <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-primary-container/15 text-primary font-bold font-label-sm">
+            <span class="material-symbols-outlined text-[14px]">arrow_downward</span>
+            <span>${row.typeLabel || 'توريد [+]'}</span>
+          </span>
+        `;
+        amountColor = 'text-primary';
+      } else if (row.type === 'sale') {
+        badgeHtml = `
+          <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-surface-container-high text-on-surface-variant font-label-sm">
+            <span class="material-symbols-outlined text-[14px]">arrow_upward</span>
+            <span>${row.typeLabel || 'بيع فليكسي [-]'}</span>
+          </span>
+        `;
+        amountColor = 'text-on-surface';
+      } else if (row.type === 'adjust') {
+        badgeHtml = `
+          <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-surface-container-high text-secondary font-bold font-label-sm">
+            <span class="material-symbols-outlined text-[14px]">tune</span>
+            <span>${row.typeLabel || 'تسوية رصيد [⚠]'}</span>
+          </span>
+        `;
+        amountColor = 'text-secondary';
+      }
+
+      return `
+        <tr class="hover:bg-surface-container-low/60 transition-colors">
+          <td class="py-2.5 px-space-sm">
+            <span class="font-label-sm font-semibold text-on-surface block" dir="ltr">${row.time}</span>
+            <span class="font-body-sm text-body-sm text-on-surface-variant text-[11px]">${row.date}</span>
+          </td>
+          <td class="py-2.5 px-space-sm">
+            ${badgeHtml}
+          </td>
+          <td class="py-2.5 px-space-sm font-currency-display text-label-md font-bold ${amountColor}" dir="ltr">
+            ${amountSign}${Number(row.amount).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+          </td>
+          <td class="py-2.5 px-space-sm font-currency-display text-label-md font-bold text-on-surface" dir="ltr">
+            ${Number(row.balanceAfter).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+          </td>
+          <td class="py-2.5 px-space-sm">
+            <span class="font-body-sm text-on-surface font-medium block">${row.note}</span>
+            <span class="font-label-sm text-on-surface-variant text-[11px]" dir="ltr">${row.ref}</span>
+          </td>
+          <td class="py-2.5 px-space-sm text-on-surface font-body-sm">${row.user}</td>
+          <td class="py-2.5 px-space-sm text-center">
+            <button class="p-1 rounded hover:bg-surface-container text-on-surface-variant hover:text-primary transition-colors cursor-pointer" onclick="printReceipt(${row.id})" title="طباعة الوصل">
+              <span class="material-symbols-outlined text-[18px]">receipt</span>
+            </button>
+          </td>
+        </tr>
+      `;
+    }).join('');
+  }
+
+  // Refill Calculations
+  function updateCalculations() {
+    const cashInput = document.getElementById('cashInput');
+    const sim = state.carriers[state.activeSim];
+    if (!cashInput || !sim) return;
+
+    const rawVal = parseFloat(cashInput.value.replace(/,/g, '')) || 0;
+    const bonusRate = sim.bonusRate || 0.04;
+    const bonusProfit = rawVal * bonusRate;
+    const totalReceived = rawVal + bonusProfit;
+
+    const display = document.getElementById('receivedDisplay');
+    if (display) {
+      display.innerText = totalReceived.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' DA';
+    }
+
+    const rateLabel = document.getElementById('bonusRateLabel');
+    if (rateLabel) rateLabel.innerText = `+${(bonusRate * 100).toFixed(1)}%`;
+
+    const gainLabel = document.getElementById('bonusGainLabel');
+    if (gainLabel) gainLabel.innerText = `(= +${bonusProfit.toLocaleString('en-US')} DA ربح صافي)`;
+  }
+
+  function setCash(amount) {
+    const input = document.getElementById('cashInput');
+    if (input) {
+      input.value = Number(amount).toLocaleString('en-US');
+      updateCalculations();
+      // Highlight matching quick button
+      document.querySelectorAll('.quick-cash-btn').forEach(btn => {
+        if (parseInt(btn.getAttribute('data-amt')) === amount) {
+          btn.className = 'quick-cash-btn px-1.5 py-0.5 rounded bg-surface-container-high text-primary font-bold text-label-sm font-label-sm cursor-pointer transition-colors';
+        } else {
+          btn.className = 'quick-cash-btn px-1.5 py-0.5 rounded bg-surface-container text-label-sm font-label-sm hover:bg-surface-container-high cursor-pointer transition-colors';
+        }
+      });
+    }
+  }
+
+  function focusCashInput() {
+    const input = document.getElementById('cashInput');
+    if (input) {
+      input.focus();
+      input.select();
+    }
+  }
+
+  // Submit Topup
+  function submitTopup() {
+    const cashInput = document.getElementById('cashInput');
+    const rawVal = parseFloat((cashInput?.value || '').replace(/,/g, '')) || 0;
+
+    if (rawVal <= 0) {
+      showToast('يرجى إدخال مبلغ صحيح لتسجيل الشحنة!', 'warn');
+      if (cashInput) cashInput.focus();
+      return;
+    }
+
+    const sim = state.carriers[state.activeSim];
+    const bonusProfit = rawVal * sim.bonusRate;
+    const received = rawVal + bonusProfit;
+
+    // Update State
+    sim.balance += received;
+    sim.monthlyTopup += rawVal;
+    sim.monthlyTopupCount += 1;
+    sim.monthlyProfit += bonusProfit;
+
+    // Get input notes/refs
+    const refInput = document.getElementById('refInput');
+    const notesInput = document.getElementById('notesInput');
+    const distSelect = document.getElementById('distributorSelect');
+    const paymentRadio = document.querySelector('input[name="paymentType"]:checked');
+    const isCash = (paymentRadio?.value || 'cash') === 'cash';
+
+    const now = new Date();
+    const timeStr = now.toTimeString().split(' ')[0];
+
+    const newLedgerItem = {
+      id: Date.now(),
+      time: timeStr,
+      date: 'اليوم 19/10',
+      type: 'topup',
+      typeLabel: isCash ? 'توريد [ + ]' : 'توريد آجل [ + ]',
+      amount: received,
+      balanceAfter: sim.balance,
+      note: `شحنة #${Math.floor(1000 + Math.random() * 9000)} - ${distSelect?.value ? distSelect.value.split('-')[0].trim() : 'الموزع'}`,
+      ref: refInput?.value || `REF-${Date.now().toString().slice(-6)}`,
+      user: 'أمين بلقاسم'
+    };
+
+    state.ledger[state.activeSim].unshift(newLedgerItem);
+
+    // Update Carrier Card Balance visually
+    const activeCarrierCard = document.querySelector(`.carrier-card[data-sim="${state.activeSim}"] .carrier-balance-val`);
+    if (activeCarrierCard) {
+      activeCarrierCard.innerText = formatMoney(sim.balance);
+    }
+
+    // Refresh display
+    selectCarrier(state.activeSim);
+
+    // Toast
+    showToast(`تم قيد شحنة جديدة بنجاح (+${formatMoney(received)}) إلى رصيد ${sim.name}`, 'success');
+
+    // Reset Form to Default
+    if (notesInput) notesInput.value = '';
+    if (refInput) refInput.value = `${sim.name.substring(0, 3).toUpperCase()}-${Math.floor(10000 + Math.random() * 90000)}-ALG`;
+  }
+
+  // Reconciliation Dialog Logic
+  function openReconciliationModal() {
+    const backdrop = document.getElementById('reconcileModalBackdrop');
+    const card = document.getElementById('reconcileModalCard');
+    const simSelect = document.getElementById('modalSimSelect');
+    if (!backdrop || !card) return;
+
+    if (simSelect) simSelect.value = state.activeSim;
+    updateModalFields();
+
+    backdrop.classList.remove('hidden');
+    requestAnimationFrame(() => {
+      backdrop.classList.remove('opacity-0');
+      card.classList.remove('scale-95');
+      card.classList.add('scale-100');
+    });
+
+    const actInput = document.getElementById('modalActualInput');
+    if (actInput) {
+      actInput.focus();
+      actInput.select();
+    }
+  }
+
+  function closeReconciliationModal() {
+    const backdrop = document.getElementById('reconcileModalBackdrop');
+    const card = document.getElementById('reconcileModalCard');
+    if (!backdrop || !card) return;
+
+    card.classList.remove('scale-100');
+    card.classList.add('scale-95');
+    backdrop.classList.add('opacity-0');
+
+    setTimeout(() => {
+      backdrop.classList.add('hidden');
+    }, 200);
+  }
+
+  function updateModalFields() {
+    const simSelect = document.getElementById('modalSimSelect');
+    const simKey = simSelect ? simSelect.value : state.activeSim;
+    const sim = state.carriers[simKey];
+    if (!sim) return;
+
+    const sysBal = document.getElementById('modalSystemBalance');
+    if (sysBal) sysBal.innerText = formatMoney(sim.balance);
+
+    const actualInput = document.getElementById('modalActualInput');
+    const diffDisplay = document.getElementById('modalDiffDisplay');
+
+    if (actualInput && diffDisplay) {
+      const actualVal = parseFloat(actualInput.value);
+      if (isNaN(actualVal)) {
+        diffDisplay.innerText = '0.00 DA';
+        diffDisplay.className = 'font-currency-display text-label-lg font-bold text-on-surface';
+      } else {
+        const diff = actualVal - sim.balance;
+        const sign = diff >= 0 ? '+' : '';
+        diffDisplay.innerText = `${sign}${formatMoney(diff)}`;
+        diffDisplay.className = diff >= 0
+          ? 'font-currency-display text-label-lg font-bold text-primary'
+          : 'font-currency-display text-label-lg font-bold text-tertiary';
+      }
+    }
+  }
+
+  function submitReconciliation() {
+    const simSelect = document.getElementById('modalSimSelect');
+    const simKey = simSelect ? simSelect.value : state.activeSim;
+    const sim = state.carriers[simKey];
+    const actualInput = document.getElementById('modalActualInput');
+    const reasonInput = document.getElementById('modalReasonInput');
+
+    const actualVal = parseFloat(actualInput?.value);
+    if (isNaN(actualVal)) {
+      showToast('يرجى إدخال الرصيد الفعلي المقروء من كود USSD', 'warn');
+      if (actualInput) actualInput.focus();
+      return;
+    }
+
+    const diff = actualVal - sim.balance;
+    if (Math.abs(diff) < 0.01) {
+      showToast('الرصيد الفعلي مطابق للمسجل بالنظام، لا يوجد فارق للتسوية.', 'info');
+      closeReconciliationModal();
+      return;
+    }
+
+    // Apply reconciliation
+    sim.balance = actualVal;
+
+    const now = new Date();
+    const timeStr = now.toTimeString().split(' ')[0];
+
+    const adjustLedgerItem = {
+      id: Date.now(),
+      time: timeStr,
+      date: 'اليوم 19/10',
+      type: 'adjust',
+      typeLabel: 'تسوية رصيد [⚠]',
+      amount: diff,
+      balanceAfter: sim.balance,
+      note: reasonInput?.value || 'تسوية فارق الرصيد الفعلي مع USSD',
+      ref: `تطابق مع USSD ${sim.ussdCode}`,
+      user: 'أمين بلقاسم'
+    };
+
+    state.ledger[simKey].unshift(adjustLedgerItem);
+
+    // Update Carrier card
+    const cardBal = document.querySelector(`.carrier-card[data-sim="${simKey}"] .carrier-balance-val`);
+    if (cardBal) cardBal.innerText = formatMoney(sim.balance);
+
+    closeReconciliationModal();
+    selectCarrier(simKey);
+
+    const sign = diff >= 0 ? '+' : '';
+    showToast(`تمت تسوية رصيد ${sim.name} بنجاح (${sign}${formatMoney(diff)}). الرصيد الجديد: ${formatMoney(sim.balance)}`, 'success');
+  }
+
+  function printReceipt(id) {
+    showToast(`جاري إرسال إيصال الحركة #${id} إلى طابعة الإيصالات الحرارية...`, 'info');
+  }
+
+  // Event Listeners
+  document.addEventListener('DOMContentLoaded', () => {
+    // 1. Initial view setup
+    selectCarrier('mobilis');
+
+    // 2. Carrier Cards clicks
+    document.querySelectorAll('.carrier-card').forEach(card => {
+      card.addEventListener('click', () => {
+        const simKey = card.getAttribute('data-sim');
+        if (simKey) selectCarrier(simKey);
+      });
+    });
+
+    // 3. Quick Cash Buttons
+    document.querySelectorAll('.quick-cash-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const amt = parseFloat(btn.getAttribute('data-amt')) || 0;
+        setCash(amt);
+      });
+    });
+
+    // 4. Cash input change
+    const cashInput = document.getElementById('cashInput');
+    if (cashInput) {
+      cashInput.addEventListener('input', updateCalculations);
+    }
+
+    // 5. Submit Topup Button
+    document.getElementById('submitTopupBtn')?.addEventListener('click', submitTopup);
+    document.getElementById('openTopupBtn')?.addEventListener('click', () => {
+      focusCashInput();
+      showToast('نموذج تسجيل الشحنة جاهز للإدخال (F5)', 'info');
+    });
+
+    // 6. Reset Form
+    document.getElementById('resetTopupFormBtn')?.addEventListener('click', () => {
+      setCash(50000);
+      showToast('تمت إعادة ضبط نموذج الشحنة', 'info');
+    });
+
+    // 7. Payment Type Radio Style Switch
+    document.querySelectorAll('input[name="paymentType"]').forEach(radio => {
+      radio.addEventListener('change', () => {
+        document.querySelectorAll('.payment-option-label').forEach(lbl => {
+          const r = lbl.querySelector('input[type="radio"]');
+          if (r && r.checked) {
+            lbl.className = 'payment-option-label flex items-center gap-2 p-space-sm rounded-lg bg-surface-container-high text-primary font-bold cursor-pointer transition-all border border-primary/30';
+          } else {
+            lbl.className = 'payment-option-label flex items-center gap-2 p-space-sm rounded-lg bg-surface-container-low text-on-surface hover:bg-surface-container cursor-pointer transition-all border border-transparent';
+          }
+        });
+      });
+    });
+
+    // 8. Filter Pills
+    document.querySelectorAll('.filter-tab').forEach(btn => {
+      btn.addEventListener('click', () => {
+        state.activeFilter = btn.getAttribute('data-type');
+        document.querySelectorAll('.filter-tab').forEach(b => {
+          if (b === btn) {
+            b.className = 'filter-tab px-space-sm py-1 rounded bg-surface-container-lowest font-body-sm text-body-sm font-bold text-primary shadow-sm cursor-pointer transition-all';
+          } else {
+            b.className = 'filter-tab px-space-sm py-1 rounded hover:bg-surface-container font-body-sm text-body-sm text-on-surface-variant cursor-pointer transition-all';
+          }
+        });
+        renderLedger();
+      });
+    });
+
+    // 9. Reconciliation Modal Trigger
+    document.getElementById('openReconcileBtn')?.addEventListener('click', openReconciliationModal);
+    document.getElementById('modalSimSelect')?.addEventListener('change', updateModalFields);
+    document.getElementById('modalActualInput')?.addEventListener('input', updateModalFields);
+
+    // Backdrop click close
+    document.getElementById('reconcileModalBackdrop')?.addEventListener('click', (e) => {
+      if (e.target === document.getElementById('reconcileModalBackdrop')) {
+        closeReconciliationModal();
+      }
+    });
+
+    // 10. Refresh USSD (F9) Button
+    const refreshBtn = document.getElementById('refreshBalanceBtn');
+    if (refreshBtn) {
+      refreshBtn.addEventListener('click', () => {
+        const icon = document.getElementById('refreshIcon');
+        if (icon) icon.classList.add('animate-spin');
+        showToast('جاري إرسال أوامر USSD (*600# , *710# , *200#) للشرائح...', 'info');
+
+        setTimeout(() => {
+          if (icon) icon.classList.remove('animate-spin');
+          const now = new Date();
+          const timeStr = now.toTimeString().split(' ')[0];
+          const timeElem = document.getElementById('lastCheckTime');
+          if (timeElem) timeElem.innerText = timeStr;
+          showToast('تمت مزامنة رصيد USSD بنجاح لجميع الشرائح النشطة. الأرصدة مطابقة!', 'success');
+        }, 900);
+      });
+    }
+
+    // 11. Live Clock
+    setInterval(() => {
+      const clockElem = document.getElementById('liveClock');
+      if (clockElem) {
+        const d = new Date();
+        clockElem.innerText = d.toTimeString().split(' ')[0];
+      }
+    }, 1000);
+
+    // 12. Keyboard Shortcuts Handler
+    window.addEventListener('keydown', (e) => {
+      // F5: Focus Cash Input
+      if (e.key === 'F5') {
+        e.preventDefault();
+        focusCashInput();
+      }
+      // F6: Open Reconciliation Modal
+      else if (e.key === 'F6') {
+        e.preventDefault();
+        openReconciliationModal();
+      }
+      // F9: Refresh USSD
+      else if (e.key === 'F9') {
+        e.preventDefault();
+        refreshBtn?.click();
+      }
+      // Esc: Close Modals or Reset
+      else if (e.key === 'Escape') {
+        const backdrop = document.getElementById('reconcileModalBackdrop');
+        if (backdrop && !backdrop.classList.contains('hidden')) {
+          closeReconciliationModal();
+        }
+      }
+      // Ctrl + Enter: Submit Topup
+      else if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
+        e.preventDefault();
+        submitTopup();
+      }
+    });
+  });
+</script>
+</body></html>

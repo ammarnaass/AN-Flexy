@@ -8,7 +8,12 @@ export function AuthGate() {
 
   if (session.isLoading) {
     return (
-      <div className="flex h-screen items-center justify-center text-neutral-400">{ui.loading}</div>
+      <div className="flex h-screen items-center justify-center bg-background">
+        <div className="flex flex-col items-center gap-space-md">
+          <div className="w-10 h-10 rounded-full border-2 border-primary-container border-t-transparent animate-spin" />
+          <p className="font-body-md text-body-md text-on-surface-variant">{ui.loading}</p>
+        </div>
+      </div>
     )
   }
 

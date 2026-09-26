@@ -1,14 +1,159 @@
 @import 'tailwindcss';
 
-/* نظام الألوان والتصميم الداكن عالي التباين (OLED / Dark Mode) */
-:root {
-  color-scheme: dark;
-  --bg-app: #030712;
-  --bg-surface: #0b1120;
-  --bg-card: #0f172a;
-  --border-subtle: #1e293b;
-  --border-hover: #334155;
-  --accent-emerald: #10b981;
+@theme {
+  --color-surface: #f8f9ff;
+  --color-surface-dim: #cbdbf5;
+  --color-surface-bright: #f8f9ff;
+  --color-surface-container-lowest: #ffffff;
+  --color-surface-container-low: #eff4ff;
+  --color-surface-container: #e5eeff;
+  --color-surface-container-high: #dce9ff;
+  --color-surface-container-highest: #d3e4fe;
+  --color-surface-variant: #d3e4fe;
+  --color-surface-tint: #006a63;
+
+  --color-on-surface: #0b1c30;
+  --color-on-surface-variant: #3e4947;
+  --color-inverse-surface: #213145;
+  --color-inverse-on-surface: #eaf1ff;
+  --color-outline: #6e7977;
+  --color-outline-variant: #bdc9c6;
+
+  --color-primary: #005c55;
+  --color-on-primary: #ffffff;
+  --color-primary-container: #0f766e;
+  --color-on-primary-container: #a3faef;
+  --color-inverse-primary: #80d5cb;
+  --color-primary-fixed: #9cf2e8;
+  --color-primary-fixed-dim: #80d5cb;
+  --color-on-primary-fixed: #00201d;
+  --color-on-primary-fixed-variant: #00504a;
+
+  --color-secondary: #006398;
+  --color-on-secondary: #ffffff;
+  --color-secondary-container: #5bb8fe;
+  --color-on-secondary-container: #00476e;
+  --color-secondary-fixed: #cce5ff;
+  --color-secondary-fixed-dim: #93ccff;
+  --color-on-secondary-fixed: #001d31;
+  --color-on-secondary-fixed-variant: #004b73;
+
+  --color-tertiary: #a6002f;
+  --color-on-tertiary: #ffffff;
+  --color-tertiary-container: #d2093f;
+  --color-on-tertiary-container: #ffe4e4;
+  --color-tertiary-fixed: #ffdada;
+  --color-tertiary-fixed-dim: #ffb3b6;
+  --color-on-tertiary-fixed: #40000c;
+  --color-on-tertiary-fixed-variant: #920028;
+
+  --color-error: #ba1a1a;
+  --color-on-error: #ffffff;
+  --color-error-container: #ffdad6;
+  --color-on-error-container: #93000a;
+
+  --color-background: #f8f9ff;
+  --color-on-background: #0b1c30;
+
+  --spacing-space-xs: 0.25rem;
+  --spacing-space-sm: 0.5rem;
+  --spacing-space-md: 0.75rem;
+  --spacing-space-lg: 1rem;
+  --spacing-space-xl: 1.5rem;
+  --spacing-gutter: 0.75rem;
+  --spacing-margin: 1rem;
+
+  --font-cairo: 'Cairo', sans-serif;
+  --font-tajawal: 'Tajawal', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+/* Material Symbols Outlined */
+.material-symbols-outlined {
+  font-family: 'Material Symbols Outlined';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 20px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-smoothing: antialiased;
+  user-select: none;
+}
+
+/* Typography styles per Stitch Telecom Retail POS Specification */
+.font-display-lg {
+  font-family: 'Cairo', sans-serif;
+  font-size: 32px;
+  line-height: 40px;
+  font-weight: 700;
+}
+.font-headline-lg {
+  font-family: 'Cairo', sans-serif;
+  font-size: 24px;
+  line-height: 32px;
+  font-weight: 700;
+}
+.font-headline-md {
+  font-family: 'Cairo', sans-serif;
+  font-size: 20px;
+  line-height: 28px;
+  font-weight: 600;
+}
+.font-headline-sm {
+  font-family: 'Cairo', sans-serif;
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 600;
+}
+.font-body-lg {
+  font-family: 'Tajawal', sans-serif;
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 500;
+}
+.font-body-md {
+  font-family: 'Tajawal', sans-serif;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 400;
+}
+.font-body-sm {
+  font-family: 'Tajawal', sans-serif;
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 400;
+}
+.font-label-lg {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 15px;
+  line-height: 20px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+.font-label-md {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  line-height: 16px;
+  font-weight: 500;
+}
+.font-label-sm {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  line-height: 14px;
+  font-weight: 500;
+}
+.font-currency-display {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 28px;
+  line-height: 32px;
+  font-weight: 700;
 }
 
 html,
@@ -16,74 +161,97 @@ body,
 #root {
   height: 100%;
   margin: 0;
-  background-color: var(--bg-app);
-  color: #f8fafc;
+  background-color: var(--color-background, #f8f9ff);
+  color: var(--color-on-surface, #0b1c30);
 }
 
 body {
   font-family:
-    'Segoe UI', 'Tajawal', 'Cairo', 'Noto Naskh Arabic', 'Tahoma', system-ui, -apple-system,
-    'Helvetica Neue', Arial, sans-serif;
+    'Tajawal',
+    'Cairo',
+    system-ui,
+    -apple-system,
+    sans-serif;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   user-select: none;
 }
 
-/* تخصيص أشرطة التمرير لمظهر عصري وناعم */
+.font-mono-num {
+  font-family: 'JetBrains Mono', monospace;
+  direction: ltr;
+  unicode-bidi: isolate;
+}
+
+/* Custom scrollbars */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 5px;
+  height: 5px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #060b18;
+  background: #eff4ff;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #1e293b;
+  background: #cbdbf5;
   border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #334155;
+  background: #6e7977;
 }
 
 ::selection {
-  background-color: #059669;
+  background-color: #0f766e;
   color: #ffffff;
 }
 
-/* انتقالات سلسة ومريحة للأزرار وعناصر الإدخال */
+/* Acute tinted focus ring per POS spec */
+.pos-focus:focus-within,
+.pos-focus:focus {
+  outline: none !important;
+  box-shadow:
+    0 0 0 2px #0f766e,
+    0 0 0 4px rgba(15, 118, 110, 0.15) !important;
+  border-color: #0f766e !important;
+}
+
+.custom-ring {
+  box-shadow:
+    0 0 0 2px #0f766e,
+    0 10px 25px -5px rgba(15, 118, 110, 0.15);
+}
+
+/* Smooth micro-interactions */
 button,
 a,
 input,
 select {
   transition:
-    color 150ms ease,
-    background-color 150ms ease,
-    border-color 150ms ease,
-    box-shadow 150ms ease,
-    transform 100ms ease;
+    color 120ms ease,
+    background-color 120ms ease,
+    border-color 120ms ease,
+    box-shadow 120ms ease,
+    transform 80ms ease;
 }
 
 button:active {
-  transform: scale(0.98);
+  transform: scale(0.985);
 }
 
-/* تأثيرات التوهج البصري للبطاقات */
-.glow-emerald {
-  box-shadow: 0 0 25px -5px rgba(16, 185, 129, 0.2);
+/* Number inputs spin button removal */
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 
-.glow-amber {
-  box-shadow: 0 0 25px -5px rgba(245, 158, 11, 0.2);
+/* Zebra striping for POS data grids */
+.pos-zebra-table tr:nth-child(even) {
+  background-color: #f8f9ff;
 }
 
-.glow-red {
-  box-shadow: 0 0 25px -5px rgba(239, 68, 68, 0.2);
-}
-
-/* إمكانية الوصول: احترام تفضيل تقليل الحركة */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

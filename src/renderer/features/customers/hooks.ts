@@ -1,6 +1,16 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { listCustomers, searchCustomers, getCustomerById, createCustomer, updateCustomer } from './api'
-import type { CreateCustomerInput, UpdateCustomerInput, SearchCustomersInput } from '@shared/contracts/customers'
+import {
+  listCustomers,
+  searchCustomers,
+  getCustomerById,
+  createCustomer,
+  updateCustomer,
+} from './api'
+import type {
+  CreateCustomerInput,
+  UpdateCustomerInput,
+  SearchCustomersInput,
+} from '@shared/contracts/customers'
 
 const CUSTOMERS_KEY = 'customers'
 

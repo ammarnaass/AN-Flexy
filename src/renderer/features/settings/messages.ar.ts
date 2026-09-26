@@ -44,7 +44,8 @@ export const settingsMessages = {
     stackLabel: 'البيئة والتقنيات:',
     developerLabel: 'المطوّر:',
     licenseLabel: 'الترخيص:',
-    description: 'نظام إدارة محل تعبئة الرصيد (فليكسي) — يعمل دون اتصال بالإنترنت مع ضمان سلامة البيانات وأعلى معايير الأداء.',
+    description:
+      'نظام إدارة محل تعبئة الرصيد (فليكسي) — يعمل دون اتصال بالإنترنت مع ضمان سلامة البيانات وأعلى معايير الأداء.',
     stack: 'Electron 44 + React 19 + TypeScript + SQLite (WAL) + Drizzle ORM',
     developer: 'Ammar (AN Flexy)',
     license: 'ترخيص ملكي خاص',

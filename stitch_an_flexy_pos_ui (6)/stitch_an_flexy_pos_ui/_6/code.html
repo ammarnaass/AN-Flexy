@@ -1,0 +1,1071 @@
+<!DOCTYPE html>
+
+<html dir="rtl" lang="ar"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_dashboard" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700&amp;family=JetBrains+Mono:wght@500;600;700&amp;family=Tajawal:wght@400;500;700&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{colors:{"surface-container":"#e5eeff","on-primary":"#ffffff","primary-container":"#0f766e","inverse-primary":"#80d5cb","surface-container-lowest":"#ffffff","on-surface-variant":"#3e4947","tertiary-container":"#d2093f","on-secondary-fixed-variant":"#004b73","on-secondary-fixed":"#001d31","on-primary-fixed-variant":"#00504a","surface-tint":"#006a63","error":"#ba1a1a","primary-fixed":"#9cf2e8","surface-dim":"#cbdbf5","inverse-surface":"#213145","surface-container-high":"#dce9ff","outline-variant":"#bdc9c6","on-tertiary-fixed":"#40000c","secondary":"#006398","tertiary-fixed-dim":"#ffb3b6","error-container":"#ffdad6","tertiary-fixed":"#ffdada","on-surface":"#0b1c30","on-background":"#0b1c30","background":"#f8f9ff","surface-variant":"#d3e4fe","surface":"#f8f9ff","surface-container-highest":"#d3e4fe","on-secondary-container":"#00476e","on-tertiary-container":"#ffe4e4","tertiary":"#a6002f","primary":"#005c55","on-tertiary":"#ffffff","primary-fixed-dim":"#80d5cb","on-primary-fixed":"#00201d","on-tertiary-fixed-variant":"#920028","on-error-container":"#93000a","outline":"#6e7977","inverse-on-surface":"#eaf1ff","secondary-fixed-dim":"#93ccff","secondary-fixed":"#cce5ff","on-secondary":"#ffffff","surface-bright":"#f8f9ff","surface-container-low":"#eff4ff","on-error":"#ffffff","on-primary-container":"#a3faef","secondary-container":"#5bb8fe"},borderRadius:{"DEFAULT":"0.25rem","lg":"0.5rem","xl":"0.75rem","full":"9999px"},spacing:{"space-md":"0.75rem","space-xl":"1.5rem","space-sm":"0.5rem","margin":"1rem","gutter":"0.75rem","space-xs":"0.25rem","space-lg":"1rem"},fontFamily:{"label-lg":["JetBrains Mono"],"body-sm":["Tajawal"],"currency-display":["JetBrains Mono"],"body-lg":["Tajawal"],"body-md":["Tajawal"],"headline-sm":["Cairo"],"headline-md":["Cairo"],"headline-lg":["Cairo"],"label-md":["JetBrains Mono"],"display-lg":["Cairo"],"label-sm":["JetBrains Mono"]},fontSize:{"label-lg":["15px",{lineHeight:"20px",letterSpacing:"0.02em",fontWeight:"600"}],"body-sm":["12px",{lineHeight:"16px",fontWeight:"400"}],"currency-display":["28px",{lineHeight:"32px",fontWeight:"700"}],"body-lg":["16px",{lineHeight:"24px",fontWeight:"500"}],"body-md":["14px",{lineHeight:"20px",fontWeight:"400"}],"headline-sm":["16px",{lineHeight:"24px",fontWeight:"600"}],"headline-md":["20px",{lineHeight:"28px",fontWeight:"600"}],"headline-lg":["24px",{lineHeight:"32px",fontWeight:"700"}],"label-md":["13px",{lineHeight:"16px",fontWeight:"500"}],"display-lg":["32px",{lineHeight:"40px",fontWeight:"700"}],"label-sm":["11px",{lineHeight:"14px",fontWeight:"500"}]}}}};</script></head><body class="bg-surface font-body-md text-body-md text-on-surface antialiased select-none"><aside class="fixed right-0 top-0 h-full w-72 bg-surface-container-low shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-50 flex flex-col justify-between p-space-md"><div class="flex flex-col gap-space-md"><div class="flex items-center gap-space-sm px-space-xs py-space-xs"><div class="w-9 h-9 rounded-lg bg-primary-container flex items-center justify-center text-on-primary shadow-sm"><span class="material-symbols-outlined text-[22px]">point_of_sale</span></div><div class="flex flex-col"><span class="font-headline-sm text-headline-sm text-on-surface tracking-tight leading-none">AN-Flexy POS</span><span class="font-label-sm text-label-sm text-on-surface-variant font-label-lg mt-0.5">نظام الاتصالات v2.4</span></div></div><div class="p-space-xs"><button class="w-full flex items-center justify-between px-space-md py-space-sm bg-primary-container text-on-primary rounded-lg font-headline-sm text-headline-sm shadow-sm hover:bg-primary transition-colors cursor-pointer"><div class="flex items-center gap-space-xs"><span class="material-symbols-outlined text-[20px]">add_circle</span><span>بيع جديد</span></div><span class="bg-on-primary-container text-on-primary-fixed font-label-sm text-label-sm px-space-xs py-0.5 rounded font-label-lg" dir="ltr">Ctrl+N</span></button></div><nav class="flex flex-col gap-1" data-active-classes="bg-surface-container-high text-primary font-bold rounded-lg"><a class="flex items-center justify-between px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container-highest hover:text-on-surface transition-colors" data-path="dashboard" href="#"><div class="flex items-center gap-space-md"><span class="material-symbols-outlined text-[20px]">dashboard</span><span class="font-body-md text-body-md">لوحة التحكم</span></div><span class="font-label-sm text-label-sm text-on-surface-variant" dir="ltr">F1</span></a><a class="flex items-center justify-between px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container-highest hover:text-on-surface transition-colors" data-path="new-sale" href="#"><div class="flex items-center gap-space-md"><span class="material-symbols-outlined text-[20px]">flash_on</span><span class="font-body-md text-body-md">بيع سريع (فليكسي)</span></div><span class="font-label-sm text-label-sm text-on-surface-variant" dir="ltr">Space</span></a><a class="flex items-center justify-between px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container-highest hover:text-on-surface transition-colors" data-path="inventory-and-balances" href="#"><div class="flex items-center gap-space-md"><span class="material-symbols-outlined text-[20px]">sim_card</span><span class="font-body-md text-body-md">المخزون والأرصدة</span></div><span class="font-label-sm text-label-sm text-on-surface-variant" dir="ltr">F3</span></a><a aria-current="page" class="flex items-center justify-between px-space-md py-space-sm transition-colors bg-surface-container-high text-primary font-bold rounded-lg" data-path="customers-and-debts" href="#"><div class="flex items-center gap-space-md"><span class="material-symbols-outlined text-[20px]">receipt_long</span><span class="font-body-md text-body-md">الزبائن والديون</span></div><span class="font-label-sm text-label-sm text-on-surface-variant" dir="ltr">F2</span></a><a class="flex items-center justify-between px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container-highest hover:text-on-surface transition-colors" data-path="reports" href="#"><div class="flex items-center gap-space-md"><span class="material-symbols-outlined text-[20px]">analytics</span><span class="font-body-md text-body-md">التقارير والمبيعات</span></div><span class="font-label-sm text-label-sm text-on-surface-variant" dir="ltr">F4</span></a><a class="flex items-center justify-between px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container-highest hover:text-on-surface transition-colors" data-path="settings" href="#"><div class="flex items-center gap-space-md"><span class="material-symbols-outlined text-[20px]">settings</span><span class="font-body-md text-body-md">الإعدادات والمزامنة</span></div><span class="font-label-sm text-label-sm text-on-surface-variant" dir="ltr">F9</span></a></nav></div><div class="bg-surface-container rounded-lg p-space-sm flex flex-col gap-space-xs"><div class="text-label-sm font-label-sm text-on-surface-variant font-bold">مفاتيح الوصول السريع:</div><div class="grid grid-cols-2 gap-space-xs text-label-sm font-label-sm"><div class="flex items-center justify-between bg-surface-container-lowest px-1.5 py-0.5 rounded"><span class="text-on-surface-variant">فليكسي</span><span class="text-primary font-bold" dir="ltr">F1</span></div><div class="flex items-center justify-between bg-surface-container-lowest px-1.5 py-0.5 rounded"><span class="text-on-surface-variant">ديون</span><span class="text-primary font-bold" dir="ltr">F2</span></div><div class="flex items-center justify-between bg-surface-container-lowest px-1.5 py-0.5 rounded"><span class="text-on-surface-variant">بحث</span><span class="text-primary font-bold" dir="ltr">F3</span></div><div class="flex items-center justify-between bg-surface-container-lowest px-1.5 py-0.5 rounded"><span class="text-tertiary font-bold">إلغاء</span><span class="text-tertiary font-bold" dir="ltr">ESC</span></div></div></div></aside><div class="pr-72"><header class="fixed top-0 left-0 right-72 h-14 bg-surface/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-40 flex items-center justify-between px-space-lg"><div class="flex items-center gap-space-lg"><div class="flex items-center gap-space-xs"><span class="material-symbols-outlined text-primary text-[20px]">storefront</span><span class="font-headline-sm text-headline-sm text-on-surface font-bold">متجر الوفاء للاتصالات</span></div><div class="h-4 w-px bg-outline-variant"></div><div class="flex items-center gap-space-xs text-on-surface-variant"><span class="material-symbols-outlined text-[18px]">badge</span><span class="font-body-md text-body-md">البائع: <span class="text-on-surface font-bold">أمين بلقاسم (مالك)</span></span></div><div class="h-4 w-px bg-outline-variant"></div><div class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-surface-container-high text-primary font-label-sm text-label-sm"><span class="w-2 h-2 rounded-full bg-primary-container animate-pulse"></span><span>متصل محلياً (Offline-Ready)</span></div></div><div class="flex items-center gap-space-md"><div class="flex items-center gap-space-xs bg-surface-container-low px-space-sm py-1 rounded font-currency-display text-label-lg text-primary tracking-wider" dir="ltr"><span class="material-symbols-outlined text-[16px]">schedule</span><span id="live-pos-clock">10:45:12</span></div><button class="flex items-center gap-1 px-space-sm py-1 bg-surface-container-highest hover:bg-surface-container text-on-surface rounded text-label-md font-label-md transition-colors cursor-pointer"><span class="material-symbols-outlined text-[18px]">lock_person</span><span>قفل الكاسة</span></button><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></header><main class="relative pt-14 w-full px-space-lg bg-surface"><div class="flex flex-col w-full pb-space-xl">
+<!-- Top Context Header & KPI Metric Strip -->
+<div class="grid grid-cols-12 gap-space-md mb-space-md">
+<!-- Metric 1: Total Market Debts -->
+<div class="col-span-12 md:col-span-4 bg-surface-container-lowest rounded-xl p-space-md shadow-sm relative overflow-hidden flex flex-col justify-between">
+<div class="flex items-center justify-between">
+<span class="font-body-md text-body-md text-on-surface-variant">إجمالي ديون السوق الحالية</span>
+<div class="w-8 h-8 rounded-lg bg-tertiary-fixed text-tertiary flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]">account_balance_wallet</span>
+</div>
+</div>
+<div class="mt-space-sm flex items-baseline gap-space-xs" dir="ltr">
+<span class="font-currency-display text-currency-display text-tertiary tracking-tight" id="kpi-total-debt">42,600</span>
+<span class="font-label-md text-label-md text-on-surface-variant font-bold">DA</span>
+</div>
+<div class="mt-space-xs flex items-center gap-space-xs text-body-sm font-body-sm text-tertiary font-bold">
+<span class="material-symbols-outlined text-[16px]">trending_up</span>
+<span id="kpi-debtors-count">14 زبون مدين حالياً</span>
+<span class="text-on-surface-variant font-normal mr-auto font-label-sm text-label-sm" dir="ltr">+2.4% vs أسبوع</span>
+</div>
+<div class="absolute -bottom-4 -left-4 w-20 h-20 bg-tertiary-container/10 rounded-full blur-xl pointer-events-none"></div>
+</div>
+<!-- Metric 2: Largest Single Debt -->
+<div class="col-span-12 md:col-span-4 bg-surface-container-lowest rounded-xl p-space-md shadow-sm relative overflow-hidden flex flex-col justify-between">
+<div class="flex items-center justify-between">
+<span class="font-body-md text-body-md text-on-surface-variant">أكبر دين فردي مسجل</span>
+<div class="w-8 h-8 rounded-lg bg-surface-container text-secondary flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]">priority_high</span>
+</div>
+</div>
+<div class="mt-space-sm flex items-baseline gap-space-xs" dir="ltr">
+<span class="font-currency-display text-currency-display text-on-surface tracking-tight" id="kpi-max-debt">8,400</span>
+<span class="font-label-md text-label-md text-on-surface-variant font-bold">DA</span>
+</div>
+<div class="mt-space-xs flex items-center justify-between text-body-sm font-body-sm">
+<div class="flex items-center gap-1 font-bold text-tertiary truncate">
+<span class="material-symbols-outlined text-[16px]">person_alert</span>
+<span class="truncate" id="kpi-max-debt-customer">الزبون: كمال تيجاني</span>
+</div>
+<span class="bg-tertiary-fixed text-tertiary font-label-sm text-label-sm px-1.5 py-0.5 rounded font-bold" id="kpi-max-debt-rate">تجاوز السقف 168%</span>
+</div>
+<div class="absolute -bottom-4 -left-4 w-20 h-20 bg-secondary-container/15 rounded-full blur-xl pointer-events-none"></div>
+</div>
+<!-- Metric 3: Collected Today -->
+<div class="col-span-12 md:col-span-4 bg-surface-container-lowest rounded-xl p-space-md shadow-sm relative overflow-hidden flex flex-col justify-between">
+<div class="flex items-center justify-between">
+<span class="font-body-md text-body-md text-on-surface-variant">ديون مسترجعة اليوم</span>
+<div class="w-8 h-8 rounded-lg bg-primary-fixed text-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]">price_check</span>
+</div>
+</div>
+<div class="mt-space-sm flex items-baseline gap-space-xs" dir="ltr">
+<span class="font-currency-display text-currency-display text-primary tracking-tight" id="kpi-collected-today">6,500</span>
+<span class="font-label-md text-label-md text-on-surface-variant font-bold">DA</span>
+</div>
+<div class="mt-space-xs flex items-center gap-space-xs text-body-sm font-body-sm text-primary font-bold">
+<span class="material-symbols-outlined text-[16px]">check_circle</span>
+<span id="kpi-collected-count">5 تسديدات نقدية ناجحة</span>
+<span class="text-on-surface-variant font-normal mr-auto font-label-sm text-label-sm" dir="ltr">كاسة الصندوق</span>
+</div>
+<div class="absolute -bottom-4 -left-4 w-20 h-20 bg-primary-container/10 rounded-full blur-xl pointer-events-none"></div>
+</div>
+</div>
+<!-- Operational Filter & Search Toolbar -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm mb-space-md flex flex-wrap items-center justify-between gap-space-md">
+<!-- Search Bar with Keyboard F3 Tag -->
+<div class="flex-1 min-w-[280px] max-w-lg relative">
+<div class="absolute inset-y-0 right-0 flex items-center pr-space-md pointer-events-none text-on-surface-variant">
+<span class="material-symbols-outlined text-[20px]">search</span>
+</div>
+<input class="w-full pl-20 pr-10 py-space-sm bg-surface-container-low text-on-surface rounded-lg font-body-md text-body-md placeholder:text-on-surface-variant/70 focus:outline-none focus:bg-surface-container-lowest shadow-[0_0_0_2px_transparent] focus:shadow-[0_0_0_2px_#005c55] transition-all" id="customer-search-input" oninput="handleSearchFilter()" placeholder="ابحث باسم الزبون أو رقم الهاتف (05, 06, 07)..." type="text"/>
+<div class="absolute inset-y-0 left-0 flex items-center pl-space-sm">
+<span class="bg-surface-container-high text-on-surface-variant px-space-xs py-0.5 rounded font-label-sm text-label-sm" dir="ltr">F3</span>
+</div>
+</div>
+<!-- Filter Pills -->
+<div class="flex items-center gap-space-xs bg-surface-container-low p-1 rounded-lg overflow-x-auto">
+<button class="px-space-md py-1 rounded bg-surface-container-lowest text-primary font-headline-sm text-headline-sm shadow-sm transition-colors cursor-pointer filter-pill" data-filter="all" onclick="setFilter('all', this)">
+        الكل <span class="font-label-sm text-label-sm font-bold mr-1" id="filter-all-count">(48)</span>
+</button>
+<button class="px-space-md py-1 rounded text-on-surface-variant hover:text-on-surface font-body-md text-body-md transition-colors cursor-pointer flex items-center gap-1 filter-pill" data-filter="debts" onclick="setFilter('debts', this)">
+<span class="w-2 h-2 rounded-full bg-tertiary"></span>
+        عليهم ديون <span class="font-label-sm text-label-sm font-bold" id="filter-debts-count">(14)</span>
+</button>
+<button class="px-space-md py-1 rounded text-on-surface-variant hover:text-on-surface font-body-md text-body-md transition-colors cursor-pointer flex items-center gap-1 filter-pill" data-filter="settled" onclick="setFilter('settled', this)">
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+        مسددون بالكامل <span class="font-label-sm text-label-sm font-bold" id="filter-settled-count">(34)</span>
+</button>
+<button class="px-space-md py-1 rounded text-on-surface-variant hover:text-on-surface font-body-md text-body-md transition-colors cursor-pointer flex items-center gap-1 filter-pill" id="btn-sort-toggle" onclick="toggleSort()">
+<span class="material-symbols-outlined text-[16px]" id="sort-icon">arrow_downward</span>
+<span id="sort-label">الأعلى ديناً أولاً</span>
+</button>
+</div>
+<!-- Action Button: Add New Customer -->
+<button class="flex items-center gap-space-sm px-space-md py-space-sm bg-primary-container text-on-primary rounded-lg font-headline-sm text-headline-sm shadow-sm hover:bg-primary transition-colors cursor-pointer mr-auto" onclick="openNewCustomerModal()">
+<span class="material-symbols-outlined text-[20px]">person_add</span>
+<span>زبون جديد</span>
+<span class="bg-on-primary-container text-on-primary-fixed font-label-sm text-label-sm px-space-xs py-0.5 rounded font-label-lg" dir="ltr">Insert</span>
+</button>
+</div>
+<!-- Main Grid: Ledger & Fast Payment Drawer -->
+<div class="grid grid-cols-12 gap-space-md items-start">
+<!-- Data Table Ledger (Width: 8 Cols) -->
+<div class="col-span-12 lg:col-span-8 bg-surface-container-lowest rounded-xl shadow-sm overflow-hidden flex flex-col">
+<div class="px-space-md py-space-sm bg-surface-container-low flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[18px]">table_chart</span>
+<span class="font-headline-sm text-headline-sm text-on-surface font-bold">سجل حسابات الديون والزبائن</span>
+</div>
+<div class="flex items-center gap-space-sm text-label-sm font-label-sm text-on-surface-variant">
+<span>الترتيب: <strong class="text-tertiary" id="ledger-sort-info">الأعلى ديناً أولاً</strong></span>
+<span>•</span>
+<span dir="ltr" id="ledger-view-count">4 معروض</span>
+</div>
+</div>
+<div class="overflow-x-auto min-h-[360px]">
+<table class="w-full text-right border-collapse">
+<thead>
+<tr class="bg-surface-container text-on-surface-variant font-label-md text-label-md select-none">
+<th class="py-2.5 px-space-md font-bold">اسم الزبون</th>
+<th class="py-2.5 px-space-md font-bold">رقم الهاتف (الشبكة)</th>
+<th class="py-2.5 px-space-md font-bold">الدين الحالي</th>
+<th class="py-2.5 px-space-md font-bold">سقف الدين</th>
+<th class="py-2.5 px-space-md font-bold">آخر معاملة</th>
+<th class="py-2.5 px-space-md font-bold text-center">إجراء فوري</th>
+</tr>
+</thead>
+<tbody class="divide-y-0" id="customers-table-body">
+<!-- Populated dynamically via JS -->
+</tbody>
+</table>
+<div class="hidden p-space-xl text-center flex-col items-center justify-center gap-space-sm text-on-surface-variant" id="empty-state">
+<span class="material-symbols-outlined text-4xl text-outline-variant">person_search</span>
+<p class="font-body-lg text-body-lg font-bold">لا يوجد زبائن يطابقون معايير البحث!</p>
+<p class="font-body-sm text-body-sm">يرجى تعديل مصطلح البحث أو الضغط على "الكل" لعرض القائمة كاملة.</p>
+</div>
+</div>
+<!-- Quick Counter Table Footer -->
+<div class="p-space-sm bg-surface-container-low flex items-center justify-between font-label-sm text-label-sm text-on-surface-variant">
+<div class="flex items-center gap-space-md">
+<span>اختصارات السجل: <strong class="text-on-surface" dir="ltr">[↑ / ↓]</strong> للتنقل</span>
+<span><strong class="text-on-surface" dir="ltr">[Space]</strong> لاختيار وتعبئة الدفعة</span>
+</div>
+<div class="flex items-center gap-1 font-body-sm text-body-sm">
+<span id="footer-page-label">الصفحة 1 من 1</span>
+</div>
+</div>
+</div>
+<!-- Active Right Side Panel: Fast Payment Drawer (Width: 4 Cols) -->
+<div class="col-span-12 lg:col-span-4 bg-surface-container-lowest rounded-xl shadow-sm overflow-hidden flex flex-col" id="quick-repayment-panel">
+<!-- Panel Header with Alert Tint -->
+<div class="px-space-md py-space-sm bg-primary-container text-on-primary flex items-center justify-between shadow-sm">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-[20px]">point_of_sale</span>
+<span class="font-headline-sm text-headline-sm font-bold">تسجيل دفعة سريعة</span>
+</div>
+<span class="bg-on-primary-container text-on-primary-fixed font-label-sm text-label-sm px-1.5 py-0.5 rounded font-bold" dir="ltr">F2 Quick Pay</span>
+</div>
+<div class="p-space-md flex flex-col gap-space-md">
+<!-- Target Customer Identity Card -->
+<div class="p-space-sm bg-surface-container-low rounded-lg flex flex-col gap-space-xs">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-on-surface-variant">الزبون المختار للدفع:</span>
+<span class="bg-tertiary-fixed text-tertiary px-1.5 py-0.5 rounded font-label-sm text-label-sm font-bold" dir="ltr" id="selected-customer-operator">Ooredoo</span>
+</div>
+<div class="flex items-baseline justify-between mt-1">
+<span class="font-headline-md text-headline-md text-on-surface font-bold" id="selected-customer-name">كمال تيجاني</span>
+<span class="font-label-md text-label-md text-on-surface-variant" dir="ltr" id="selected-customer-phone">0554-11-22-33</span>
+</div>
+<div class="pt-space-xs flex items-center justify-between bg-surface-container-lowest p-2 rounded">
+<span class="font-body-sm text-body-sm text-tertiary font-bold">الدين المستحق حالياً:</span>
+<div class="flex items-baseline gap-1" dir="ltr">
+<span class="font-currency-display text-headline-lg text-tertiary font-bold tracking-tight" id="selected-customer-debt">8,400</span>
+<span class="font-label-sm text-label-sm text-tertiary font-bold">DA</span>
+</div>
+</div>
+</div>
+<!-- Fast Full Pay Action Trigger -->
+<button class="w-full py-2 bg-tertiary-fixed hover:bg-tertiary text-tertiary hover:text-on-tertiary rounded-lg font-headline-sm text-headline-sm font-bold flex items-center justify-center gap-space-xs transition-colors cursor-pointer" id="btn-pay-all" onclick="fillFullPayment()">
+<span class="material-symbols-outlined text-[18px]">done_all</span>
+<span id="btn-pay-all-text">تسديد الدين كاملاً (8,400 DA)</span>
+</button>
+<!-- Payment Input Formulation -->
+<div class="flex flex-col gap-space-xs">
+<label class="font-body-md text-body-md text-on-surface font-bold flex items-center justify-between">
+<span>المبلغ المقبوض نقداً:</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant font-normal">بالدينار الجزائري</span>
+</label>
+<div class="relative">
+<input class="w-full pr-space-md pl-14 py-space-sm bg-surface-container-low text-on-surface rounded-lg font-currency-display text-headline-md tracking-tight focus:outline-none focus:bg-surface-container-lowest shadow-[0_0_0_2px_#005c55] transition-all" dir="ltr" id="payment-amount-input" oninput="updateRemainingCalc()" type="number" value="8400"/>
+<span class="absolute inset-y-0 left-0 flex items-center pl-space-md font-label-md text-label-md text-on-surface-variant font-bold">DA</span>
+</div>
+</div>
+<!-- Quick Numerical Dials -->
+<div class="grid grid-cols-4 gap-space-xs">
+<button class="py-1.5 bg-surface-container-low hover:bg-surface-container text-on-surface rounded font-label-md text-label-md font-bold transition-colors cursor-pointer" dir="ltr" onclick="fillPaymentAmount(500)">500</button>
+<button class="py-1.5 bg-surface-container-low hover:bg-surface-container text-on-surface rounded font-label-md text-label-md font-bold transition-colors cursor-pointer" dir="ltr" onclick="fillPaymentAmount(1000)">1,000</button>
+<button class="py-1.5 bg-surface-container-low hover:bg-surface-container text-on-surface rounded font-label-md text-label-md font-bold transition-colors cursor-pointer" dir="ltr" onclick="fillPaymentAmount(2000)">2,000</button>
+<button class="py-1.5 bg-surface-container-low hover:bg-surface-container text-on-surface rounded font-label-md text-label-md font-bold transition-colors cursor-pointer" dir="ltr" onclick="fillPaymentAmount(5000)">5,000</button>
+</div>
+<!-- Payment Method & Receipt Checkbox -->
+<div class="flex flex-col gap-space-xs pt-space-xs">
+<div class="flex items-center justify-between text-body-sm font-body-sm">
+<span class="text-on-surface-variant">طريقة الدفع:</span>
+<span class="font-bold text-on-surface flex items-center gap-1 bg-surface-container-high px-2 py-0.5 rounded">
+<span class="material-symbols-outlined text-[16px] text-primary">local_atm</span>
+              نقدي في الصندوق (Cash)
+            </span>
+</div>
+<label class="flex items-center gap-space-xs text-body-sm font-body-sm text-on-surface cursor-pointer select-none mt-1">
+<input checked="" class="w-4 h-4 accent-primary rounded cursor-pointer" id="print-receipt-toggle" type="checkbox"/>
+<span>طباعة وصل استلام حراري تلقائياً</span>
+</label>
+</div>
+<!-- Computed Remaining Summary -->
+<div class="p-space-sm bg-surface-container-high rounded-lg flex items-center justify-between mt-space-xs">
+<span class="font-body-md text-body-md text-on-surface font-bold">الدين المتبقي بعد العملية:</span>
+<div class="flex items-baseline gap-1" dir="ltr">
+<span class="font-currency-display text-headline-sm text-primary font-bold" id="remaining-calc-display">0.00</span>
+<span class="font-label-sm text-label-sm text-primary font-bold" id="remaining-calc-currency">DA</span>
+</div>
+</div>
+<!-- Confirm Execution CTA -->
+<button class="w-full py-space-md bg-primary hover:bg-primary-container text-on-primary rounded-xl font-headline-sm text-headline-sm font-bold flex items-center justify-between px-space-md shadow-md hover:shadow-lg transition-all cursor-pointer mt-space-xs" id="confirm-payment-btn" onclick="processPayment()">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-[20px]">check_circle</span>
+<span>تأكيد قبض المبلغ وإلغاء الدين</span>
+</div>
+<span class="bg-on-primary-container text-on-primary-fixed font-label-sm text-label-sm px-2 py-0.5 rounded font-label-lg" dir="ltr">Enter ↵</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Modal: Fast Add Customer (Insert Shortcut) -->
+<div class="hidden fixed inset-0 z-50 flex items-center justify-center p-space-md bg-inverse-surface/40 backdrop-blur-sm" id="new-customer-modal">
+<div class="w-full max-w-lg bg-surface-container-lowest rounded-xl shadow-xl overflow-hidden flex flex-col animate-in fade-in zoom-in-95 duration-150">
+<!-- Modal Header -->
+<div class="px-space-lg py-space-md bg-surface-container flex items-center justify-between">
+<div class="flex items-center gap-space-xs text-on-surface">
+<span class="material-symbols-outlined text-primary text-[22px]">person_add</span>
+<span class="font-headline-md text-headline-md font-bold">إضافة زبون وفتح حساب دين</span>
+</div>
+<button class="w-8 h-8 rounded-lg bg-surface-container-highest hover:bg-surface-dim flex items-center justify-center text-on-surface-variant transition-colors cursor-pointer" onclick="closeNewCustomerModal()">
+<span class="material-symbols-outlined text-[18px]">close</span>
+</button>
+</div>
+<!-- Modal Body Inputs -->
+<form class="p-space-lg flex flex-col gap-space-md" id="new-customer-form" onsubmit="handleCustomerSubmit(event)">
+<!-- Customer Name -->
+<div class="flex flex-col gap-1">
+<label class="font-body-md text-body-md font-bold text-on-surface">الاسم واللقب *</label>
+<input class="w-full px-space-md py-space-sm bg-surface-container-low text-on-surface rounded-lg font-body-lg text-body-lg focus:outline-none focus:bg-surface-container-lowest shadow-[0_0_0_2px_transparent] focus:shadow-[0_0_0_2px_#005c55] transition-all" id="new-cust-name" placeholder="مثال: يوسف معمري" required="" type="text"/>
+</div>
+<!-- Phone Number with Auto-detection -->
+<div class="flex flex-col gap-1">
+<div class="flex items-center justify-between">
+<label class="font-body-md text-body-md font-bold text-on-surface">رقم الهاتف (الجزائر) *</label>
+<span class="font-label-sm text-label-sm text-on-surface-variant">يدعم 05 / 06 / 07</span>
+</div>
+<div class="relative">
+<input class="w-full pr-space-md pl-24 py-space-sm bg-surface-container-low text-on-surface rounded-lg font-label-lg text-label-lg tracking-wider focus:outline-none focus:bg-surface-container-lowest shadow-[0_0_0_2px_transparent] focus:shadow-[0_0_0_2px_#005c55] transition-all" dir="ltr" id="new-cust-phone" maxlength="14" placeholder="0662 00 00 00" required="" type="tel"/>
+<div class="absolute inset-y-0 left-0 flex items-center pl-space-sm">
+<span class="bg-surface-container-high text-on-surface-variant px-space-xs py-0.5 rounded font-label-sm text-label-sm font-bold" id="detected-sim-badge">Auto</span>
+</div>
+</div>
+</div>
+<!-- Operator Selection & Debt Limit -->
+<div class="grid grid-cols-2 gap-space-md">
+<div class="flex flex-col gap-1">
+<label class="font-body-md text-body-md font-bold text-on-surface">المتعامل المفضل</label>
+<select class="w-full px-space-md py-space-sm bg-surface-container-low text-on-surface rounded-lg font-body-md focus:outline-none focus:bg-surface-container-lowest shadow-[0_0_0_2px_transparent] focus:shadow-[0_0_0_2px_#005c55] transition-all" id="new-cust-operator">
+<option value="Mobilis">06 Mobilis</option>
+<option value="Djezzy">07 Djezzy</option>
+<option value="Ooredoo">05 Ooredoo</option>
+</select>
+</div>
+<div class="flex flex-col gap-1">
+<label class="font-body-md text-body-md font-bold text-on-surface">سقف الدين (DA) *</label>
+<div class="relative">
+<input class="w-full pr-space-md pl-14 py-space-sm bg-surface-container-low text-on-surface rounded-lg font-currency-display text-headline-sm tracking-tight focus:outline-none focus:bg-surface-container-lowest shadow-[0_0_0_2px_transparent] focus:shadow-[0_0_0_2px_#005c55] transition-all" dir="ltr" id="new-cust-limit" required="" step="500" type="number" value="5000"/>
+<span class="absolute inset-y-0 left-0 flex items-center pl-space-md font-label-md text-label-md text-on-surface-variant font-bold">DA</span>
+</div>
+</div>
+</div>
+<!-- Notes Field -->
+<div class="flex flex-col gap-1">
+<label class="font-body-md text-body-md font-bold text-on-surface">ملاحظات الزبون (العنوان، النشاط)</label>
+<input class="w-full px-space-md py-space-sm bg-surface-container-low text-on-surface rounded-lg font-body-md focus:outline-none focus:bg-surface-container-lowest shadow-[0_0_0_2px_transparent] focus:shadow-[0_0_0_2px_#005c55] transition-all" id="new-cust-notes" placeholder="مثال: تاجر مجاور - محل الهواتف" type="text"/>
+</div>
+<!-- Modal Footer Actions -->
+<div class="pt-space-sm flex items-center justify-end gap-space-sm">
+<button class="px-space-md py-space-sm bg-surface-container hover:bg-surface-container-high text-on-surface rounded-lg font-headline-sm text-headline-sm transition-colors cursor-pointer" onclick="closeNewCustomerModal()" type="button">
+            إلغاء [Esc]
+          </button>
+<button class="px-space-lg py-space-sm bg-primary-container hover:bg-primary text-on-primary rounded-lg font-headline-sm text-headline-sm font-bold shadow-sm flex items-center gap-space-xs transition-colors cursor-pointer" type="submit">
+<span class="material-symbols-outlined text-[18px]">save</span>
+<span>حفظ وإضافة الزبون</span>
+</button>
+</div>
+</form>
+</div>
+</div>
+<!-- Modal: Statement / Customer Profile (عرض الملف) -->
+<div class="hidden fixed inset-0 z-50 flex items-center justify-center p-space-md bg-inverse-surface/40 backdrop-blur-sm" id="customer-profile-modal">
+<div class="w-full max-w-2xl bg-surface-container-lowest rounded-xl shadow-2xl overflow-hidden flex flex-col animate-in fade-in zoom-in-95 duration-150">
+<!-- Statement Header -->
+<div class="px-space-lg py-space-md bg-surface-container flex items-center justify-between">
+<div class="flex items-center gap-space-sm">
+<div class="w-10 h-10 rounded-full bg-primary text-on-primary flex items-center justify-center font-bold text-headline-sm" id="profile-modal-avatar">ك</div>
+<div class="flex flex-col">
+<div class="flex items-center gap-space-xs">
+<span class="font-headline-md text-headline-md font-bold text-on-surface" id="profile-modal-name">كمال تيجاني</span>
+<span class="px-2 py-0.5 rounded text-label-sm font-bold font-label-sm" id="profile-modal-sim-badge">Ooredoo</span>
+</div>
+<span class="text-label-md text-label-md text-on-surface-variant font-label-lg" dir="ltr" id="profile-modal-phone">0554-11-22-33</span>
+</div>
+</div>
+<div class="flex items-center gap-space-xs">
+<button class="flex items-center gap-1 px-space-sm py-1 bg-surface-container-high hover:bg-surface-container-highest text-primary font-bold rounded text-label-sm font-label-sm transition-colors" onclick="triggerProfilePayment()">
+<span class="material-symbols-outlined text-[16px]">payments</span>
+<span>تسجيل دفعة</span>
+</button>
+<button class="w-8 h-8 rounded-lg bg-surface-container-highest hover:bg-surface-dim flex items-center justify-center text-on-surface-variant transition-colors cursor-pointer" onclick="closeProfileModal()">
+<span class="material-symbols-outlined text-[18px]">close</span>
+</button>
+</div>
+</div>
+<!-- Statement Summary Strip -->
+<div class="grid grid-cols-3 gap-px bg-outline-variant/30 text-center border-b border-outline-variant/30">
+<div class="p-space-md bg-surface-container-lowest flex flex-col">
+<span class="text-body-sm text-on-surface-variant">الرصيد المدين</span>
+<span class="font-currency-display text-headline-md text-tertiary font-bold" id="profile-modal-debt">8,400 DA</span>
+</div>
+<div class="p-space-md bg-surface-container-lowest flex flex-col">
+<span class="text-body-sm text-on-surface-variant">سقف الائتمان</span>
+<span class="font-currency-display text-headline-md text-on-surface font-bold" id="profile-modal-limit">5,000 DA</span>
+</div>
+<div class="p-space-md bg-surface-container-lowest flex flex-col">
+<span class="text-body-sm text-on-surface-variant">حالة الحساب</span>
+<span class="font-headline-sm text-headline-sm font-bold mt-1" id="profile-modal-status">تجاوز السقف!</span>
+</div>
+</div>
+<!-- Statement Transaction Ledger History -->
+<div class="p-space-lg flex flex-col gap-space-sm max-h-[300px] overflow-y-auto">
+<div class="flex items-center justify-between font-label-sm text-label-sm font-bold text-on-surface-variant">
+<span>كشف آخر العمليات والمعاملات المالية:</span>
+<span class="text-primary cursor-pointer hover:underline flex items-center gap-0.5">
+<span class="material-symbols-outlined text-[14px]">print</span>
+        طباعة الكشف
+      </span>
+</div>
+<div class="space-y-2" id="profile-modal-history">
+<!-- Rendered via JS -->
+</div>
+</div>
+<!-- Modal Actions Bottom -->
+<div class="px-space-lg py-space-sm bg-surface-container-low flex items-center justify-between">
+<div class="flex items-center gap-space-sm text-body-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px] text-primary">call</span>
+<span>اتصال سريع: <strong class="text-on-surface" dir="ltr" id="profile-call-num">0554-11-22-33</strong></span>
+</div>
+<button class="px-space-md py-1.5 bg-surface-container-highest hover:bg-surface-dim text-on-surface font-headline-sm text-headline-sm rounded-lg transition-colors cursor-pointer" onclick="closeProfileModal()">
+      إغلاق النافذة [Esc]
+    </button>
+</div>
+</div>
+</div>
+<!-- Floating Sleek Toast Notification Container -->
+<div class="fixed bottom-6 left-6 z-50 flex flex-col gap-2 pointer-events-none" id="toast-container"></div>
+</div></main></div>
+<script>
+  // Initial Mock Database
+  let customersData = [
+    {
+      id: "CUST-1",
+      name: "كمال تيجاني",
+      phone: "0554-11-22-33",
+      operator: "Ooredoo",
+      debt: 8400,
+      limit: 5000,
+      notes: "زبون دائم - حي السلام",
+      lastTxTime: "اليوم 09:30",
+      lastTxDesc: "فليكسي ماكس 1,200",
+      history: [
+        { type: "debit", title: "فليكسي ماكس أوريدو", amount: 1200, time: "اليوم 09:30", ref: "#TX-9901" },
+        { type: "debit", title: "بطاقة تعبئة 2000 دج", amount: 2000, time: "أمس 14:15", ref: "#TX-9844" },
+        { type: "credit", title: "دفعة نقدية بالصندوق", amount: 2000, time: "18/09/2024", ref: "#RCP-8812" },
+        { type: "debit", title: "فليكسي رصيد إنترنت", amount: 5200, time: "15/09/2024", ref: "#TX-9720" }
+      ]
+    },
+    {
+      id: "CUST-2",
+      name: "محمد بوحفص",
+      phone: "0662-88-99-00",
+      operator: "Mobilis",
+      debt: 4200,
+      limit: 5000,
+      notes: "زبون وفي (حي النصر)",
+      lastTxTime: "أمس 18:20",
+      lastTxDesc: "بطاقة شحن 2,000",
+      history: [
+        { type: "debit", title: "بطاقة شحن موبيليس 2,000", amount: 2000, time: "أمس 18:20", ref: "#TX-9877" },
+        { type: "debit", title: "فليكسي مكالمات", amount: 2200, time: "17/09/2024", ref: "#TX-9801" },
+        { type: "credit", title: "تسديد كاش", amount: 3000, time: "10/09/2024", ref: "#RCP-8711" }
+      ]
+    },
+    {
+      id: "CUST-3",
+      name: "فريد لعريبي",
+      phone: "0771-33-44-55",
+      operator: "Djezzy",
+      debt: 1800,
+      limit: 3000,
+      notes: "عامل ورشة مجاورة",
+      lastTxTime: "منذ 3 أيام",
+      lastTxDesc: "فليكسي عادي 1,800",
+      history: [
+        { type: "debit", title: "فليكسي جازي عادي", amount: 1800, time: "منذ 3 أيام", ref: "#TX-9780" },
+        { type: "credit", title: "تسديد دفعة", amount: 1500, time: "12/09/2024", ref: "#RCP-8690" }
+      ]
+    },
+    {
+      id: "CUST-4",
+      name: "سمير قندوز",
+      phone: "0550-99-11-22",
+      operator: "Ooredoo",
+      debt: 0,
+      limit: 2000,
+      notes: "تسديد فوري منتظم",
+      lastTxTime: "18/09/2024",
+      lastTxDesc: "تسديد نقدي كامل",
+      history: [
+        { type: "credit", title: "تسديد نقدي كامل للحساب", amount: 2500, time: "18/09/2024", ref: "#RCP-8850" },
+        { type: "debit", title: "فليكسي هدايا أوريدو", amount: 2500, time: "18/09/2024", ref: "#TX-9755" }
+      ]
+    }
+  ];
+
+  let currentSelectedCustomerId = "CUST-1";
+  let activeFilter = "all";
+  let currentSort = "desc"; // desc = highest debt first, asc = lowest/recent
+
+  // Live POS Clock
+  function updateLiveClock() {
+    const now = new Date();
+    const pad = (n) => String(n).padStart(2, '0');
+    const clockEl = document.getElementById('live-pos-clock');
+    if (clockEl) {
+      clockEl.textContent = `${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
+    }
+  }
+  setInterval(updateLiveClock, 1000);
+  updateLiveClock();
+
+  // Toast System
+  function showToast(message, type = 'success') {
+    const container = document.getElementById('toast-container');
+    const toast = document.createElement('div');
+    toast.className = "flex items-center gap-2 px-space-md py- space-sm bg-primary text-on-primary rounded-xl shadow-xl pointer-events-auto transition-all transform duration-200 translate-y-2 opacity-0 text-body-md font-bold";
+    if (type === 'error') {
+      toast.className = "flex items-center gap-2 px-space-md py-space-sm bg-tertiary text-on-tertiary rounded-xl shadow-xl pointer-events-auto transition-all transform duration-200 translate-y-2 opacity-0 text-body-md font-bold";
+    }
+    toast.innerHTML = `
+      <span class="material-symbols-outlined text-[20px]">${type === 'success' ? 'check_circle' : 'error'}</span>
+      <span>${message}</span>
+    `;
+    container.appendChild(toast);
+    
+    // Animate in
+    setTimeout(() => {
+      toast.classList.remove('translate-y-2', 'opacity-0');
+      toast.classList.add('translate-y-0', 'opacity-100');
+    }, 10);
+
+    // Animate out
+    setTimeout(() => {
+      toast.classList.remove('opacity-100');
+      toast.classList.add('opacity-0', 'translate-y-2');
+      setTimeout(() => toast.remove(), 250);
+    }, 4500);
+  }
+
+  // Operator badge rendering helper
+  function getOperatorBadgeHTML(operator) {
+    if (operator === 'Mobilis') {
+      return `<span class="bg-primary-fixed text-primary font-label-sm text-label-sm px-1.5 py-0.5 rounded font-bold">06 Mobilis</span>`;
+    } else if (operator === 'Djezzy') {
+      return `<span class="bg-tertiary-fixed text-tertiary font-label-sm text-label-sm px-1.5 py-0.5 rounded font-bold">07 Djezzy</span>`;
+    }
+    return `<span class="bg-tertiary-container/20 text-tertiary font-label-sm text-label-sm px-1.5 py-0.5 rounded font-bold">05 Ooredoo</span>`;
+  }
+
+  // Operator badge class helper for modal
+  function updateOperatorBadgeStyle(el, operator) {
+    el.textContent = operator;
+    if (operator === 'Mobilis') {
+      el.className = 'bg-primary-fixed text-primary px-1.5 py-0.5 rounded font-label-sm text-label-sm font-bold';
+    } else if (operator === 'Djezzy') {
+      el.className = 'bg-secondary-container text-on-secondary-container px-1.5 py-0.5 rounded font-label-sm text-label-sm font-bold';
+    } else {
+      el.className = 'bg-tertiary-fixed text-tertiary px-1.5 py-0.5 rounded font-label-sm text-label-sm font-bold';
+    }
+  }
+
+  // Render Table
+  function renderLedgerTable() {
+    const tbody = document.getElementById('customers-table-body');
+    const emptyState = document.getElementById('empty-state');
+    const searchTerm = (document.getElementById('customer-search-input').value || '').trim().toLowerCase();
+
+    let filtered = customersData.filter(c => {
+      // Filter tab
+      if (activeFilter === 'debts' && c.debt <= 0) return false;
+      if (activeFilter === 'settled' && c.debt > 0) return false;
+
+      // Search match
+      if (searchTerm) {
+        const cleanPhone = c.phone.replace(/[\s-]/g, '');
+        const cleanTerm = searchTerm.replace(/[\s-]/g, '');
+        const nameMatch = c.name.toLowerCase().includes(searchTerm);
+        const phoneMatch = cleanPhone.includes(cleanTerm) || c.phone.includes(searchTerm);
+        const opMatch = c.operator.toLowerCase().includes(searchTerm);
+        return nameMatch || phoneMatch || opMatch;
+      }
+      return true;
+    });
+
+    // Sorting
+    filtered.sort((a, b) => {
+      if (currentSort === 'desc') {
+        return b.debt - a.debt;
+      } else {
+        return a.debt - b.debt;
+      }
+    });
+
+    // View count updates
+    document.getElementById('ledger-view-count').textContent = `${filtered.length} معروض`;
+
+    tbody.innerHTML = '';
+    if (filtered.length === 0) {
+      emptyState.classList.remove('hidden');
+      emptyState.classList.add('flex');
+    } else {
+      emptyState.classList.add('hidden');
+      emptyState.classList.remove('flex');
+    }
+
+    filtered.forEach(customer => {
+      const isSelected = customer.id === currentSelectedCustomerId;
+      const isOverLimit = customer.debt > customer.limit && customer.limit > 0;
+      const isSettled = customer.debt <= 0;
+
+      const tr = document.createElement('tr');
+      
+      // Row styles
+      let rowClasses = "transition-colors group cursor-pointer border-b border-surface-container/50 ";
+      if (isSelected) {
+        rowClasses += isOverLimit ? "bg-tertiary-fixed/40 ring-1 ring-tertiary/40 " : "bg-surface-container-high/80 ring-1 ring-primary/40 ";
+      } else if (isOverLimit) {
+        rowClasses += "bg-tertiary-fixed/20 hover:bg-tertiary-fixed/35 ";
+      } else if (isSettled) {
+        rowClasses += "bg-surface-container-lowest hover:bg-surface-container-low ";
+      } else {
+        rowClasses += "bg-surface-container-low/30 hover:bg-surface-container-low ";
+      }
+      tr.className = rowClasses;
+      tr.onclick = (e) => {
+        // Prevent row selection click if clicked on action buttons specifically
+        if (e.target.closest('button')) return;
+        selectCustomerById(customer.id);
+      };
+
+      // Initial Avatar letter
+      const firstLetter = customer.name.trim().charAt(0) || 'ز';
+      let avatarClass = "w-8 h-8 rounded-full flex items-center justify-center font-bold text-body-sm font-body-sm ";
+      if (isOverLimit) avatarClass += "bg-tertiary text-on-tertiary shadow-sm";
+      else if (isSettled) avatarClass += "bg-primary-fixed text-primary";
+      else avatarClass += "bg-secondary text-on-secondary";
+
+      // Sub-status under name
+      let subStatusHtml = '';
+      if (isOverLimit) {
+        subStatusHtml = `<span class="text-tertiary font-label-sm text-label-sm flex items-center gap-0.5">
+          <span class="material-symbols-outlined text-[12px]">warning</span>
+          تجاوز السقف المحدد!
+        </span>`;
+      } else if (isSettled) {
+        subStatusHtml = `<span class="text-primary font-label-sm text-label-sm flex items-center gap-0.5">
+          <span class="material-symbols-outlined text-[12px]">done_all</span>
+          حساب نظيف (خالص)
+        </span>`;
+      } else {
+        subStatusHtml = `<span class="text-on-surface-variant font-label-sm text-label-sm">${customer.notes || 'حساب نشط'}</span>`;
+      }
+
+      // Debt column HTML
+      let debtHtml = '';
+      if (isSettled) {
+        debtHtml = `<div class="flex items-center gap-1 text-right">
+          <span class="font-label-lg text-label-lg text-primary font-bold tracking-tight">0.00</span>
+          <span class="font-label-sm text-label-sm text-primary font-bold">DA</span>
+        </div>`;
+      } else {
+        const debtClass = isOverLimit ? "text-tertiary" : "text-secondary";
+        debtHtml = `<div class="flex items-center gap-1 text-right">
+          <span class="font-label-lg text-label-lg ${debtClass} font-bold tracking-tight">-${customer.debt.toLocaleString('en-US')}</span>
+          <span class="font-label-sm text-label-sm ${debtClass} font-bold">DA</span>
+        </div>`;
+      }
+
+      tr.innerHTML = `
+        <td class="py-3 px-space-md">
+          <div class="flex items-center gap-space-xs">
+            <div class="${avatarClass}">${firstLetter}</div>
+            <div class="flex flex-col">
+              <span class="font-headline-sm text-headline-sm text-on-surface font-bold">${customer.name}</span>
+              ${subStatusHtml}
+            </div>
+          </div>
+        </td>
+        <td class="py-3 px-space-md">
+          <div class="flex items-center gap-space-xs" dir="ltr">
+            ${getOperatorBadgeHTML(customer.operator)}
+            <span class="font-label-md text-label-md text-on-surface tracking-wider">${customer.phone}</span>
+          </div>
+        </td>
+        <td class="py-3 px-space-md" dir="ltr">
+          ${debtHtml}
+        </td>
+        <td class="py-3 px-space-md" dir="ltr">
+          <span class="font-label-md text-label-md text-on-surface-variant">${customer.limit.toLocaleString('en-US')} DA</span>
+        </td>
+        <td class="py-3 px-space-md">
+          <div class="flex flex-col">
+            <span class="font-body-sm text-body-sm text-on-surface ${isOverLimit ? 'font-bold' : ''}">${customer.lastTxTime}</span>
+            <span class="font-label-sm text-label-sm text-on-surface-variant">${customer.lastTxDesc}</span>
+          </div>
+        </td>
+        <td class="py-3 px-space-md text-center">
+          <div class="flex items-center justify-center gap-space-xs">
+            ${customer.debt > 0 ? `
+              <button onclick="triggerRepay('${customer.id}')" class="px-space-sm py-1 bg-primary hover:bg-primary-container text-on-primary rounded font-label-sm text-label-sm font-bold flex items-center gap-1 shadow-sm transition-colors cursor-pointer" title="تسجيل دفعة">
+                <span class="material-symbols-outlined text-[14px]">payments</span>
+                <span>تسديد</span>
+              </button>
+            ` : `
+              <button onclick="openProfileModal('${customer.id}')" class="px-space-sm py-1 bg-surface-container-high hover:bg-surface-container-highest text-primary rounded font-label-sm text-label-sm font-bold flex items-center gap-1 transition-colors cursor-pointer">
+                <span class="material-symbols-outlined text-[14px]">account_box</span>
+                <span>عرض الملف</span>
+              </button>
+            `}
+            <button onclick="openProfileModal('${customer.id}')" class="p-1 text-on-surface-variant hover:text-on-surface hover:bg-surface-container rounded transition-colors cursor-pointer" title="كشف الحساب والعمليات">
+              <span class="material-symbols-outlined text-[18px]">receipt_long</span>
+            </button>
+          </div>
+        </td>
+      `;
+
+      tbody.appendChild(tr);
+    });
+
+    updateMetricsAndCounts();
+  }
+
+  // Update Top KPIs and Counters
+  function updateMetricsAndCounts() {
+    const totalDebt = customersData.reduce((acc, c) => acc + c.debt, 0);
+    const debtorsCount = customersData.filter(c => c.debt > 0).length;
+    const settledCount = customersData.filter(c => c.debt <= 0).length;
+    const totalCount = customersData.length;
+
+    // KPI 1
+    document.getElementById('kpi-total-debt').textContent = totalDebt.toLocaleString('en-US');
+    document.getElementById('kpi-debtors-count').textContent = `${debtorsCount} زبون مدين حالياً`;
+
+    // KPI 2 (Max single debt)
+    let maxCust = customersData.reduce((max, c) => (c.debt > (max?.debt || 0) ? c : max), null);
+    if (maxCust && maxCust.debt > 0) {
+      document.getElementById('kpi-max-debt').textContent = maxCust.debt.toLocaleString('en-US');
+      document.getElementById('kpi-max-debt-customer').textContent = `الزبون: ${maxCust.name}`;
+      const pct = maxCust.limit > 0 ? Math.round((maxCust.debt / maxCust.limit) * 100) : 100;
+      document.getElementById('kpi-max-debt-rate').textContent = pct > 100 ? `تجاوز السقف ${pct}%` : `${pct}% من السقف`;
+    } else {
+      document.getElementById('kpi-max-debt').textContent = "0.00";
+      document.getElementById('kpi-max-debt-customer').textContent = "لا توجد ديون معلقة";
+      document.getElementById('kpi-max-debt-rate').textContent = "سليم 100%";
+    }
+
+    // Filter pill counters
+    document.getElementById('filter-all-count').textContent = `(${totalCount})`;
+    document.getElementById('filter-debts-count').textContent = `(${debtorsCount})`;
+    document.getElementById('filter-settled-count').textContent = `(${settledCount})`;
+  }
+
+  // Select Customer Logic
+  function selectCustomerById(id, focusInput = false) {
+    const customer = customersData.find(c => c.id === id);
+    if (!customer) return;
+
+    currentSelectedCustomerId = id;
+
+    // Update Drawer UI
+    document.getElementById('selected-customer-name').textContent = customer.name;
+    document.getElementById('selected-customer-phone').textContent = customer.phone;
+    document.getElementById('selected-customer-debt').textContent = customer.debt.toLocaleString('en-US');
+    
+    const badge = document.getElementById('selected-customer-operator');
+    updateOperatorBadgeStyle(badge, customer.operator);
+
+    // Pay All button styling & text
+    const payAllBtn = document.getElementById('btn-pay-all');
+    const payAllText = document.getElementById('btn-pay-all-text');
+    const input = document.getElementById('payment-amount-input');
+
+    if (customer.debt <= 0) {
+      payAllBtn.classList.add('opacity-50', 'pointer-events-none');
+      payAllText.textContent = 'الحساب مسدد بالكامل (0 DA)';
+      input.value = '0';
+    } else {
+      payAllBtn.classList.remove('opacity-50', 'pointer-events-none');
+      payAllText.textContent = `تسديد الدين كاملاً (${customer.debt.toLocaleString('en-US')} DA)`;
+      input.value = customer.debt;
+    }
+
+    updateRemainingCalc();
+    renderLedgerTable();
+
+    if (focusInput) {
+      setTimeout(() => {
+        input.focus();
+        input.select();
+      }, 50);
+    }
+  }
+
+  // Quick Action from row
+  function triggerRepay(id) {
+    selectCustomerById(id, true);
+  }
+
+  // Fill Full Payment Amount
+  function fillFullPayment() {
+    const customer = customersData.find(c => c.id === currentSelectedCustomerId);
+    if (!customer || customer.debt <= 0) return;
+    document.getElementById('payment-amount-input').value = customer.debt;
+    updateRemainingCalc();
+  }
+
+  // Preset Chips
+  function fillPaymentAmount(val) {
+    const input = document.getElementById('payment-amount-input');
+    input.value = val;
+    updateRemainingCalc();
+  }
+
+  // Live calculation of remaining debt
+  function updateRemainingCalc() {
+    const customer = customersData.find(c => c.id === currentSelectedCustomerId);
+    const totalDebt = customer ? customer.debt : 0;
+    const paying = parseInt(document.getElementById('payment-amount-input').value, 10) || 0;
+    const remaining = Math.max(0, totalDebt - paying);
+
+    const display = document.getElementById('remaining-calc-display');
+    display.textContent = remaining.toLocaleString('en-US');
+    if (remaining === 0) {
+      display.className = "font-currency-display text-headline-sm text-primary font-bold";
+    } else {
+      display.className = "font-currency-display text-headline-sm text-tertiary font-bold";
+    }
+  }
+
+  // Process and finalize payment
+  function processPayment() {
+    const customer = customersData.find(c => c.id === currentSelectedCustomerId);
+    if (!customer) {
+      showToast('يرجى اختيار زبون أولاً!', 'error');
+      return;
+    }
+
+    const paying = parseInt(document.getElementById('payment-amount-input').value, 10) || 0;
+    if (paying <= 0) {
+      showToast('يرجى إدخال مبلغ صحيح أكبر من الصفر.', 'error');
+      return;
+    }
+
+    if (customer.debt <= 0) {
+      showToast(`حساب الزبون ${customer.name} مسدد بالكامل مسبقاً!`, 'error');
+      return;
+    }
+
+    const actualPay = Math.min(paying, customer.debt);
+    customer.debt = Math.max(0, customer.debt - actualPay);
+
+    const now = new Date();
+    const timeStr = `اليوم ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
+    const rcpCode = `RCP-${Math.floor(1000 + Math.random() * 9000)}`;
+
+    // Add to history
+    customer.lastTxTime = timeStr;
+    customer.lastTxDesc = `تسديد نقدي ${actualPay.toLocaleString('en-US')} DA`;
+    if (!customer.history) customer.history = [];
+    customer.history.unshift({
+      type: "credit",
+      title: "قبض دفعة نقدية بالصندوق",
+      amount: actualPay,
+      time: timeStr,
+      ref: `#${rcpCode}`
+    });
+
+    // Update Collected Today KPI
+    const collEl = document.getElementById('kpi-collected-today');
+    const currentCollected = parseInt(collEl.textContent.replace(/,/g, ''), 10) || 0;
+    collEl.textContent = (currentCollected + actualPay).toLocaleString('en-US');
+
+    const countEl = document.getElementById('kpi-collected-count');
+    const match = countEl.textContent.match(/\d+/);
+    const curCount = match ? parseInt(match[0], 10) : 5;
+    countEl.textContent = `${curCount + 1} تسديدات نقدية ناجحة`;
+
+    // Feedback Toast
+    const receiptPrint = document.getElementById('print-receipt-toggle').checked;
+    const printMsg = receiptPrint ? ' (تم إرسال أمر الطباعة)' : '';
+    showToast(`تم قبض مبلغ ${actualPay.toLocaleString('en-US')} DA بنجاح وتسوية حساب الزبون [${customer.name}] - كود الوصل: #${rcpCode}${printMsg}`);
+
+    // Update Drawer view
+    selectCustomerById(customer.id);
+  }
+
+  // Filter Buttons
+  function setFilter(filterType, btn) {
+    activeFilter = filterType;
+    document.querySelectorAll('.filter-pill').forEach(b => {
+      b.classList.remove('bg-surface-container-lowest', 'text-primary', 'shadow-sm');
+      b.classList.add('text-on-surface-variant');
+    });
+    if (btn) {
+      btn.classList.add('bg-surface-container-lowest', 'text-primary', 'shadow-sm');
+      btn.classList.remove('text-on-surface-variant');
+    }
+    renderLedgerTable();
+  }
+
+  function handleSearchFilter() {
+    renderLedgerTable();
+  }
+
+  // Sort Toggle
+  function toggleSort() {
+    currentSort = currentSort === 'desc' ? 'asc' : 'desc';
+    const icon = document.getElementById('sort-icon');
+    const label = document.getElementById('sort-label');
+    const ledgerSortInfo = document.getElementById('ledger-sort-info');
+
+    if (currentSort === 'desc') {
+      icon.textContent = 'arrow_downward';
+      label.textContent = 'الأعلى ديناً أولاً';
+      ledgerSortInfo.textContent = 'الأعلى ديناً أولاً';
+    } else {
+      icon.textContent = 'arrow_upward';
+      label.textContent = 'الأقل ديناً أولاً';
+      ledgerSortInfo.textContent = 'الأقل ديناً أولاً';
+    }
+    renderLedgerTable();
+  }
+
+  // New Customer Modal
+  function openNewCustomerModal() {
+    document.getElementById('new-customer-modal').classList.remove('hidden');
+    setTimeout(() => {
+      document.getElementById('new-cust-name').focus();
+    }, 50);
+  }
+
+  function closeNewCustomerModal() {
+    document.getElementById('new-customer-modal').classList.add('hidden');
+    document.getElementById('new-customer-form').reset();
+    document.getElementById('detected-sim-badge').textContent = 'Auto';
+    document.getElementById('detected-sim-badge').className = 'bg-surface-container-high text-on-surface-variant px-space-xs py-0.5 rounded font-label-sm text-label-sm font-bold';
+  }
+
+  // Phone input operator auto detect
+  const phoneInput = document.getElementById('new-cust-phone');
+  const simBadge = document.getElementById('detected-sim-badge');
+  const opSelect = document.getElementById('new-cust-operator');
+
+  phoneInput.addEventListener('input', (e) => {
+    const val = e.target.value.trim();
+    if (val.startsWith('05')) {
+      simBadge.textContent = 'Ooredoo';
+      simBadge.className = 'bg-tertiary-fixed text-tertiary px-space-xs py-0.5 rounded font-label-sm text-label-sm font-bold';
+      opSelect.value = 'Ooredoo';
+    } else if (val.startsWith('06')) {
+      simBadge.textContent = 'Mobilis';
+      simBadge.className = 'bg-primary-fixed text-primary px-space-xs py-0.5 rounded font-label-sm text-label-sm font-bold';
+      opSelect.value = 'Mobilis';
+    } else if (val.startsWith('07')) {
+      simBadge.textContent = 'Djezzy';
+      simBadge.className = 'bg-secondary-container text-on-secondary-container px-space-xs py-0.5 rounded font-label-sm text-label-sm font-bold';
+      opSelect.value = 'Djezzy';
+    } else {
+      simBadge.textContent = 'Auto';
+      simBadge.className = 'bg-surface-container-high text-on-surface-variant px-space-xs py-0.5 rounded font-label-sm text-label-sm font-bold';
+    }
+  });
+
+  // Handle New Customer Submit
+  function handleCustomerSubmit(e) {
+    e.preventDefault();
+    const name = document.getElementById('new-cust-name').value.trim();
+    const phone = document.getElementById('new-cust-phone').value.trim();
+    const operator = document.getElementById('new-cust-operator').value;
+    const limit = parseInt(document.getElementById('new-cust-limit').value, 10) || 5000;
+    const notes = document.getElementById('new-cust-notes').value.trim();
+
+    if (!name || !phone) {
+      showToast('يرجى ملء جميع الحقول الإلزامية!', 'error');
+      return;
+    }
+
+    const newCustomer = {
+      id: `CUST-${Date.now()}`,
+      name: name,
+      phone: phone,
+      operator: operator,
+      debt: 0,
+      limit: limit,
+      notes: notes || "زبون جديد",
+      lastTxTime: "الآن",
+      lastTxDesc: "فتح حساب جديد",
+      history: [
+        { type: "credit", title: "فتح حساب دين جديد", amount: 0, time: "الآن", ref: "#SYS-INIT" }
+      ]
+    };
+
+    // Add to top of list
+    customersData.unshift(newCustomer);
+    closeNewCustomerModal();
+    selectCustomerById(newCustomer.id);
+    showToast(`تم حفظ الزبون [${name}] بنجاح وفتح حساب ائتمان بسقف ${limit.toLocaleString('en-US')} DA.`);
+  }
+
+  // Profile / Statement Modal
+  let activeProfileCustomerId = null;
+
+  function openProfileModal(id) {
+    const customer = customersData.find(c => c.id === id);
+    if (!customer) return;
+
+    activeProfileCustomerId = id;
+
+    document.getElementById('profile-modal-avatar').textContent = customer.name.charAt(0);
+    document.getElementById('profile-modal-name').textContent = customer.name;
+    document.getElementById('profile-modal-phone').textContent = customer.phone;
+    document.getElementById('profile-call-num').textContent = customer.phone;
+
+    const simBadge = document.getElementById('profile-modal-sim-badge');
+    updateOperatorBadgeStyle(simBadge, customer.operator);
+
+    document.getElementById('profile-modal-debt').textContent = `${customer.debt.toLocaleString('en-US')} DA`;
+    document.getElementById('profile-modal-limit').textContent = `${customer.limit.toLocaleString('en-US')} DA`;
+
+    const statusEl = document.getElementById('profile-modal-status');
+    if (customer.debt > customer.limit && customer.limit > 0) {
+      statusEl.textContent = 'تجاوز السقف!';
+      statusEl.className = 'font-headline-sm text-headline-sm font-bold mt-1 text-tertiary';
+    } else if (customer.debt <= 0) {
+      statusEl.textContent = 'مسدد بالكامل';
+      statusEl.className = 'font-headline-sm text-headline-sm font-bold mt-1 text-primary';
+    } else {
+      statusEl.textContent = 'نشط ضمن السقف';
+      statusEl.className = 'font-headline-sm text-headline-sm font-bold mt-1 text-secondary';
+    }
+
+    // Render History Ledger
+    const histContainer = document.getElementById('profile-modal-history');
+    histContainer.innerHTML = '';
+    
+    if (!customer.history || customer.history.length === 0) {
+      histContainer.innerHTML = '<div class="p-3 text-center text-on-surface-variant font-body-sm">لا توجد عمليات سابقة مسجلة.</div>';
+    } else {
+      customer.history.forEach(tx => {
+        const item = document.createElement('div');
+        item.className = "flex items-center justify-between p-2.5 bg-surface-container-low rounded-lg hover:bg-surface-container transition-colors";
+        const isPayment = tx.type === 'credit';
+        item.innerHTML = `
+          <div class="flex items-center gap-space-xs">
+            <div class="w-7 h-7 rounded ${isPayment ? 'bg-primary-fixed text-primary' : 'bg-surface-container-high text-on-surface'} flex items-center justify-center">
+              <span class="material-symbols-outlined text-[16px]">${isPayment ? 'price_check' : 'phone_android'}</span>
+            </div>
+            <div class="flex flex-col">
+              <span class="font-body-md text-body-md font-bold text-on-surface">${tx.title}</span>
+              <span class="font-label-sm text-label-sm text-on-surface-variant">${tx.time} • <strong dir="ltr">${tx.ref}</strong></span>
+            </div>
+          </div>
+          <div class="flex items-baseline gap-1" dir="ltr">
+            <span class="font-label-lg text-label-lg font-bold ${isPayment ? 'text-primary' : 'text-tertiary'}">
+              ${isPayment ? '+' : '-'}${tx.amount.toLocaleString('en-US')}
+            </span>
+            <span class="font-label-sm text-label-sm text-on-surface-variant font-bold">DA</span>
+          </div>
+        `;
+        histContainer.appendChild(item);
+      });
+    }
+
+    document.getElementById('customer-profile-modal').classList.remove('hidden');
+  }
+
+  function closeProfileModal() {
+    document.getElementById('customer-profile-modal').classList.add('hidden');
+    activeProfileCustomerId = null;
+  }
+
+  function triggerProfilePayment() {
+    if (activeProfileCustomerId) {
+      closeProfileModal();
+      selectCustomerById(activeProfileCustomerId, true);
+    }
+  }
+
+  // Keyboard Navigation & POS Ergonomics
+  window.addEventListener('keydown', (e) => {
+    // F2: Focus payment amount
+    if (e.key === 'F2') {
+      e.preventDefault();
+      const input = document.getElementById('payment-amount-input');
+      input.focus();
+      input.select();
+    }
+    // F3: Focus search bar
+    else if (e.key === 'F3') {
+      e.preventDefault();
+      const search = document.getElementById('customer-search-input');
+      search.focus();
+      search.select();
+    }
+    // Insert: New customer modal
+    else if (e.key === 'Insert') {
+      e.preventDefault();
+      openNewCustomerModal();
+    }
+    // Escape: Dismiss active modals or blur search
+    else if (e.key === 'Escape') {
+      const newModal = document.getElementById('new-customer-modal');
+      const profileModal = document.getElementById('customer-profile-modal');
+      if (!newModal.classList.contains('hidden')) {
+        closeNewCustomerModal();
+      } else if (!profileModal.classList.contains('hidden')) {
+        closeProfileModal();
+      } else {
+        const search = document.getElementById('customer-search-input');
+        if (document.activeElement === search) {
+          search.value = '';
+          search.blur();
+          renderLedgerTable();
+        }
+      }
+    }
+  });
+
+  // Initial Boot
+  window.addEventListener('DOMContentLoaded', () => {
+    renderLedgerTable();
+    selectCustomerById("CUST-1");
+  });
+</script>
+</body></html>

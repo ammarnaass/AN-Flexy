@@ -1,6 +1,11 @@
 import { invoke } from '@renderer/shared/api'
 import { customersChannels } from '@shared/contracts/customers'
-import type { CustomerInfo, CreateCustomerInput, UpdateCustomerInput, SearchCustomersInput } from '@shared/contracts/customers'
+import type {
+  CustomerInfo,
+  CreateCustomerInput,
+  UpdateCustomerInput,
+  SearchCustomersInput,
+} from '@shared/contracts/customers'
 
 export function listCustomers(limit = 50): Promise<CustomerInfo[]> {
   return invoke<CustomerInfo[]>(customersChannels.list, { limit })

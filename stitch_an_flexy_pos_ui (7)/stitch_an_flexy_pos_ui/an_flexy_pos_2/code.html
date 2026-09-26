@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+
+<html dir="rtl" lang="ar"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_blank" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700&amp;family=JetBrains+Mono:wght@500;600;700&amp;family=Tajawal:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{colors:{"surface":"#f8f9ff","primary-fixed":"#9cf2e8","on-tertiary":"#ffffff","surface-dim":"#cbdbf5","inverse-on-surface":"#eaf1ff","tertiary":"#a6002f","tertiary-fixed":"#ffdada","on-secondary-fixed":"#001d31","surface-container-lowest":"#ffffff","surface-tint":"#006a63","secondary":"#006398","on-secondary-fixed-variant":"#004b73","surface-container-low":"#eff4ff","surface-container-high":"#dce9ff","primary-fixed-dim":"#80d5cb","on-primary-fixed-variant":"#00504a","inverse-primary":"#80d5cb","on-primary-container":"#a3faef","on-error-container":"#93000a","primary-container":"#0f766e","background":"#f8f9ff","on-secondary":"#ffffff","surface-variant":"#d3e4fe","secondary-container":"#5bb8fe","on-tertiary-fixed":"#40000c","tertiary-fixed-dim":"#ffb3b6","surface-container":"#e5eeff","surface-bright":"#f8f9ff","on-background":"#0b1c30","on-secondary-container":"#00476e","secondary-fixed-dim":"#93ccff","outline-variant":"#bdc9c6","primary":"#005c55","secondary-fixed":"#cce5ff","error":"#ba1a1a","inverse-surface":"#213145","surface-container-highest":"#d3e4fe","tertiary-container":"#d2093f","error-container":"#ffdad6","on-tertiary-container":"#ffe4e4","on-error":"#ffffff","outline":"#6e7977","on-primary":"#ffffff","on-surface":"#0b1c30","on-surface-variant":"#3e4947","on-primary-fixed":"#00201d","on-tertiary-fixed-variant":"#920028"},borderRadius:{"DEFAULT":"0.25rem","lg":"0.5rem","xl":"0.75rem","full":"9999px"},spacing:{"space-lg":"1rem","space-sm":"0.5rem","space-md":"0.75rem","space-xs":"0.25rem","gutter":"0.75rem","space-xl":"1.5rem","margin":"1rem"},fontFamily:{"currency-display":["JetBrains Mono"],"label-lg":["JetBrains Mono"],"headline-md":["Cairo"],"body-lg":["Tajawal"],"label-md":["JetBrains Mono"],"label-sm":["JetBrains Mono"],"body-sm":["Tajawal"],"headline-lg":["Cairo"],"headline-sm":["Cairo"],"body-md":["Tajawal"],"display-lg":["Cairo"]},fontSize:{"currency-display":["28px",{"lineHeight":"32px","fontWeight":"700"}],"label-lg":["15px",{"lineHeight":"20px","letterSpacing":"0.02em","fontWeight":"600"}],"headline-md":["20px",{"lineHeight":"28px","fontWeight":"600"}],"body-lg":["16px",{"lineHeight":"24px","fontWeight":"500"}],"label-md":["13px",{"lineHeight":"16px","fontWeight":"500"}],"label-sm":["11px",{"lineHeight":"14px","fontWeight":"500"}],"body-sm":["12px",{"lineHeight":"16px","fontWeight":"400"}],"headline-lg":["24px",{"lineHeight":"32px","fontWeight":"700"}],"headline-sm":["16px",{"lineHeight":"24px","fontWeight":"600"}],"body-md":["14px",{"lineHeight":"20px","fontWeight":"400"}],"display-lg":["32px",{"lineHeight":"40px","fontWeight":"700"}]}}}}</script></head><body class="bg-surface font-body-md text-body-md text-on-surface min-h-screen flex flex-col"><header class="w-full bg-surface-container-lowest shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="w-full px-margin h-14 flex items-center justify-between"><div class="flex items-center gap-space-md"><div class="w-8 h-8 rounded-lg bg-primary-container text-on-primary flex items-center justify-center"><span class="material-symbols-outlined text-[20px]">point_of_sale</span></div><div class="flex flex-col"><span class="font-headline-sm text-headline-sm text-on-surface leading-none">AN-Flexy POS</span><span class="font-body-sm text-body-sm text-on-surface-variant font-label-sm">Telecom Retail System</span></div></div><div class="flex items-center gap-space-lg" dir="ltr"><div class="flex items-center gap-space-xs bg-surface-container-low px-space-md py-space-xs rounded-full"><span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span><span class="font-label-sm text-label-sm text-on-surface-variant font-currency-display">STATION: ALGIERS-01 // READY</span></div><div class="flex items-center gap-space-xs text-on-surface-variant"><span class="material-symbols-outlined text-[18px] text-primary">verified_user</span><span class="font-label-sm text-label-sm">TLS 1.3 256-BIT</span></div></div></div></header><main class="flex-1 w-full flex items-center justify-center p-margin bg-surface"><div class="flex flex-col w-full">
+<div class="relative w-full max-w-6xl mx-auto py-space-sm px-space-md">
+<!-- Ambient Backdrop Illumination -->
+<div class="absolute -top-12 -right-12 w-96 h-96 bg-primary-container/10 rounded-full blur-3xl pointer-events-none -z-10"></div>
+<div class="absolute top-1/2 -left-16 w-80 h-80 bg-secondary/10 rounded-full blur-3xl pointer-events-none -z-10"></div>
+<!-- Top Workflow Indicator & Stepper -->
+<section class="bg-surface-container-lowest rounded-xl shadow-sm p-space-md mb-space-md">
+<div class="flex flex-col md:flex-row md:items-center md:justify-between gap-space-md pb-space-sm">
+<div class="flex items-center gap-space-sm">
+<span class="p-2 rounded-lg bg-primary-container text-on-primary shadow-sm flex items-center justify-center">
+<span class="material-symbols-outlined text-[20px]">storefront</span>
+</span>
+<div>
+<h1 class="font-headline-md text-headline-md text-on-surface">إعداد المحطة وتسجيل نقطة البيع</h1>
+<p class="font-body-sm text-body-sm text-on-surface-variant">التهيئة الأولية لنظام الاتصالات AN-Flexy v4.2 Pro المعتمد</p>
+</div>
+</div>
+<div class="flex items-center gap-space-xs self-start md:self-auto bg-surface-container-low px-space-md py-space-xs rounded-full">
+<span class="w-2.5 h-2.5 rounded-full bg-primary animate-pulse"></span>
+<span class="font-label-sm text-label-sm text-on-surface font-currency-display tracking-tight" dir="ltr">SQLITE LOCAL ENCRYPTED • SYNC ACTIVE</span>
+</div>
+</div>
+<!-- Stepper Nodes -->
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-space-sm pt-space-xs">
+<!-- Step 1 (Active) -->
+<div class="flex items-center gap-space-sm p-space-sm rounded-lg bg-surface-container-low shadow-sm">
+<span class="w-7 h-7 rounded-full bg-primary-container text-on-primary font-currency-display font-bold text-center flex items-center justify-center text-xs">1</span>
+<div class="min-w-0">
+<span class="block font-headline-sm text-headline-sm text-on-surface leading-tight truncate">بيانات المسؤول</span>
+<span class="block font-body-sm text-body-sm text-primary font-medium">الخطوة الحالية</span>
+</div>
+<span class="material-symbols-outlined text-primary text-[18px] mr-auto">radio_button_checked</span>
+</div>
+<!-- Step 2 -->
+<div class="flex items-center gap-space-sm p-space-sm rounded-lg bg-surface-container-lowest opacity-75">
+<span class="w-7 h-7 rounded-full bg-surface-variant text-on-surface-variant font-currency-display font-bold text-center flex items-center justify-center text-xs">2</span>
+<div class="min-w-0">
+<span class="block font-headline-sm text-headline-sm text-on-surface leading-tight truncate">معلومات المتجر</span>
+<span class="block font-body-sm text-body-sm text-on-surface-variant">الفرع والصندوق</span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant text-[18px] mr-auto">check_circle</span>
+</div>
+<!-- Step 3 -->
+<div class="flex items-center gap-space-sm p-space-sm rounded-lg bg-surface-container-lowest opacity-60">
+<span class="w-7 h-7 rounded-full bg-surface-variant text-on-surface-variant font-currency-display font-bold text-center flex items-center justify-center text-xs">3</span>
+<div class="min-w-0">
+<span class="block font-headline-sm text-headline-sm text-on-surface leading-tight truncate">منافذ GSM &amp; Flexy</span>
+<span class="block font-body-sm text-body-sm text-on-surface-variant">المودمات والشرائح</span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant text-[18px] mr-auto">pending</span>
+</div>
+</div>
+</section>
+<!-- Main Dynamic Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-md items-start">
+<!-- Primary Registration Form Card (8 Columns) -->
+<section class="lg:col-span-8 bg-surface-container-lowest rounded-xl shadow-md p-space-lg flex flex-col gap-space-md">
+<!-- Header Text -->
+<div>
+<span class="font-label-sm text-label-sm font-currency-display text-primary px-2 py-0.5 rounded bg-primary-fixed/20 tracking-wider">REGISTRATION GATEWAY</span>
+<h2 class="font-headline-lg text-headline-lg text-on-surface mt-1">إنشاء حساب جديد للمتجر</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">سجل بيانات الإدارة للوصول الفوري إلى وحدة التحكم، أرصدة المشغلين، وموازنة الصندوق اليومي.</p>
+</div>
+<!-- Role Selector Toggle -->
+<div>
+<label class="block font-headline-sm text-headline-sm text-on-surface mb-2">نوع الحساب والصلاحيات الأساسية</label>
+<div class="grid grid-cols-2 gap-space-sm" id="roleGroup">
+<button class="flex items-center gap-space-sm p-space-sm rounded-lg bg-surface-container-high shadow-sm text-right transition-all" id="roleAdminBtn" type="button">
+<span class="w-9 h-9 rounded-lg bg-primary-container text-on-primary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[20px]">admin_panel_settings</span>
+</span>
+<div>
+<span class="block font-headline-sm text-headline-sm text-on-surface leading-none">مسؤول متجر كامل</span>
+<span class="block font-body-sm text-body-sm text-on-surface-variant mt-1">إشراف، تقارير Z، وسحب أرباح</span>
+</div>
+</button>
+<button class="flex items-center gap-space-sm p-space-sm rounded-lg bg-surface-container-low text-right opacity-70 hover:opacity-100 transition-all" id="roleCashierBtn" type="button">
+<span class="w-9 h-9 rounded-lg bg-surface-variant text-on-surface-variant flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[20px]">badge</span>
+</span>
+<div>
+<span class="block font-headline-sm text-headline-sm text-on-surface leading-none">بائع وردية / كاشير</span>
+<span class="block font-body-sm text-body-sm text-on-surface-variant mt-1">فليكسي، شحن أرصدة، وفواتير</span>
+</div>
+</button>
+</div>
+</div>
+<!-- Form Elements -->
+<form class="flex flex-col gap-space-md" id="posRegistrationForm" onsubmit="event.preventDefault();">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-space-md">
+<!-- Full Name -->
+<div class="flex flex-col gap-1">
+<label class="font-headline-sm text-headline-sm text-on-surface" for="fullNameInput">الاسم الكامل للمسؤول <span class="text-tertiary">*</span></label>
+<div class="relative flex items-center bg-surface-container-low rounded-lg focus-within:bg-surface-container-lowest shadow-sm transition-all">
+<span class="material-symbols-outlined text-outline pr-3 pl-1 text-[20px]">person</span>
+<input class="w-full py-2.5 px-2 bg-transparent text-on-surface font-body-lg text-body-lg focus:outline-none" id="fullNameInput" placeholder="مثال: أمين بلقاسم" required="" type="text" value="أمين بلقاسم"/>
+</div>
+</div>
+<!-- Username -->
+<div class="flex flex-col gap-1">
+<label class="font-headline-sm text-headline-sm text-on-surface" for="usernameInput">اسم الدخول للمحطة <span class="text-tertiary">*</span></label>
+<div class="relative flex items-center bg-surface-container-low rounded-lg focus-within:bg-surface-container-lowest shadow-sm transition-all" dir="ltr">
+<span class="material-symbols-outlined text-outline pl-3 pr-1 text-[20px]">alternate_email</span>
+<input class="w-full py-2.5 px-2 bg-transparent text-on-surface font-currency-display text-label-lg focus:outline-none text-left" id="usernameInput" placeholder="amin_admin" required="" type="text" value="amin_pos2025"/>
+</div>
+</div>
+<!-- Phone Number DZ -->
+<div class="flex flex-col gap-1">
+<label class="font-headline-sm text-headline-sm text-on-surface" for="phoneInput">رقم هاتف الإشعار والفليكسي <span class="text-tertiary">*</span></label>
+<div class="relative flex items-center bg-surface-container-low rounded-lg focus-within:bg-surface-container-lowest shadow-sm transition-all" dir="ltr">
+<div class="flex items-center gap-1 pl-3 pr-2 py-1 bg-surface-variant/40 rounded-l-lg text-on-surface-variant font-currency-display text-label-md">
+<span>🇩🇿</span>
+<span>+213</span>
+</div>
+<input class="w-full py-2.5 px-3 bg-transparent text-on-surface font-currency-display text-label-lg tracking-wider focus:outline-none text-left" id="phoneInput" placeholder="0550 00 00 00" required="" type="tel" value="0550123456"/>
+<span class="ml-auto mr-3 px-2 py-0.5 rounded text-xs font-currency-display font-bold bg-error-container text-on-error-container" id="carrierTag">OOREDOO</span>
+</div>
+</div>
+<!-- Wilaya / Daira -->
+<div class="flex flex-col gap-1">
+<label class="font-headline-sm text-headline-sm text-on-surface" for="locationInput">الولاية والبلدية</label>
+<div class="relative flex items-center bg-surface-container-low rounded-lg shadow-sm">
+<span class="material-symbols-outlined text-outline pr-3 pl-1 text-[20px]">location_on</span>
+<select class="w-full py-2.5 px-2 bg-transparent text-on-surface font-body-md text-body-md focus:outline-none cursor-pointer" id="locationInput">
+<option value="31">وهران - 31 (وهران وسط - حي السلام)</option>
+<option value="16">الجزائر العاصمة - 16 (باب الزوار - المركز التجاري)</option>
+<option value="25">قسنطينة - 25 (الكدية - وسط المدينة)</option>
+<option value="19">سطيف - 19 (حي 1014 مسكن)</option>
+<option value="09">البليدة - 09 (أولاد يعيش)</option>
+</select>
+</div>
+</div>
+<!-- Password -->
+<div class="flex flex-col gap-1">
+<div class="flex items-center justify-between">
+<label class="font-headline-sm text-headline-sm text-on-surface" for="passwordInput">كلمة المرور الرئيسية <span class="text-tertiary">*</span></label>
+<span class="font-label-sm text-label-sm font-currency-display text-primary" id="pwdStrengthText">قوية (Strong)</span>
+</div>
+<div class="relative flex items-center bg-surface-container-low rounded-lg focus-within:bg-surface-container-lowest shadow-sm transition-all" dir="ltr">
+<span class="material-symbols-outlined text-outline pl-3 pr-1 text-[20px]">lock</span>
+<input class="w-full py-2.5 px-2 bg-transparent text-on-surface font-currency-display text-label-lg focus:outline-none" id="passwordInput" required="" type="password" value="FlexyDZ#2025!"/>
+<button class="pr-3 pl-2 text-outline hover:text-on-surface flex items-center" id="togglePwdBtn" type="button">
+<span class="material-symbols-outlined text-[20px]" id="pwdEyeIcon">visibility</span>
+</button>
+</div>
+<!-- Strength Progress Bar -->
+<div class="w-full h-1.5 bg-surface-variant rounded-full overflow-hidden mt-1">
+<div class="h-full bg-primary w-4/5 transition-all duration-300" id="pwdStrengthBar"></div>
+</div>
+</div>
+<!-- Fast Quick-PIN -->
+<div class="flex flex-col gap-1">
+<label class="font-headline-sm text-headline-sm text-on-surface" for="pinCode">رمز PIN سريع للكاشير (4 أرقام)</label>
+<div class="relative flex items-center bg-surface-container-low rounded-lg focus-within:bg-surface-container-lowest shadow-sm transition-all" dir="ltr">
+<span class="material-symbols-outlined text-outline pl-3 pr-1 text-[20px]">dialpad</span>
+<input class="w-full py-2.5 px-2 bg-transparent text-on-surface font-currency-display text-currency-display tracking-widest text-center focus:outline-none" id="pinCode" maxlength="4" placeholder="----" type="password" value="2025"/>
+<span class="pr-3 font-label-sm text-label-sm text-on-surface-variant">LOCK-PIN</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant">يستخدم للتبديل السريع بين المستخدمين أثناء طابور الزبائن</span>
+</div>
+</div>
+<!-- Legal & Privacy Consent -->
+<div class="flex items-start gap-space-sm p-space-sm rounded-lg bg-surface-container-low">
+<input checked="" class="mt-1 w-4 h-4 rounded text-primary focus:ring-0 cursor-pointer" id="termsCheck" type="checkbox"/>
+<label class="font-body-sm text-body-sm text-on-surface select-none cursor-pointer" for="termsCheck">
+              أوافق على سياسة تشفير المعاملات المحلية وحفظ السجلات في قاعدة بيانات المحطة المشفرة وفق نظام البريد والمواصلات السلكية واللاسلكية الجزائري.
+            </label>
+</div>
+<!-- Submit Bar -->
+<div class="flex flex-col sm:flex-row items-center justify-between gap-space-md pt-space-xs">
+<button class="w-full sm:w-auto px-space-xl py-3 rounded-lg bg-primary-container text-on-primary font-headline-sm text-headline-sm shadow-md hover:bg-primary transition-all flex items-center justify-center gap-space-sm active:scale-95" id="submitRegBtn" type="submit">
+<span>إنشاء الحساب وتفعيل المحطة</span>
+<span class="material-symbols-outlined text-[20px]">bolt</span>
+<span class="px-1.5 py-0.5 rounded bg-on-primary-container text-primary-container font-currency-display text-xs" dir="ltr">[Enter]</span>
+</button>
+<a class="font-body-md text-body-md text-secondary hover:underline flex items-center gap-1" href="javascript:void(0)">
+<span>لديك حساب نشط بالفعل؟</span>
+<span class="font-headline-sm text-headline-sm text-primary">تسجيل الدخول السريع</span>
+</a>
+</div>
+</form>
+</section>
+<!-- Right Column: Store Setup Preview & Hardware Diagnostic (4 Columns) -->
+<aside class="lg:col-span-4 flex flex-col gap-space-md">
+<!-- Store Setup Summary Card -->
+<div class="bg-surface-container-lowest rounded-xl shadow-md p-space-md flex flex-col gap-space-sm">
+<div class="flex items-center justify-between pb-space-xs">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[22px]">domain</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">إعدادات نقطة البيع</h3>
+</div>
+<span class="font-label-sm text-label-sm text-primary font-currency-display px-2 py-0.5 rounded bg-primary-fixed/20">STATION #01</span>
+</div>
+<div class="space-y-space-xs">
+<label class="block font-headline-sm text-headline-sm text-on-surface text-xs">اسم المتجر التجاري</label>
+<input class="w-full p-2 bg-surface-container-low rounded-lg text-on-surface font-body-md text-body-md focus:outline-none" id="storeNameField" type="text" value="متجر الوفاء لخدمات الهاتف الرقمي"/>
+</div>
+<div class="space-y-space-xs">
+<label class="block font-headline-sm text-headline-sm text-on-surface text-xs">رقم السجل التجاري / NIF (اختياري)</label>
+<input class="w-full p-2 bg-surface-container-low rounded-lg text-on-surface font-currency-display text-label-sm focus:outline-none text-left" dir="ltr" type="text" value="001931084512948"/>
+</div>
+<!-- Active Operators Check-chips -->
+<div class="space-y-1.5 pt-1">
+<span class="block font-headline-sm text-headline-sm text-on-surface text-xs">المشغلون المفعلون فورياً بالبوابة</span>
+<div class="flex flex-col gap-1.5">
+<!-- Mobilis -->
+<label class="flex items-center justify-between p-2 rounded-lg bg-surface-container-low cursor-pointer hover:bg-surface-container-high transition-colors">
+<div class="flex items-center gap-2">
+<input checked="" class="operator-checkbox rounded text-primary" data-operator="mobilis" type="checkbox"/>
+<span class="font-headline-sm text-headline-sm text-on-surface">موبيليس Mobilis</span>
+</div>
+<span class="font-currency-display text-xs px-2 py-0.5 rounded font-bold bg-[#DCFCE7] text-[#15803D]" dir="ltr">06 SIM READY</span>
+</label>
+<!-- Djezzy -->
+<label class="flex items-center justify-between p-2 rounded-lg bg-surface-container-low cursor-pointer hover:bg-surface-container-high transition-colors">
+<div class="flex items-center gap-2">
+<input checked="" class="operator-checkbox rounded text-primary" data-operator="djezzy" type="checkbox"/>
+<span class="font-headline-sm text-headline-sm text-on-surface">جيزي Djezzy</span>
+</div>
+<span class="font-currency-display text-xs px-2 py-0.5 rounded font-bold bg-[#FFEDD5] text-[#C2410C]" dir="ltr">07 SIM READY</span>
+</label>
+<!-- Ooredoo -->
+<label class="flex items-center justify-between p-2 rounded-lg bg-surface-container-low cursor-pointer hover:bg-surface-container-high transition-colors">
+<div class="flex items-center gap-2">
+<input checked="" class="operator-checkbox rounded text-primary" data-operator="ooredoo" type="checkbox"/>
+<span class="font-headline-sm text-headline-sm text-on-surface">أوريدو Ooredoo</span>
+</div>
+<span class="font-currency-display text-xs px-2 py-0.5 rounded font-bold bg-[#FEE2E2] text-[#B91C1C]" dir="ltr">05 SIM READY</span>
+</label>
+</div>
+</div>
+<!-- Opening Balance Preset -->
+<div class="pt-2">
+<div class="flex items-center justify-between mb-1">
+<span class="font-headline-sm text-headline-sm text-on-surface text-xs">رصيد الصندوق الافتتاحي (DZD)</span>
+<span class="font-currency-display text-xs text-primary font-bold">15,000 د.ج</span>
+</div>
+<div class="grid grid-cols-3 gap-1">
+<button class="cash-preset-btn py-1 px-2 rounded bg-surface-container-low hover:bg-surface-container-high font-currency-display text-xs text-on-surface font-semibold" type="button">5,000</button>
+<button class="cash-preset-btn py-1 px-2 rounded bg-primary-container text-on-primary font-currency-display text-xs font-semibold" type="button">15,000</button>
+<button class="cash-preset-btn py-1 px-2 rounded bg-surface-container-low hover:bg-surface-container-high font-currency-display text-xs text-on-surface font-semibold" type="button">30,000</button>
+</div>
+</div>
+</div>
+<!-- Hardware & Security Diagnostics Card -->
+<div class="bg-surface-container-lowest rounded-xl shadow-md p-space-md flex flex-col gap-space-sm">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-[22px]">developer_board</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">كاشف العتاد والاتصال</h3>
+</div>
+<!-- Diagnostic Metrics -->
+<div class="grid grid-cols-2 gap-space-xs">
+<div class="p-2.5 rounded-lg bg-surface-container-low flex flex-col">
+<span class="font-body-sm text-body-sm text-on-surface-variant">تشفير التخزين</span>
+<span class="font-currency-display text-label-md text-on-surface font-bold mt-1">AES-256 GCM</span>
+</div>
+<div class="p-2.5 rounded-lg bg-surface-container-low flex flex-col">
+<span class="font-body-sm text-body-sm text-on-surface-variant">مودمات USB</span>
+<span class="font-currency-display text-label-md text-primary font-bold mt-1">3x DETECTED</span>
+</div>
+</div>
+<!-- Port Status Feed -->
+<div class="p-2.5 rounded-lg bg-surface-container-low flex flex-col gap-1 text-xs">
+<div class="flex items-center justify-between">
+<span class="font-currency-display text-on-surface-variant" dir="ltr">COM3 (Huawei E3372)</span>
+<span class="text-primary font-bold">ONLINE</span>
+</div>
+<div class="flex items-center justify-between">
+<span class="font-currency-display text-on-surface-variant" dir="ltr">COM4 (ZTE MF79U)</span>
+<span class="text-primary font-bold">ONLINE</span>
+</div>
+<div class="flex items-center justify-between">
+<span class="font-currency-display text-on-surface-variant" dir="ltr">COM5 (Thermal 80mm)</span>
+<span class="text-secondary font-bold">READY</span>
+</div>
+</div>
+<!-- System Badge -->
+<div class="flex items-center gap-2 px-3 py-2 rounded-lg bg-primary-fixed/30 text-on-surface text-xs">
+<span class="material-symbols-outlined text-primary text-[18px]">verified</span>
+<span class="font-body-sm">نظام تشغيل محلي معتمد دون انقطاع</span>
+</div>
+</div>
+</aside>
+</div>
+<!-- Floating Interactive Toast Notification -->
+<div class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-inverse-surface text-inverse-on-surface px-space-lg py-space-md rounded-xl shadow-2xl flex items-center gap-space-md opacity-0 pointer-events-none transition-all duration-300 transform translate-y-4 z-50" id="toastNotification">
+<span class="w-8 h-8 rounded-full bg-primary-container text-on-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-[20px]">check</span>
+</span>
+<div>
+<p class="font-headline-sm text-headline-sm leading-tight">تم إنشاء حساب المحطة بنجاح!</p>
+<p class="font-body-sm text-body-sm opacity-80">جاري مزامنة منافذ COM وتحضير شاشة الفليكسي السريعة...</p>
+</div>
+</div>
+</div>
+<script>
+    (function initPOSRegister() {
+      // Elements
+      const roleAdminBtn = document.getElementById('roleAdminBtn');
+      const roleCashierBtn = document.getElementById('roleCashierBtn');
+      const phoneInput = document.getElementById('phoneInput');
+      const carrierTag = document.getElementById('carrierTag');
+      const passwordInput = document.getElementById('passwordInput');
+      const togglePwdBtn = document.getElementById('togglePwdBtn');
+      const pwdEyeIcon = document.getElementById('pwdEyeIcon');
+      const pwdStrengthBar = document.getElementById('pwdStrengthBar');
+      const pwdStrengthText = document.getElementById('pwdStrengthText');
+      const submitRegBtn = document.getElementById('submitRegBtn');
+      const toast = document.getElementById('toastNotification');
+      const cashButtons = document.querySelectorAll('.cash-preset-btn');
+
+      // Role Selection
+      if (roleAdminBtn && roleCashierBtn) {
+        roleAdminBtn.addEventListener('click', () => {
+          roleAdminBtn.classList.remove('bg-surface-container-low', 'opacity-70');
+          roleAdminBtn.classList.add('bg-surface-container-high');
+          roleCashierBtn.classList.add('bg-surface-container-low', 'opacity-70');
+          roleCashierBtn.classList.remove('bg-surface-container-high');
+        });
+
+        roleCashierBtn.addEventListener('click', () => {
+          roleCashierBtn.classList.remove('bg-surface-container-low', 'opacity-70');
+          roleCashierBtn.classList.add('bg-surface-container-high');
+          roleAdminBtn.classList.add('bg-surface-container-low', 'opacity-70');
+          roleAdminBtn.classList.remove('bg-surface-container-high');
+        });
+      }
+
+      // Live Carrier Identification from Algerian Prefix
+      if (phoneInput && carrierTag) {
+        const updateCarrier = () => {
+          const val = phoneInput.value.trim().replace(/\s+/g, '');
+          if (val.startsWith('06') || val.startsWith('6')) {
+            carrierTag.textContent = 'MOBILIS';
+            carrierTag.className = 'ml-auto mr-3 px-2 py-0.5 rounded text-xs font-currency-display font-bold bg-[#DCFCE7] text-[#15803D]';
+          } else if (val.startsWith('07') || val.startsWith('7')) {
+            carrierTag.textContent = 'DJEZZY';
+            carrierTag.className = 'ml-auto mr-3 px-2 py-0.5 rounded text-xs font-currency-display font-bold bg-[#FFEDD5] text-[#C2410C]';
+          } else if (val.startsWith('05') || val.startsWith('5')) {
+            carrierTag.textContent = 'OOREDOO';
+            carrierTag.className = 'ml-auto mr-3 px-2 py-0.5 rounded text-xs font-currency-display font-bold bg-[#FEE2E2] text-[#B91C1C]';
+          } else {
+            carrierTag.textContent = 'UNKNOWN';
+            carrierTag.className = 'ml-auto mr-3 px-2 py-0.5 rounded text-xs font-currency-display font-bold bg-surface-variant text-on-surface-variant';
+          }
+        };
+        phoneInput.addEventListener('input', updateCarrier);
+        updateCarrier();
+      }
+
+      // Password visibility toggle
+      if (togglePwdBtn && passwordInput && pwdEyeIcon) {
+        togglePwdBtn.addEventListener('click', () => {
+          const isPwd = passwordInput.getAttribute('type') === 'password';
+          passwordInput.setAttribute('type', isPwd ? 'text' : 'password');
+          pwdEyeIcon.textContent = isPwd ? 'visibility_off' : 'visibility';
+        });
+      }
+
+      // Dynamic Password Strength
+      if (passwordInput && pwdStrengthBar && pwdStrengthText) {
+        passwordInput.addEventListener('input', (e) => {
+          const len = e.target.value.length;
+          if (len === 0) {
+            pwdStrengthBar.style.width = '0%';
+            pwdStrengthText.textContent = 'فارغ';
+          } else if (len < 6) {
+            pwdStrengthBar.style.width = '30%';
+            pwdStrengthBar.className = 'h-full bg-tertiary transition-all duration-300';
+            pwdStrengthText.textContent = 'ضعيفة (Weak)';
+          } else if (len < 10) {
+            pwdStrengthBar.style.width = '65%';
+            pwdStrengthBar.className = 'h-full bg-secondary-container transition-all duration-300';
+            pwdStrengthText.textContent = 'متوسطة (Good)';
+          } else {
+            pwdStrengthBar.style.width = '100%';
+            pwdStrengthBar.className = 'h-full bg-primary transition-all duration-300';
+            pwdStrengthText.textContent = 'قوية جداً (Excellent)';
+          }
+        });
+      }
+
+      // Cash Preset Buttons
+      cashButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          cashButtons.forEach(b => {
+            b.classList.remove('bg-primary-container', 'text-on-primary');
+            b.classList.add('bg-surface-container-low', 'text-on-surface');
+          });
+          btn.classList.add('bg-primary-container', 'text-on-primary');
+          btn.classList.remove('bg-surface-container-low', 'text-on-surface');
+        });
+      });
+
+      // Submit Form Flow
+      const showToast = () => {
+        if (!toast) return;
+        toast.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-4');
+        toast.classList.add('opacity-100', 'translate-y-0');
+        setTimeout(() => {
+          toast.classList.add('opacity-0', 'pointer-events-none', 'translate-y-4');
+          toast.classList.remove('opacity-100', 'translate-y-0');
+        }, 4000);
+      };
+
+      if (submitRegBtn) {
+        submitRegBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          showToast();
+        });
+      }
+
+      // Physical Keyboard Shortcut Enter
+      window.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+          const activeTag = document.activeElement ? document.activeElement.tagName : '';
+          if (activeTag !== 'TEXTAREA') {
+            e.preventDefault();
+            showToast();
+          }
+        }
+      });
+    })();
+  </script>
+</div></main><footer class="w-full py-space-sm bg-surface-container-low text-center text-on-surface-variant font-body-sm text-body-sm"><div class="flex items-center justify-center gap-space-md font-label-sm text-label-sm" dir="ltr"><span>AN-Flexy v4.2 Pro</span><span>•</span><span>DZ Telecommunication Hub</span></div></footer></body></html>

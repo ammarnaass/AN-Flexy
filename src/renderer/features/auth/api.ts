@@ -8,11 +8,13 @@ export type SessionResult = LoginResult | null
 
 export const authApi = {
   hasUsers: (): Promise<HasUsersResult> => invoke<HasUsersResult>(authChannels.hasUsers),
-  login: (input: LoginInput): Promise<LoginResult> => invoke<LoginResult>(authChannels.login, input),
+  login: (input: LoginInput): Promise<LoginResult> =>
+    invoke<LoginResult>(authChannels.login, input),
   setupOwner: (input: SetupOwnerInput): Promise<LoginResult> =>
     invoke<LoginResult>(authChannels.setupOwner, input),
   session: (): Promise<SessionResult> => invoke<SessionResult>(authChannels.session),
   logout: (): Promise<null> => invoke<null>(authChannels.logout),
-  listUsers: (): Promise<Array<{ id: number; name: string; role: 'admin' | 'cashier'; active: boolean }>> =>
-    invoke(authChannels.listUsers),
+  listUsers: (): Promise<
+    Array<{ id: number; name: string; role: 'admin' | 'cashier'; active: boolean }>
+  > => invoke(authChannels.listUsers),
 }

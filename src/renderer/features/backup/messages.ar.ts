@@ -8,7 +8,8 @@ export const backupMessages = {
   restore: 'استرجاع',
   restoring: 'جارٍ الاسترجاع…',
   restoreSuccess: 'تم استرجاع النسخة بنجاح ✓',
-  restoreConfirm: 'تحذير: استرجاع هذه النسخة سيستبدل البيانات الحالية ببيانات النسخة. هل ترغب بالمتابعة؟',
+  restoreConfirm:
+    'تحذير: استرجاع هذه النسخة سيستبدل البيانات الحالية ببيانات النسخة. هل ترغب بالمتابعة؟',
   confirmModalTitle: 'تأكيد استرجاع النسخة الاحتياطية',
   confirmRestoreButton: 'تأكيد الاسترجاع',
   table: {

@@ -225,3 +225,88 @@ export function IconArrowBack({ size = 20, className = '', ...props }: IconProps
   )
 }
 
+export function IconCopy({ size = 20, className = '', ...props }: IconProps) {
+  return (
+    <svg width={size} height={size} {...defaultProps} className={className} {...props}>
+      <rect width="14" height="14" x="8" y="8" rx="2" ry="2" />
+      <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />
+    </svg>
+  )
+}
+
+export function IconCash({ size = 20, className = '', ...props }: IconProps) {
+  return (
+    <svg width={size} height={size} {...defaultProps} className={className} {...props}>
+      <rect width="20" height="12" x="2" y="6" rx="2" />
+      <circle cx="12" cy="12" r="2" />
+      <path d="M6 12h.01M18 12h.01" />
+    </svg>
+  )
+}
+
+export function IconKeyboard({ size = 20, className = '', ...props }: IconProps) {
+  return (
+    <svg width={size} height={size} {...defaultProps} className={className} {...props}>
+      <rect width="20" height="14" x="2" y="5" rx="2" />
+      <path d="M6 9h.01M10 9h.01M14 9h.01M18 9h.01M6 13h.01M18 13h.01M8 13h8" />
+    </svg>
+  )
+}
+
+export function IconSim({ size = 20, className = '', ...props }: IconProps) {
+  return (
+    <svg width={size} height={size} {...defaultProps} className={className} {...props}>
+      <path d="M6 2h8l4 4v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Z" />
+      <path d="M9 10h6M9 14h6M9 18h6" />
+    </svg>
+  )
+}
+
+export function IconTune({ size = 20, className = '', ...props }: IconProps) {
+  return (
+    <svg width={size} height={size} {...defaultProps} className={className} {...props}>
+      <line x1="21" y1="4" x2="14" y2="4" />
+      <line x1="10" y1="4" x2="3" y2="4" />
+      <line x1="21" y1="12" x2="12" y2="12" />
+      <line x1="8" y1="12" x2="3" y2="12" />
+      <line x1="21" y1="20" x2="16" y2="20" />
+      <line x1="12" y1="20" x2="3" y2="20" />
+      <line x1="14" y1="2" x2="14" y2="6" />
+      <line x1="8" y1="10" x2="8" y2="14" />
+      <line x1="16" y1="18" x2="16" y2="22" />
+    </svg>
+  )
+}
+
+export function IconDownload({ size = 20, className = '', ...props }: IconProps) {
+  return (
+    <svg width={size} height={size} {...defaultProps} className={className} {...props}>
+      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+      <polyline points="7 10 12 15 17 10" />
+      <line x1="12" y1="15" x2="12" y2="3" />
+    </svg>
+  )
+}
+
+export function IconReceipt({ size = 20, className = '', ...props }: IconProps) {
+  return (
+    <svg width={size} height={size} {...defaultProps} className={className} {...props}>
+      <path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1Z" />
+      <line x1="8" y1="8" x2="16" y2="8" />
+      <line x1="8" y1="12" x2="16" y2="12" />
+      <line x1="8" y1="16" x2="12" y2="16" />
+    </svg>
+  )
+}
+
+export function IconBalance({ size = 20, className = '', ...props }: IconProps) {
+  return (
+    <svg width={size} height={size} {...defaultProps} className={className} {...props}>
+      <path d="m3 6 9-4 9 4v2H3V6z" />
+      <path d="M12 8v13" />
+      <path d="M5 10v4a3 3 0 0 0 6 0v-4" />
+      <path d="M13 10v4a3 3 0 0 0 6 0v-4" />
+      <path d="M8 21h8" />
+    </svg>
+  )
+}

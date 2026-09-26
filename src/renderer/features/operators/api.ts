@@ -1,5 +1,9 @@
 import { operatorsChannels } from '@shared/contracts/operators'
-import type { CreateOperatorInput, OperatorInfo, UpdateOperatorMarginInput } from '@shared/contracts/operators'
+import type {
+  CreateOperatorInput,
+  OperatorInfo,
+  UpdateOperatorMarginInput,
+} from '@shared/contracts/operators'
 import { invoke } from '@renderer/shared/api'
 
 // طبقة الوصول إلى IPC للمتعاملين.

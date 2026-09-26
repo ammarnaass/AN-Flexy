@@ -4,7 +4,8 @@ import type { GetReportInput } from '@shared/contracts/reports'
 
 export const reportsKeys = {
   all: ['reports'] as const,
-  report: (input: GetReportInput) => ['reports', input.period, input.startDate, input.endDate] as const,
+  report: (input: GetReportInput) =>
+    ['reports', input.period, input.startDate, input.endDate] as const,
 }
 
 export function useReport(input: GetReportInput) {

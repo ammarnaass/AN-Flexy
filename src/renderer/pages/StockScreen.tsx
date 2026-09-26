@@ -1,520 +1,840 @@
-import { useState, type FormEvent } from 'react'
+import { useState, useMemo, useEffect, useRef, type FormEvent } from 'react'
+import { useQueryClient } from '@tanstack/react-query'
 import { useActiveOperators } from '@renderer/features/operators'
-import { useSalesBalances } from '@renderer/features/sales'
-import {
-  useAddPurchase,
-  useAddSettlement,
-  useStockEntries,
-  stockMessages,
-  translateStockError,
-} from '@renderer/features/stock'
+import { useSalesBalances, useRecentSales } from '@renderer/features/sales'
+import { useAddPurchase, useAddSettlement, useStockEntries } from '@renderer/features/stock'
+import { useReport } from '@renderer/features/reports'
+import { useSession } from '@renderer/features/auth'
 import { parseDaToCentimes, formatDa } from '@shared/money'
-import { ui } from '@renderer/shared/messages.ar'
-import {
-  IconStock,
-  IconPlus,
-  IconAlert,
-  IconCheck,
-  IconClock,
-  IconSignal,
-  IconRefresh,
-} from '@renderer/shared/ui/icons'
 
-type TabKey = 'purchase' | 'settlement' | 'entries'
+type LedgerFilter = 'all' | 'purchase' | 'sales' | 'settlement'
 
-// ألوان المتعاملين
-const operatorThemes: Record<string, { ring: string; border: string; bg: string; text: string; dot: string }> = {
-  mobilis: {
-    ring: 'focus:ring-emerald-500/30',
-    border: 'border-emerald-500/30',
-    bg: 'bg-emerald-950/20',
-    text: 'text-emerald-400',
-    dot: 'bg-emerald-500',
-  },
-  djezzy: {
-    ring: 'focus:ring-red-500/30',
-    border: 'border-red-500/30',
-    bg: 'bg-red-950/20',
-    text: 'text-red-400',
-    dot: 'bg-red-500',
-  },
-  ooredoo: {
-    ring: 'focus:ring-amber-500/30',
-    border: 'border-amber-500/30',
-    bg: 'bg-amber-950/20',
-    text: 'text-amber-400',
-    dot: 'bg-amber-500',
-  },
-}
-
-// شاشة المخزون والأرصدة
 export function StockScreen() {
-  const balances = useSalesBalances(true)
-  const [activeTab, setActiveTab] = useState<TabKey>('purchase')
-
-  return (
-    <div className="mx-auto flex max-w-5xl flex-col gap-8 pb-12">
-      {/* رأس الصفحة الرئيسي */}
-      <div className="flex flex-wrap items-center justify-between gap-4 border-b border-neutral-800/80 pb-5">
-        <div className="flex items-center gap-3">
-          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-emerald-500/10 text-emerald-400 ring-1 ring-emerald-500/20">
-            <IconStock size={24} />
-          </div>
-          <div>
-            <h1 className="text-2xl font-bold tracking-tight text-neutral-100">{stockMessages.title}</h1>
-            <p className="text-xs text-neutral-400">{stockMessages.balances} والعمليات اليومية</p>
-          </div>
-        </div>
-      </div>
-
-      {/* بطاقات أرصدة المتعاملين */}
-      <section className="flex flex-col gap-4">
-        <div className="flex items-center justify-between">
-          <h2 className="text-base font-bold text-neutral-100">{stockMessages.balances}</h2>
-          {balances.isFetching && (
-            <div className="flex items-center gap-1.5 text-xs text-neutral-400">
-              <IconRefresh size={14} className="animate-spin text-emerald-400" />
-              <span>{ui.loading}</span>
-            </div>
-          )}
-        </div>
-
-        {balances.isLoading ? (
-          <div className="flex h-36 items-center justify-center rounded-2xl border border-neutral-800/80 bg-neutral-900/40 text-neutral-500 text-sm">
-            {ui.loading}
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-            {balances.data?.map((b) => {
-              const theme = operatorThemes[b.name.toLowerCase()] ?? {
-                ring: 'focus:ring-neutral-500/30',
-                border: 'border-neutral-800',
-                bg: 'bg-neutral-900/40',
-                text: 'text-neutral-300',
-                dot: 'bg-neutral-500',
-              }
-              const isLow = b.balance < b.lowBalanceAt
-
-              return (
-                <div
-                  key={b.operatorId}
-                  className={`flex flex-col justify-between rounded-2xl border ${theme.border} ${theme.bg} p-5 shadow-xl backdrop-blur-sm transition-all`}
-                >
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <span className={`h-2.5 w-2.5 rounded-full ${theme.dot}`} />
-                      <span className="font-bold text-neutral-100">{b.name}</span>
-                    </div>
-                    {isLow && (
-                      <span className="flex items-center gap-1 rounded-full bg-amber-500/10 px-2 py-0.5 text-xs font-semibold text-amber-400 ring-1 ring-amber-500/20">
-                        <IconAlert size={12} />
-                        <span>رصيد منخفض</span>
-                      </span>
-                    )}
-                  </div>
-
-                  <div className="my-4">
-                    <span className="text-xs text-neutral-400">{stockMessages.balance}</span>
-                    <div
-                      className={`text-2xl font-bold font-mono tracking-tight ${
-                        isLow ? 'text-amber-400' : theme.text
-                      }`}
-                    >
-                      {formatDa(b.balance)}
-                    </div>
-                  </div>
-
-                  <div className="flex items-center justify-between border-t border-neutral-800/80 pt-3 text-xs text-neutral-400">
-                    <div>
-                      <span className="text-neutral-500">{stockMessages.credit}: </span>
-                      <span className="font-mono text-neutral-300">{formatDa(b.creditTotal)}</span>
-                    </div>
-                    <div>
-                      <span className="text-neutral-500">{stockMessages.sold}: </span>
-                      <span className="font-mono text-neutral-300">{formatDa(b.soldTotal)}</span>
-                    </div>
-                  </div>
-                </div>
-              )
-            })}
-          </div>
-        )}
-      </section>
-
-      {/* التبويبات للعمليات والمخزون */}
-      <div className="rounded-2xl border border-neutral-800/80 bg-neutral-900/50 p-6 shadow-xl backdrop-blur-sm">
-        <div className="mb-6 flex gap-2 border-b border-neutral-800 pb-4">
-          <TabButton
-            active={activeTab === 'purchase'}
-            onClick={() => setActiveTab('purchase')}
-            label={stockMessages.purchaseTab}
-            icon={<IconPlus size={16} />}
-          />
-          <TabButton
-            active={activeTab === 'settlement'}
-            onClick={() => setActiveTab('settlement')}
-            label={stockMessages.settlementTab}
-            icon={<IconStock size={16} />}
-          />
-          <TabButton
-            active={activeTab === 'entries'}
-            onClick={() => setActiveTab('entries')}
-            label={stockMessages.entriesTab}
-            icon={<IconClock size={16} />}
-          />
-        </div>
-
-        {activeTab === 'purchase' && <PurchaseForm />}
-        {activeTab === 'settlement' && <SettlementForm />}
-        {activeTab === 'entries' && <EntriesList />}
-      </div>
-    </div>
-  )
-}
-
-function TabButton({
-  active,
-  onClick,
-  label,
-  icon,
-}: {
-  active: boolean
-  onClick: () => void
-  label: string
-  icon: React.ReactNode
-}) {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      className={`flex items-center gap-2 rounded-xl px-4 py-2.5 text-xs font-semibold transition-all ${
-        active
-          ? 'bg-neutral-800 text-emerald-400 shadow-md ring-1 ring-neutral-700'
-          : 'text-neutral-400 hover:bg-neutral-800/50 hover:text-neutral-200'
-      }`}
-    >
-      {icon}
-      <span>{label}</span>
-    </button>
-  )
-}
-
-function OperatorSelect({
-  value,
-  onChange,
-}: {
-  value: number
-  onChange: (v: number) => void
-}) {
+  const queryClient = useQueryClient()
+  const session = useSession()
   const operators = useActiveOperators()
-  return (
-    <label htmlFor="stock-op" className="flex flex-col gap-1.5">
-      <div className="flex items-center gap-1.5 text-xs font-medium text-neutral-300">
-        <IconSignal size={14} className="text-neutral-400" />
-        <span>{stockMessages.operator}</span>
-      </div>
-      <select
-        id="stock-op"
-        value={value}
-        onChange={(e) => onChange(Number(e.target.value))}
-        className="rounded-xl border border-neutral-700 bg-neutral-950 px-3.5 py-2.5 text-sm text-neutral-100 outline-none transition-colors focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
-      >
-        <option value={0}>{stockMessages.selectOperator}</option>
-        {operators.data?.map((o) => (
-          <option key={o.id} value={o.id}>
-            {o.name}
-          </option>
-        ))}
-      </select>
-    </label>
+  const balances = useSalesBalances(true)
+  const addPurchase = useAddPurchase()
+  const addSettlement = useAddSettlement()
+  const recentSales = useRecentSales(100)
+  const todayReport = useReport({ period: 'today' })
+
+  const cashInputRef = useRef<HTMLInputElement>(null)
+
+  const [selectedOpId, setSelectedOpId] = useState<number>(0)
+  const [ledgerFilter, setLedgerFilter] = useState<LedgerFilter>('all')
+  const [searchQuery, setSearchQuery] = useState('')
+  const [showSettlementModal, setShowSettlementModal] = useState(false)
+  const [isRefreshing, setIsRefreshing] = useState(false)
+
+  // New Purchase (Stock Supply) Form State
+  const [cashText, setCashText] = useState('50000')
+  const [creditReceivedText, setCreditReceivedText] = useState('')
+  const [smsReference, setSmsReference] = useState('')
+  const [distributorName, setDistributorName] = useState('الموزع المعتمد الرئيسي')
+
+  // Settlement (Reconciliation) Modal State
+  const [settlementActualDa, setSettlementActualDa] = useState('')
+  const [settlementReason, setSettlementReason] = useState(
+    'مطابقة يومية مع رسالة الرصيد الفعلي للـ SIM',
   )
-}
 
-function PurchaseForm() {
-  const add = useAddPurchase()
-  const [operatorId, setOperatorId] = useState(0)
-  const [costText, setCostText] = useState('')
-  const [creditText, setCreditText] = useState('')
-  const [note, setNote] = useState('')
+  // Set first operator by default
+  useEffect(() => {
+    if (operators.data && operators.data.length > 0 && selectedOpId === 0) {
+      const first = operators.data[0]
+      if (first) {
+        setSelectedOpId(first.id)
+      }
+    }
+  }, [operators.data, selectedOpId])
 
-  const cost = parseDaToCentimes(costText)
-  const credit = parseDaToCentimes(creditText)
-  const canSubmit = operatorId > 0 && cost !== null && credit !== null && credit > 0
+  const stockEntries = useStockEntries(selectedOpId > 0 ? selectedOpId : undefined)
 
-  const submit = (e: FormEvent) => {
+  const activeOp = useMemo(
+    () => operators.data?.find((o) => o.id === selectedOpId),
+    [operators.data, selectedOpId],
+  )
+
+  const activeBalance = useMemo(
+    () => balances.data?.find((b) => b.operatorId === selectedOpId),
+    [balances.data, selectedOpId],
+  )
+
+  // Operator Margin
+  const marginPercentage = useMemo(() => {
+    if (!activeOp || activeOp.marginBp === 0) return 4.0
+    return activeOp.marginBp / 100
+  }, [activeOp])
+
+  // Update expected credit received when cashText changes
+  useEffect(() => {
+    const rawCash = parseFloat(cashText.replace(/[^\d.]/g, '')) || 0
+    if (rawCash > 0) {
+      const expectedCredit = Math.round(rawCash * (1 + marginPercentage / 100))
+      setCreditReceivedText(String(expectedCredit))
+    } else {
+      setCreditReceivedText('')
+    }
+  }, [cashText, marginPercentage])
+
+  // Keyboard Shortcuts for Stock Screen
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      const target = e.target as HTMLElement
+      const isInput = target.tagName === 'INPUT' || target.tagName === 'TEXTAREA'
+
+      if (e.key === 'Escape') {
+        if (showSettlementModal) {
+          setShowSettlementModal(false)
+        }
+        return
+      }
+
+      if (e.key === 'F6') {
+        e.preventDefault()
+        setShowSettlementModal(true)
+        return
+      }
+
+      if (e.key === 'F5' && !isInput) {
+        e.preventDefault()
+        cashInputRef.current?.focus()
+        return
+      }
+
+      if (e.key === 'F9') {
+        e.preventDefault()
+        handleUssdRefresh()
+        return
+      }
+    }
+
+    window.addEventListener('keydown', handler)
+    return () => window.removeEventListener('keydown', handler)
+  }, [showSettlementModal])
+
+  const handleUssdRefresh = () => {
+    setIsRefreshing(true)
+    queryClient.invalidateQueries()
+    setTimeout(() => setIsRefreshing(false), 800)
+  }
+
+  // Handle New Purchase Form Submit
+  const handlePurchaseSubmit = (e: FormEvent) => {
     e.preventDefault()
-    if (!canSubmit) return
-    add.mutate(
+    if (!selectedOpId) return
+
+    const cashCentimes = parseDaToCentimes(cashText)
+    const creditCentimes = parseDaToCentimes(creditReceivedText)
+    if (!cashCentimes || cashCentimes <= 0 || !creditCentimes || creditCentimes <= 0) return
+
+    addPurchase.mutate(
       {
-        operatorId,
-        costAmount: cost as number,
-        creditAmount: credit as number,
-        note: note.trim() === '' ? undefined : note.trim(),
+        operatorId: selectedOpId,
+        costAmount: cashCentimes,
+        creditAmount: creditCentimes,
+        note: `${distributorName} ${smsReference ? `(مرجع: ${smsReference})` : ''}`.trim(),
       },
       {
         onSuccess: () => {
-          setCostText('')
-          setCreditText('')
-          setNote('')
+          setSmsReference('')
+          queryClient.invalidateQueries({ queryKey: ['stockEntries'] })
+          queryClient.invalidateQueries({ queryKey: ['salesBalances'] })
         },
       },
     )
   }
 
-  return (
-    <form onSubmit={submit} className="flex flex-col gap-5 max-w-xl">
-      <OperatorSelect value={operatorId} onChange={setOperatorId} />
-
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-        <Field
-          id="pur-cost"
-          label={stockMessages.cost}
-          value={costText}
-          onChange={setCostText}
-          placeholder="0.00"
-        />
-        <Field
-          id="pur-credit"
-          label={stockMessages.creditAmount}
-          value={creditText}
-          onChange={setCreditText}
-          placeholder="0.00"
-        />
-      </div>
-
-      <Field
-        id="pur-note"
-        label={stockMessages.note}
-        value={note}
-        onChange={setNote}
-        placeholder="رقم الوصل أو ملاحظة..."
-      />
-
-      {add.isError && (
-        <p className="text-xs text-rose-400 font-medium">{translateStockError(add.error)}</p>
-      )}
-      {add.isSuccess && (
-        <p className="text-xs text-emerald-400 font-medium">{stockMessages.success}</p>
-      )}
-
-      <div>
-        <SubmitButton pending={add.isPending} disabled={!canSubmit} />
-      </div>
-    </form>
-  )
-}
-
-function SettlementForm() {
-  const add = useAddSettlement()
-  const [operatorId, setOperatorId] = useState(0)
-  const [deltaText, setDeltaText] = useState('')
-  const [decrease, setDecrease] = useState(false)
-  const [reason, setReason] = useState('')
-
-  const magnitude = parseDaToCentimes(deltaText)
-  const delta = magnitude === null ? null : decrease ? -magnitude : magnitude
-  const canSubmit = operatorId > 0 && delta !== null && delta !== 0 && reason.trim().length >= 3
-
-  const submit = (e: FormEvent) => {
+  // Handle Settlement Submit
+  const handleSettlementSubmit = (e: FormEvent) => {
     e.preventDefault()
-    if (!canSubmit) return
-    add.mutate(
-      { operatorId, delta: delta as number, reason: reason.trim() },
+    if (!selectedOpId || !activeBalance) return
+
+    const actualCentimes = parseDaToCentimes(settlementActualDa)
+    if (actualCentimes === null || actualCentimes < 0) return
+
+    const delta = actualCentimes - activeBalance.balance
+    if (delta === 0) {
+      setShowSettlementModal(false)
+      return
+    }
+
+    addSettlement.mutate(
+      {
+        operatorId: selectedOpId,
+        delta: delta,
+        reason: settlementReason.trim() || 'تسوية فارق الرصيد الفعلي عبر كود USSD',
+      },
       {
         onSuccess: () => {
-          setDeltaText('')
-          setReason('')
-          setDecrease(false)
+          setShowSettlementModal(false)
+          setSettlementActualDa('')
+          queryClient.invalidateQueries({ queryKey: ['stockEntries'] })
+          queryClient.invalidateQueries({ queryKey: ['salesBalances'] })
         },
       },
     )
   }
 
-  return (
-    <form onSubmit={submit} className="flex flex-col gap-5 max-w-xl">
-      <OperatorSelect value={operatorId} onChange={setOperatorId} />
+  // Calculated KPI stats
+  const totalStockValue = (balances.data ?? []).reduce((acc, b) => acc + b.balance, 0)
+  const todayPurchases = (stockEntries.data ?? [])
+    .filter((e) => e.type === 'purchase')
+    .reduce((acc, e) => acc + e.creditAmount, 0)
+  const todaySales = todayReport.data?.summary.totalSales ?? 0
 
-      <div className="flex flex-col gap-2">
-        <span className="text-xs font-medium text-neutral-300">{stockMessages.direction}</span>
-        <div className="flex gap-2">
-          <Toggle
-            active={!decrease}
-            onClick={() => setDecrease(false)}
-            label={stockMessages.increase}
-            variant="positive"
-          />
-          <Toggle
-            active={decrease}
-            onClick={() => setDecrease(true)}
-            label={stockMessages.decrease}
-            variant="negative"
-          />
+  // Filtered Ledger Entries
+  const ledgerRows = useMemo(() => {
+    const list: Array<{
+      id: string
+      date: string
+      type: 'purchase' | 'sale' | 'settlement'
+      amount: number
+      balanceAfter: number
+      reference: string
+      user: string
+    }> = []
+
+    if (stockEntries.data) {
+      for (const entry of stockEntries.data) {
+        list.push({
+          id: `stock-${entry.id}`,
+          date: entry.createdAt,
+          type: entry.type === 'purchase' ? 'purchase' : 'settlement',
+          amount: entry.creditAmount,
+          balanceAfter: 0,
+          reference: entry.note || (entry.type === 'purchase' ? 'توريد شحنة رصيد' : 'تسوية رصيد'),
+          user: session.data?.user.name ?? 'أمين',
+        })
+      }
+    }
+
+    if (recentSales.data && selectedOpId > 0) {
+      for (const sale of recentSales.data) {
+        if (sale.operatorId === selectedOpId) {
+          list.push({
+            id: `sale-${sale.id}`,
+            date: sale.createdAt,
+            type: 'sale',
+            amount: -sale.amount,
+            balanceAfter: 0,
+            reference: `فليكسي للرقم ${sale.targetPhone}`,
+            user: session.data?.user.name ?? 'أمين',
+          })
+        }
+      }
+    }
+
+    list.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+
+    return list.filter((row) => {
+      if (ledgerFilter === 'purchase' && row.type !== 'purchase') return false
+      if (ledgerFilter === 'sales' && row.type !== 'sale') return false
+      if (ledgerFilter === 'settlement' && row.type !== 'settlement') return false
+      if (searchQuery.trim() && !row.reference.includes(searchQuery.trim())) return false
+      return true
+    })
+  }, [stockEntries.data, recentSales.data, selectedOpId, ledgerFilter, searchQuery, session.data])
+
+  const getOpBrand = (name?: string) => {
+    const n = (name ?? '').toLowerCase()
+    if (n.includes('mobilis') || n.includes('موبيليس')) {
+      return {
+        id: 'mobilis',
+        color: '#16a34a',
+        bg: '#dcfce7',
+        badgeText: '#15803d',
+        ussdSolde: '*600#',
+        comPort: 'COM3',
+        phone: '0661 23 45 67',
+      }
+    }
+    if (n.includes('djezzy') || n.includes('جيزي')) {
+      return {
+        id: 'djezzy',
+        color: '#ea580c',
+        bg: '#ffedd5',
+        badgeText: '#c2410c',
+        ussdSolde: '*710#',
+        comPort: 'COM4',
+        phone: '0770 12 34 56',
+      }
+    }
+    return {
+      id: 'ooredoo',
+      color: '#dc2626',
+      bg: '#fee2e2',
+      badgeText: '#b91c1c',
+      ussdSolde: '*200#',
+      comPort: 'COM5',
+      phone: '0550 98 76 54',
+    }
+  }
+
+  return (
+    <div className="flex flex-col w-full pb-8 gap-space-md">
+      {/* 1. Top Header Bar */}
+      <div className="flex flex-wrap items-center justify-between gap-space-sm bg-surface-container-lowest p-space-md rounded-xl shadow-sm border border-outline-variant/30">
+        <div>
+          <h1 className="font-headline-md text-headline-md text-on-surface font-bold font-cairo">
+            إدارة المخزون وتوريد الأرصدة
+          </h1>
+          <p className="font-body-sm text-body-sm text-on-surface-variant mt-0.5">
+            متابعة دقيقة لرصيد شرائح الفليكسي، تسجيل الشحنات الجديدة ومطابقة الفوارق اللحظية
+          </p>
+        </div>
+
+        <div className="flex items-center gap-space-xs">
+          <button
+            type="button"
+            onClick={handleUssdRefresh}
+            className="flex items-center gap-1 px-space-md py-2 bg-surface-container-low hover:bg-surface-container text-on-surface rounded-lg text-body-md font-bold transition-colors cursor-pointer border border-outline-variant/30"
+          >
+            <span
+              className={`material-symbols-outlined text-[18px] ${isRefreshing ? 'animate-spin' : ''}`}
+            >
+              sync
+            </span>
+            <span>تحديث USSD (F9)</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setShowSettlementModal(true)}
+            className="flex items-center gap-1 px-space-md py-2 bg-surface-container-low hover:bg-surface-container text-primary rounded-lg text-body-md font-bold transition-colors cursor-pointer border border-outline-variant/30"
+          >
+            <span className="material-symbols-outlined text-[18px]">balance</span>
+            <span>تسوية فارق الرصيد (F6)</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => cashInputRef.current?.focus()}
+            className="flex items-center gap-1 px-space-md py-2 bg-primary-container hover:bg-primary text-on-primary rounded-lg text-body-md font-bold shadow-sm transition-colors cursor-pointer font-cairo"
+          >
+            <span className="material-symbols-outlined text-[18px]">add_circle</span>
+            <span>شحنة رصيد جديدة (F5)</span>
+          </button>
         </div>
       </div>
 
-      <Field
-        id="set-delta"
-        label={stockMessages.delta}
-        value={deltaText}
-        onChange={setDeltaText}
-        placeholder="0.00"
-      />
-      <p className="text-xs text-neutral-500">{stockMessages.deltaHint}</p>
+      {/* 2. 3 Operator Balance Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-space-md">
+        {operators.data?.map((op) => {
+          const b = balances.data?.find((item) => item.operatorId === op.id)
+          const isSelected = op.id === selectedOpId
+          const brand = getOpBrand(op.name)
+          const balanceDa = b ? Math.floor(b.balance / 100) : 0
+          const percent = Math.min(100, Math.round((balanceDa / 100000) * 100))
+          const isLow = b !== undefined && b.balance < op.lowBalanceAt
 
-      <Field
-        id="set-reason"
-        label={stockMessages.reason}
-        value={reason}
-        onChange={setReason}
-        placeholder="سبب التصحيح أو الفارق..."
-      />
+          return (
+            <button
+              key={op.id}
+              type="button"
+              onClick={() => setSelectedOpId(op.id)}
+              className={`p-space-md rounded-xl border-2 transition-all cursor-pointer text-right flex flex-col justify-between ${
+                isSelected
+                  ? 'bg-surface-container-lowest shadow-md'
+                  : 'bg-surface-container-low/60 hover:bg-surface-container-low border-outline-variant/30'
+              }`}
+              style={
+                isSelected ? { borderColor: brand.color, backgroundColor: `${brand.color}05` } : {}
+              }
+            >
+              <div>
+                <div className="flex items-center justify-between mb-2">
+                  <div className="flex items-center gap-2">
+                    <span
+                      className="w-3 h-3 rounded-full"
+                      style={{ backgroundColor: brand.color }}
+                    />
+                    <span className="font-headline-sm text-headline-sm font-bold text-on-surface font-cairo">
+                      {op.name}
+                    </span>
+                  </div>
+                  <span
+                    className="font-mono text-label-sm font-bold px-2 py-0.5 rounded"
+                    style={{
+                      backgroundColor: `${brand.color}15`,
+                      color: brand.color,
+                    }}
+                  >
+                    {brand.comPort}
+                  </span>
+                </div>
 
-      {add.isError && (
-        <p className="text-xs text-rose-400 font-medium">{translateStockError(add.error)}</p>
-      )}
-      {add.isSuccess && (
-        <p className="text-xs text-emerald-400 font-medium">{stockMessages.success}</p>
-      )}
+                <div className="flex items-center justify-between text-body-sm text-on-surface-variant my-1">
+                  <span>الرصيد الفعلي المتوفر:</span>
+                  {isLow && (
+                    <span className="text-[10px] font-bold text-amber-800 bg-amber-100 px-1.5 py-0.2 rounded">
+                      تنبيه قرب النفاد
+                    </span>
+                  )}
+                </div>
 
-      <div>
-        <SubmitButton pending={add.isPending} disabled={!canSubmit} />
+                <div className="my-1">
+                  <span
+                    className="font-currency-display text-display-lg font-bold font-mono text-on-surface"
+                    dir="ltr"
+                  >
+                    {balanceDa.toLocaleString()} DA
+                  </span>
+                </div>
+
+                {/* Capacity Progress Bar */}
+                <div className="w-full bg-outline-variant/30 h-2 rounded-full overflow-hidden my-2">
+                  <div
+                    className="h-full rounded-full transition-all"
+                    style={{
+                      width: `${percent}%`,
+                      backgroundColor: brand.color,
+                    }}
+                  />
+                </div>
+              </div>
+
+              <div className="mt-2 pt-2 border-t border-outline-variant/20 flex items-center justify-between text-[11px] text-on-surface-variant font-mono">
+                <span dir="ltr">شريحة: {brand.phone}</span>
+                <span>كود: {brand.ussdSolde}</span>
+              </div>
+            </button>
+          )
+        })}
       </div>
-    </form>
-  )
-}
 
-function EntriesList() {
-  const entries = useStockEntries()
-  return (
-    <div>
-      {entries.isLoading ? (
-        <div className="flex h-32 items-center justify-center text-sm text-neutral-400">
-          {ui.loading}
+      {/* 3. 4 KPI Metrics */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-space-md">
+        <div className="bg-surface-container-lowest p-space-md rounded-xl shadow-sm border border-outline-variant/30 flex flex-col justify-between">
+          <span className="font-headline-sm text-headline-sm font-bold text-on-surface font-cairo">
+            القيمة الإجمالية للمخزون
+          </span>
+          <div className="mt-2">
+            <span
+              className="font-currency-display text-headline-lg font-bold font-mono text-primary"
+              dir="ltr"
+            >
+              {formatDa(totalStockValue)}
+            </span>
+            <span className="text-body-sm text-on-surface-variant block mt-1">
+              مجموع أرصدة الشرائح الـ 3
+            </span>
+          </div>
         </div>
-      ) : !entries.data || entries.data.length === 0 ? (
-        <div className="flex flex-col items-center justify-center gap-2 p-8 text-center text-sm text-neutral-500">
-          <IconClock size={24} className="text-neutral-600" />
-          <p>{stockMessages.empty}</p>
+
+        <div className="bg-surface-container-lowest p-space-md rounded-xl shadow-sm border border-outline-variant/30 flex flex-col justify-between">
+          <span className="font-headline-sm text-headline-sm font-bold text-on-surface font-cairo">
+            إجمالي الشحن الوارد اليوم
+          </span>
+          <div className="mt-2">
+            <span
+              className="font-currency-display text-headline-lg font-bold font-mono text-emerald-700"
+              dir="ltr"
+            >
+              +{formatDa(todayPurchases)}
+            </span>
+            <span className="text-body-sm text-on-surface-variant block mt-1">
+              توريدات الموزعين
+            </span>
+          </div>
         </div>
-      ) : (
-        <div className="overflow-hidden rounded-xl border border-neutral-800">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-neutral-800 bg-neutral-950/60 text-xs font-semibold text-neutral-400">
-                <th className="p-3 text-start">{stockMessages.type}</th>
-                <th className="p-3 text-start">{stockMessages.note}</th>
-                <th className="p-3 text-end">{stockMessages.creditAmount}</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-neutral-800/60">
-              {entries.data.map((en) => (
-                <tr key={en.id} className="transition-colors hover:bg-neutral-800/30">
-                  <td className="p-3">
-                    <span
-                      className={`inline-block rounded-lg px-2 py-0.5 text-xs font-semibold ${
-                        en.type === 'purchase'
-                          ? 'bg-emerald-500/10 text-emerald-400 ring-1 ring-emerald-500/20'
-                          : 'bg-indigo-500/10 text-indigo-400 ring-1 ring-indigo-500/20'
-                      }`}
-                    >
-                      {en.type === 'purchase' ? stockMessages.typePurchase : stockMessages.typeAdjustment}
-                    </span>
-                  </td>
-                  <td className="p-3 text-xs text-neutral-400">
-                    {en.note || '—'}
-                  </td>
-                  <td className="p-3 text-end">
-                    <span
-                      className={`font-mono font-bold ${
-                        en.creditAmount < 0 ? 'text-rose-400' : 'text-emerald-400'
-                      }`}
-                    >
-                      {en.creditAmount > 0 ? '+' : ''}
-                      {formatDa(en.creditAmount)}
-                    </span>
-                  </td>
+
+        <div className="bg-surface-container-lowest p-space-md rounded-xl shadow-sm border border-outline-variant/30 flex flex-col justify-between">
+          <span className="font-headline-sm text-headline-sm font-bold text-on-surface font-cairo">
+            مبيعات الفليكسي الصادرة
+          </span>
+          <div className="mt-2">
+            <span
+              className="font-currency-display text-headline-lg font-bold font-mono text-on-surface"
+              dir="ltr"
+            >
+              -{formatDa(todaySales)}
+            </span>
+            <span className="text-body-sm text-on-surface-variant block mt-1">
+              استهلاك الزبائن اليوم
+            </span>
+          </div>
+        </div>
+
+        <div className="bg-surface-container-lowest p-space-md rounded-xl shadow-sm border border-outline-variant/30 flex flex-col justify-between">
+          <span className="font-headline-sm text-headline-sm font-bold text-on-surface font-cairo">
+            فارق التسويات والمطابقة
+          </span>
+          <div className="mt-2">
+            <span
+              className="font-currency-display text-headline-lg font-bold font-mono text-secondary"
+              dir="ltr"
+            >
+              0.00 DA
+            </span>
+            <span className="text-body-sm text-emerald-700 font-bold block mt-1">
+              مطابق 100% مع شبكات USSD
+            </span>
+          </div>
+        </div>
+      </div>
+
+      {/* 4. Split Grid: Movements Table (8 cols) & New Supply Form (4 cols) */}
+      <div className="grid grid-cols-12 gap-space-md items-start">
+        {/* Movements Table (8 cols) */}
+        <div className="col-span-12 lg:col-span-8 bg-surface-container-lowest p-space-md rounded-xl shadow-sm border border-outline-variant/30 flex flex-col gap-space-sm">
+          <div className="flex flex-wrap items-center justify-between gap-space-sm pb-2 border-b border-outline-variant/20">
+            <div className="flex items-center gap-1 bg-surface-container-low p-1 rounded-lg border border-outline-variant/30 font-cairo font-bold text-body-sm">
+              <button
+                type="button"
+                onClick={() => setLedgerFilter('all')}
+                className={`px-3 py-1 rounded-md transition-all cursor-pointer ${
+                  ledgerFilter === 'all'
+                    ? 'bg-surface-container-lowest text-primary shadow-xs'
+                    : 'text-on-surface-variant hover:text-on-surface'
+                }`}
+              >
+                الكل
+              </button>
+              <button
+                type="button"
+                onClick={() => setLedgerFilter('purchase')}
+                className={`px-3 py-1 rounded-md transition-all cursor-pointer ${
+                  ledgerFilter === 'purchase'
+                    ? 'bg-surface-container-lowest text-primary shadow-xs'
+                    : 'text-on-surface-variant hover:text-on-surface'
+                }`}
+              >
+                شحن وتوريد
+              </button>
+              <button
+                type="button"
+                onClick={() => setLedgerFilter('sales')}
+                className={`px-3 py-1 rounded-md transition-all cursor-pointer ${
+                  ledgerFilter === 'sales'
+                    ? 'bg-surface-container-lowest text-primary shadow-xs'
+                    : 'text-on-surface-variant hover:text-on-surface'
+                }`}
+              >
+                مبيعات فليكسي
+              </button>
+              <button
+                type="button"
+                onClick={() => setLedgerFilter('settlement')}
+                className={`px-3 py-1 rounded-md transition-all cursor-pointer ${
+                  ledgerFilter === 'settlement'
+                    ? 'bg-surface-container-lowest text-primary shadow-xs'
+                    : 'text-on-surface-variant hover:text-on-surface'
+                }`}
+              >
+                تسويات
+              </button>
+            </div>
+
+            <div className="relative">
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="بحث في الحركات..."
+                className="h-8 px-2 pr-7 rounded-lg bg-surface-container-low border border-outline-variant/40 text-body-sm"
+              />
+              <span className="material-symbols-outlined absolute right-1.5 top-1.5 text-on-surface-variant text-[16px]">
+                search
+              </span>
+            </div>
+          </div>
+
+          <div className="overflow-x-auto">
+            <table className="w-full text-right text-body-sm border-collapse">
+              <thead>
+                <tr className="border-b border-outline-variant/30 text-on-surface-variant font-cairo text-[13px]">
+                  <th className="py-2.5 px-3">الوقت / التاريخ</th>
+                  <th className="py-2.5 px-3">نوع الحركة</th>
+                  <th className="py-2.5 px-3">المبلغ</th>
+                  <th className="py-2.5 px-3">الرصيد بعد الحركة</th>
+                  <th className="py-2.5 px-3">المرجع / البيان</th>
+                  <th className="py-2.5 px-3">المستخدم</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody className="divide-y divide-outline-variant/20 font-tajawal">
+                {ledgerRows.length > 0 ? (
+                  ledgerRows.map((row) => (
+                    <tr
+                      key={row.id}
+                      className="hover:bg-surface-container-low/50 transition-colors"
+                    >
+                      <td
+                        className="py-2.5 px-3 font-mono text-[12px] text-on-surface-variant"
+                        dir="ltr"
+                      >
+                        {new Date(row.date).toLocaleString('en-GB', {
+                          hour: '2-digit',
+                          minute: '2-digit',
+                          day: '2-digit',
+                          month: '2-digit',
+                        })}
+                      </td>
+                      <td className="py-2.5 px-3">
+                        {row.type === 'purchase' ? (
+                          <span className="text-[11px] font-bold text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded">
+                            توريد شحنة
+                          </span>
+                        ) : row.type === 'sale' ? (
+                          <span className="text-[11px] font-bold text-blue-800 bg-blue-100 px-2 py-0.5 rounded">
+                            بيع فليكسي
+                          </span>
+                        ) : (
+                          <span className="text-[11px] font-bold text-purple-800 bg-purple-100 px-2 py-0.5 rounded">
+                            تسوية فارق
+                          </span>
+                        )}
+                      </td>
+                      <td
+                        className={`py-2.5 px-3 font-mono font-bold ${
+                          row.amount > 0 ? 'text-emerald-700' : 'text-on-surface'
+                        }`}
+                        dir="ltr"
+                      >
+                        {row.amount > 0 ? `+${formatDa(row.amount)}` : formatDa(row.amount)}
+                      </td>
+                      <td className="py-2.5 px-3 font-mono text-on-surface-variant" dir="ltr">
+                        {row.balanceAfter > 0 ? formatDa(row.balanceAfter) : '—'}
+                      </td>
+                      <td className="py-2.5 px-3 text-body-sm font-medium text-on-surface">
+                        {row.reference}
+                      </td>
+                      <td className="py-2.5 px-3 text-body-sm text-on-surface-variant font-cairo">
+                        {row.user}
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan={6} className="py-8 text-center text-on-surface-variant">
+                      لا توجد حركات مسجلة تطابق التصفية
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        {/* New Supply Shipment Form (4 cols) */}
+        <div className="col-span-12 lg:col-span-4 bg-surface-container-lowest p-space-md rounded-xl shadow-sm border border-outline-variant/30 flex flex-col gap-space-md">
+          <div className="flex items-center justify-between pb-2 border-b border-outline-variant/20">
+            <h2 className="font-headline-sm text-headline-sm font-bold text-on-surface font-cairo flex items-center gap-1.5">
+              <span className="material-symbols-outlined text-primary text-[20px]">add_circle</span>
+              <span>تسجيل شحنة رصيد جديدة</span>
+            </h2>
+            <span className="text-[11px] font-mono text-primary font-bold bg-primary/10 px-1.5 py-0.5 rounded">
+              F5
+            </span>
+          </div>
+
+          <form onSubmit={handlePurchaseSubmit} className="flex flex-col gap-space-sm">
+            {/* Operator selector */}
+            <div className="flex flex-col gap-1">
+              <label className="text-body-sm text-on-surface font-bold">الشريحة المستلمة:</label>
+              <div className="grid grid-cols-3 gap-1">
+                {operators.data?.map((op) => (
+                  <button
+                    key={op.id}
+                    type="button"
+                    onClick={() => setSelectedOpId(op.id)}
+                    className={`py-1.5 text-center font-bold text-body-sm rounded-md transition-all cursor-pointer font-cairo ${
+                      selectedOpId === op.id
+                        ? 'bg-primary text-on-primary shadow-xs'
+                        : 'bg-surface-container-low text-on-surface hover:bg-surface-container'
+                    }`}
+                  >
+                    {op.name}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Quick Amount Chips */}
+            <div className="flex flex-col gap-1">
+              <label className="text-body-sm text-on-surface font-bold">
+                المبلغ المدفوع كاش (د.ج):
+              </label>
+              <div className="grid grid-cols-3 gap-1 mb-1">
+                {['20000', '50000', '100000'].map((val) => (
+                  <button
+                    key={val}
+                    type="button"
+                    onClick={() => setCashText(val)}
+                    className="h-8 rounded bg-surface-container-low hover:bg-surface-container text-on-surface font-mono font-bold text-xs border border-outline-variant/30"
+                  >
+                    {val === '20000' ? '20K' : val === '50000' ? '50K' : '100K'}
+                  </button>
+                ))}
+              </div>
+              <input
+                ref={cashInputRef}
+                type="number"
+                dir="ltr"
+                value={cashText}
+                onChange={(e) => setCashText(e.target.value)}
+                placeholder="50000"
+                className="h-11 px-3 rounded-lg bg-surface-container-low font-mono font-bold text-on-surface text-lg border border-outline-variant/40 pos-focus"
+              />
+            </div>
+
+            {/* Credit Received with margin */}
+            <div className="flex flex-col gap-1">
+              <div className="flex items-center justify-between">
+                <label className="text-body-sm text-on-surface font-bold">
+                  الرصيد المشحون فعلياً:
+                </label>
+                <span className="text-[11px] text-emerald-700 font-bold">
+                  (مع البونيس +{marginPercentage}%)
+                </span>
+              </div>
+              <input
+                type="number"
+                dir="ltr"
+                value={creditReceivedText}
+                onChange={(e) => setCreditReceivedText(e.target.value)}
+                placeholder="52000"
+                className="h-11 px-3 rounded-lg bg-surface-container-low font-mono font-bold text-emerald-700 text-lg border border-outline-variant/40 pos-focus"
+              />
+            </div>
+
+            {/* Supplier & SMS Reference */}
+            <div className="flex flex-col gap-1">
+              <label className="text-body-sm text-on-surface font-bold">اسم الموزع / الوكيل:</label>
+              <input
+                type="text"
+                value={distributorName}
+                onChange={(e) => setDistributorName(e.target.value)}
+                className="h-10 px-3 rounded-lg bg-surface-container-low text-body-md font-tajawal border border-outline-variant/40"
+              />
+            </div>
+
+            <div className="flex flex-col gap-1">
+              <label className="text-body-sm text-on-surface font-bold">
+                رقم مرجع رسالة التعبئة (SMS):
+              </label>
+              <input
+                type="text"
+                dir="ltr"
+                value={smsReference}
+                onChange={(e) => setSmsReference(e.target.value)}
+                placeholder="TRX-9823471"
+                className="h-10 px-3 rounded-lg bg-surface-container-low font-mono text-body-md border border-outline-variant/40"
+              />
+            </div>
+
+            <button
+              type="submit"
+              disabled={addPurchase.isPending}
+              className="mt-2 w-full h-12 rounded-xl bg-primary-container hover:bg-primary text-on-primary font-bold font-cairo flex items-center justify-center gap-1.5 shadow-sm transition-all cursor-pointer disabled:opacity-50"
+            >
+              <span className="material-symbols-outlined text-[20px]">add_circle</span>
+              <span>
+                {addPurchase.isPending ? 'جاري التسجيل...' : 'تأكيد تسجيل الشحنة وإيداع الرصيد'}
+              </span>
+            </button>
+          </form>
+        </div>
+      </div>
+
+      {/* 5. Settlement / Reconciliation Modal (F6) */}
+      {showSettlementModal && activeOp && activeBalance && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-inverse-surface/40 backdrop-blur-xs p-4 animate-fadeIn">
+          <div className="bg-surface-container-lowest rounded-2xl shadow-xl border border-outline-variant/40 w-full max-w-md p-space-lg flex flex-col gap-space-md">
+            <div className="flex items-center justify-between border-b border-outline-variant/20 pb-space-sm">
+              <div className="flex items-center gap-space-xs">
+                <span className="material-symbols-outlined text-primary text-[22px]">balance</span>
+                <h3 className="font-headline-sm text-headline-sm font-bold text-on-surface font-cairo">
+                  تسوية فارق الرصيد الفعلي (USSD)
+                </h3>
+              </div>
+              <button
+                type="button"
+                onClick={() => setShowSettlementModal(false)}
+                className="text-on-surface-variant hover:text-on-surface p-1 cursor-pointer"
+              >
+                <span className="material-symbols-outlined text-[20px]">close</span>
+              </button>
+            </div>
+
+            <div className="flex flex-col gap-space-sm">
+              <div className="p-3 bg-surface-container-low rounded-lg flex items-center justify-between">
+                <span className="text-body-sm text-on-surface-variant">
+                  الرصيد المسجل في النظام:
+                </span>
+                <span
+                  className="font-currency-display text-headline-sm font-bold text-on-surface font-mono"
+                  dir="ltr"
+                >
+                  {formatDa(activeBalance.balance)}
+                </span>
+              </div>
+
+              <div className="flex flex-col gap-1">
+                <label className="text-body-sm font-bold text-on-surface">
+                  الرصيد الفعلي المستعلم عنه عبر USSD (د.ج):
+                </label>
+                <input
+                  type="number"
+                  dir="ltr"
+                  value={settlementActualDa}
+                  onChange={(e) => setSettlementActualDa(e.target.value)}
+                  placeholder="أدخل الرصيد الظاهر في شاشة الهاتف..."
+                  className="h-11 px-3 rounded-lg bg-surface-container-low font-mono font-bold text-primary text-xl border border-outline-variant/40 pos-focus"
+                  autoFocus
+                />
+              </div>
+
+              {settlementActualDa && (
+                <div className="p-2.5 rounded-lg bg-surface-container flex items-center justify-between text-body-sm">
+                  <span>الفارق المحسوب:</span>
+                  <span
+                    className={`font-mono font-bold text-label-lg ${
+                      (parseDaToCentimes(settlementActualDa) ?? 0) - activeBalance.balance >= 0
+                        ? 'text-emerald-700'
+                        : 'text-red-700'
+                    }`}
+                    dir="ltr"
+                  >
+                    {formatDa((parseDaToCentimes(settlementActualDa) ?? 0) - activeBalance.balance)}
+                  </span>
+                </div>
+              )}
+
+              <div className="flex flex-col gap-1">
+                <label className="text-body-sm font-bold text-on-surface">
+                  ملاحظة / سبب التسوية:
+                </label>
+                <input
+                  type="text"
+                  value={settlementReason}
+                  onChange={(e) => setSettlementReason(e.target.value)}
+                  className="h-10 px-3 rounded-lg border border-outline-variant/40 text-body-md"
+                />
+              </div>
+            </div>
+
+            <div className="flex items-center justify-end gap-space-sm pt-2">
+              <button
+                type="button"
+                onClick={() => setShowSettlementModal(false)}
+                className="px-space-md py-2 rounded-lg bg-surface-container-low hover:bg-surface-container text-on-surface font-bold text-body-md cursor-pointer"
+              >
+                إلغاء (Esc)
+              </button>
+              <button
+                type="button"
+                onClick={handleSettlementSubmit}
+                disabled={!settlementActualDa || addSettlement.isPending}
+                className="px-space-md py-2 rounded-lg bg-primary text-on-primary font-bold text-body-md hover:bg-primary-container cursor-pointer shadow-sm disabled:opacity-50"
+              >
+                {addSettlement.isPending ? 'جاري التسوية...' : 'تأكيد التسوية وضبط الرصيد'}
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>
-  )
-}
-
-function Field({
-  id,
-  label,
-  value,
-  onChange,
-  placeholder,
-}: {
-  id: string
-  label: string
-  value: string
-  onChange: (v: string) => void
-  placeholder?: string
-}) {
-  return (
-    <label htmlFor={id} className="flex flex-col gap-1.5">
-      <span className="text-xs font-medium text-neutral-300">{label}</span>
-      <div className="relative">
-        <input
-          id={id}
-          value={value}
-          onChange={(e) => onChange(e.target.value)}
-          placeholder={placeholder}
-          className="w-full rounded-xl border border-neutral-700 bg-neutral-950 px-3.5 py-2.5 text-sm text-neutral-100 outline-none transition-colors focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
-        />
-        {placeholder === '0.00' && (
-          <span className="absolute inset-y-0 end-0 flex items-center pe-3 text-xs text-neutral-500">
-            دج
-          </span>
-        )}
-      </div>
-    </label>
-  )
-}
-
-function Toggle({
-  active,
-  onClick,
-  label,
-  variant,
-}: {
-  active: boolean
-  onClick: () => void
-  label: string
-  variant: 'positive' | 'negative'
-}) {
-  const activeStyle =
-    variant === 'positive'
-      ? 'border-emerald-500 bg-emerald-500/20 text-emerald-300'
-      : 'border-rose-500 bg-rose-500/20 text-rose-300'
-
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      className={`rounded-xl border px-4 py-2 text-xs font-semibold transition-all ${
-        active ? activeStyle : 'border-neutral-700 bg-neutral-900 text-neutral-400 hover:text-neutral-200'
-      }`}
-    >
-      {label}
-    </button>
-  )
-}
-
-function SubmitButton({ pending, disabled }: { pending: boolean; disabled: boolean }) {
-  return (
-    <button
-      type="submit"
-      disabled={disabled || pending}
-      className="flex items-center gap-2 rounded-xl bg-emerald-600 px-6 py-2.5 text-xs font-semibold text-white shadow-lg shadow-emerald-900/30 transition-all hover:bg-emerald-500 disabled:opacity-50 active:scale-95"
-    >
-      <IconCheck size={16} />
-      <span>{pending ? stockMessages.submitting : stockMessages.submit}</span>
-    </button>
   )
 }

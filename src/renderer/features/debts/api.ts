@@ -1,6 +1,11 @@
 import { invoke } from '@renderer/shared/api'
 import { debtsChannels } from '@shared/contracts/debts'
-import type { AddPaymentInput, DebtorInfo, PaymentInfo, ListPaymentsInput } from '@shared/contracts/debts'
+import type {
+  AddPaymentInput,
+  DebtorInfo,
+  PaymentInfo,
+  ListPaymentsInput,
+} from '@shared/contracts/debts'
 
 export function listDebtors(limit = 50): Promise<DebtorInfo[]> {
   return invoke<DebtorInfo[]>(debtsChannels.listDebtors, { limit })

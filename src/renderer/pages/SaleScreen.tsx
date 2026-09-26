@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import type { FormEvent } from 'react'
+import { useQueryClient } from '@tanstack/react-query'
 import { useActiveOperators } from '@renderer/features/operators'
 import {
   useCreateSale,
@@ -12,18 +13,10 @@ import {
 import { useCustomerSearch, useCreateCustomer } from '@renderer/features/customers'
 import { useSession } from '@renderer/features/auth'
 import { parseDaToCentimes, formatDa } from '@shared/money'
-import { ui } from '@renderer/shared/messages.ar'
-import {
-  IconCheck,
-  IconClose,
-  IconAlert,
-  IconPlus,
-  IconSearch,
-  IconUser,
-} from '@renderer/shared/ui/icons'
+import { generateUssdCode, parseUssdCode } from '@shared/ussd'
 import type { CustomerInfo } from '@shared/contracts/customers'
 
-const QUICK_AMOUNTS = [50, 100, 200, 500, 1000, 2000, 5000]
+const QUICK_AMOUNTS = [50, 100, 200, 500, 1000, 2000]
 
 export function SaleScreen() {
   const operators = useActiveOperators()
@@ -31,17 +24,22 @@ export function SaleScreen() {
   const create = useCreateSale()
   const voidSale = useVoidSale()
   const session = useSession()
-  const recentSales = useRecentSales(1)
+  const recentSales = useRecentSales(15)
+  const queryClient = useQueryClient()
 
   const phoneInputRef = useRef<HTMLInputElement>(null)
+  const amountInputRef = useRef<HTMLInputElement>(null)
+  const codeRef = useRef<HTMLInputElement>(null)
 
   const [operatorId, setOperatorId] = useState<number>(0)
   const [phone, setPhone] = useState('')
   const [amountText, setAmountText] = useState('')
   const [isDebt, setIsDebt] = useState(false)
   const [paidText, setPaidText] = useState('')
+  const [manualCode, setManualCode] = useState('')
+  const [isManualCode, setIsManualCode] = useState(false)
 
-  // الزبون للبيع الآجل
+  // Debt Customer State
   const [customerSearchQuery, setCustomerSearchQuery] = useState('')
   const [selectedCustomer, setSelectedCustomer] = useState<CustomerInfo | null>(null)
   const [showNewCustomerForm, setShowNewCustomerForm] = useState(false)
@@ -49,14 +47,16 @@ export function SaleScreen() {
   const [newCustPhone, setNewCustPhone] = useState('')
   const createCustomerMutation = useCreateCustomer()
 
-  // حالة الإلغاء
+  // Modals state
   const [showVoidModal, setShowVoidModal] = useState(false)
   const [voidReason, setVoidReason] = useState<string>(salesMessages.voidDefaultReason)
+  const [showUssdModal, setShowUssdModal] = useState(false)
+  const [copiedCode, setCopiedCode] = useState<string | null>(null)
 
-  // البحث عن الزبائن
+  // Customer live search
   const customerSearchResults = useCustomerSearch({ query: customerSearchQuery.trim(), limit: 5 })
 
-  // اختيار أول متعامل تلقائيًا عند التحميل
+  // Select first operator by default
   useEffect(() => {
     if (operators.data && operators.data.length > 0 && operatorId === 0) {
       const first = operators.data[0]
@@ -66,58 +66,192 @@ export function SaleScreen() {
     }
   }, [operators.data, operatorId])
 
-  // اختصارات لوحة المفاتيح للمتعاملين (1, 2, 3)
+  // Operator Brand helper
+  const getOpBrand = (name?: string) => {
+    const n = (name ?? '').toLowerCase()
+    if (n.includes('mobilis') || n.includes('موبيليس')) {
+      return {
+        id: 'mobilis',
+        nameAr: 'موبيليس',
+        nameEn: 'Mobilis',
+        color: '#16a34a',
+        bg: '#dcfce7',
+        border: 'border-[#16a34a]',
+        badgeBg: 'bg-[#dcfce7]',
+        badgeText: 'text-[#15803d]',
+        prefix: '06XX',
+        ussdTemplate: (p: string, a: string) => generateUssdCode('mobilis', p, a),
+      }
+    }
+    if (n.includes('djezzy') || n.includes('جيزي')) {
+      return {
+        id: 'djezzy',
+        nameAr: 'جيزي',
+        nameEn: 'Djezzy',
+        color: '#ea580c',
+        bg: '#ffedd5',
+        border: 'border-[#ea580c]',
+        badgeBg: 'bg-[#ffedd5]',
+        badgeText: 'text-[#c2410c]',
+        prefix: '07XX',
+        ussdTemplate: (p: string, a: string) => generateUssdCode('djezzy', p, a),
+      }
+    }
+    return {
+      id: 'ooredoo',
+      nameAr: 'أوريدو',
+      nameEn: 'Ooredoo',
+      color: '#dc2626',
+      bg: '#fee2e2',
+      border: 'border-[#dc2626]',
+      badgeBg: 'bg-[#fee2e2]',
+      badgeText: 'text-[#b91c1c]',
+      prefix: '05XX',
+      ussdTemplate: (p: string, a: string) => generateUssdCode('ooredoo', p, a),
+    }
+  }
+
+  // Keyboard Shortcuts
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
-      // فقط إن لم نكن نكتب في حقل نصي
       const target = e.target as HTMLElement
-      if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA') return
+      const isInput = target.tagName === 'INPUT' || target.tagName === 'TEXTAREA'
 
-      if (['1', '2', '3', '4', '5'].includes(e.key) && operators.data) {
+      if (e.key === 'F8') {
+        e.preventDefault()
+        codeRef.current?.focus()
+        codeRef.current?.select()
+        return
+      }
+
+      if (e.key === 'Escape') {
+        if (showVoidModal) {
+          setShowVoidModal(false)
+          return
+        }
+        if (showUssdModal) {
+          setShowUssdModal(false)
+          return
+        }
+        if (showNewCustomerForm) {
+          setShowNewCustomerForm(false)
+          return
+        }
+        setPhone('')
+        setAmountText('')
+        setPaidText('')
+        setIsDebt(false)
+        setSelectedCustomer(null)
+        setIsManualCode(false)
+        setManualCode('')
+        phoneInputRef.current?.focus()
+        return
+      }
+
+      if (!isInput && ['1', '2', '3'].includes(e.key) && operators.data) {
         const idx = Number(e.key) - 1
         const op = operators.data[idx]
         if (op) {
           setOperatorId(op.id)
         }
+        return
+      }
+
+      if (!isInput && (e.key === 'd' || e.key === 'D' || e.key === 'ي')) {
+        setIsDebt((prev) => !prev)
+        return
+      }
+
+      if (e.key === 'F7') {
+        e.preventDefault()
+        setShowNewCustomerForm(true)
       }
     }
+
     window.addEventListener('keydown', handler)
     return () => window.removeEventListener('keydown', handler)
-  }, [operators.data])
+  }, [operators.data, showVoidModal, showUssdModal, showNewCustomerForm])
+
+  // Auto-detect operator prefix from phone number
+  useEffect(() => {
+    if (!operators.data) return
+    const findOp = (kw: string) => operators.data?.find((o) => o.name.toLowerCase().includes(kw))
+    if (phone.startsWith('06')) {
+      const mob = findOp('mobilis') ?? findOp('موبيليس')
+      if (mob && mob.id !== operatorId) setOperatorId(mob.id)
+    } else if (phone.startsWith('07')) {
+      const dj = findOp('djezzy') ?? findOp('جيزي')
+      if (dj && dj.id !== operatorId) setOperatorId(dj.id)
+    } else if (phone.startsWith('05')) {
+      const oor = findOp('ooredoo') ?? findOp('أوريدو') ?? findOp('اوريدو')
+      if (oor && oor.id !== operatorId) setOperatorId(oor.id)
+    }
+  }, [phone, operators.data, operatorId])
+
+  const selectedOperator = useMemo(
+    () => operators.data?.find((o) => o.id === operatorId),
+    [operators.data, operatorId],
+  )
 
   const selectedBalance = useMemo(
     () => balances.data?.find((b) => b.operatorId === operatorId),
     [balances.data, operatorId],
   )
 
+  const currentOpBrand = getOpBrand(selectedOperator?.name)
+  const autoUssdCode = currentOpBrand.ussdTemplate(phone, amountText)
+
+  // Keep manualCode in sync with auto-generated code unless manually overridden
+  useEffect(() => {
+    if (!isManualCode) {
+      setManualCode(autoUssdCode)
+    }
+  }, [autoUssdCode, isManualCode])
+
+  const parsedUssd = useMemo(() => parseUssdCode(manualCode), [manualCode])
+  const canApplyParsed = Boolean(
+    isManualCode &&
+      parsedUssd.isValid &&
+      (parsedUssd.phone !== phone || parsedUssd.amount !== amountText)
+  )
+
+  const handleManualCodeChange = (newVal: string) => {
+    setManualCode(newVal)
+    setIsManualCode(true)
+  }
+
+  const handleResetToAuto = () => {
+    setIsManualCode(false)
+    setManualCode(autoUssdCode)
+  }
+
+  const handleApplyParsed = () => {
+    if (parsedUssd.phone) {
+      setPhone(parsedUssd.phone)
+    }
+    if (parsedUssd.amount) {
+      setAmountText(parsedUssd.amount)
+    }
+    if (parsedUssd.operatorKey && operators.data) {
+      const targetOp = operators.data.find((o) =>
+        o.name.toLowerCase().includes(parsedUssd.operatorKey!)
+      )
+      if (targetOp) {
+        setOperatorId(targetOp.id)
+      }
+    }
+  }
+
   const amount = parseDaToCentimes(amountText)
   const paid = isDebt ? (paidText.trim() === '' ? 0 : parseDaToCentimes(paidText)) : amount
   const phoneOk = /^0[567]\d{8}$/.test(phone)
 
-  // كشف المتعامل حسب بادئة الرقم تلقائيًا إن لم يحدده المستخدم يدويًا
-  useEffect(() => {
-    if (!operators.data) return
-    const findOp = (kw: string) =>
-      operators.data?.find((o) => o.name.toLowerCase().includes(kw))
-    if (phone.startsWith('06')) {
-      const mob = findOp('mobilis') ?? findOp('موبيليس')
-      if (mob) setOperatorId(mob.id)
-    } else if (phone.startsWith('07')) {
-      const dj = findOp('djezzy') ?? findOp('جيزي')
-      if (dj) setOperatorId(dj.id)
-    } else if (phone.startsWith('05')) {
-      const oor = findOp('ooredoo') ?? findOp('أوريدو') ?? findOp('اوريدو')
-      if (oor) setOperatorId(oor.id)
-    }
-  }, [phone, operators.data])
-
-  // التحقق الفوري من الرصيد
   const isExceedingBalance =
-    amount !== null && amount > 0 && selectedBalance !== undefined && amount > selectedBalance.balance
+    amount !== null &&
+    amount > 0 &&
+    selectedBalance !== undefined &&
+    amount > selectedBalance.balance
 
-  const isZeroBalance = selectedBalance !== undefined && selectedBalance.balance <= 0
-
-  // صلاحية الإرسال
   const canSubmit =
     operatorId > 0 &&
     phoneOk &&
@@ -130,6 +264,12 @@ export function SaleScreen() {
     (!isDebt || selectedCustomer !== null)
 
   const remainingDebt = amount !== null && paid !== null ? amount - paid : 0
+
+  // Estimated profit margin (e.g. operator marginBp)
+  const expectedProfitCentimes = useMemo(() => {
+    if (!amount || !selectedOperator) return 0
+    return Math.round((amount * (selectedOperator.marginBp || 500)) / 10000)
+  }, [amount, selectedOperator])
 
   const submit = (e: FormEvent) => {
     e.preventDefault()
@@ -151,6 +291,10 @@ export function SaleScreen() {
           setIsDebt(false)
           setSelectedCustomer(null)
           setCustomerSearchQuery('')
+          setIsManualCode(false)
+          setManualCode('')
+          queryClient.invalidateQueries({ queryKey: ['recentSales'] })
+          queryClient.invalidateQueries({ queryKey: ['salesBalances'] })
           phoneInputRef.current?.focus()
         },
       },
@@ -185,466 +329,1082 @@ export function SaleScreen() {
         onSuccess: () => {
           setShowVoidModal(false)
           setVoidReason(salesMessages.voidDefaultReason)
+          queryClient.invalidateQueries({ queryKey: ['recentSales'] })
+          queryClient.invalidateQueries({ queryKey: ['salesBalances'] })
         },
       },
     )
   }
 
-  if (operators.isLoading) return <p className="text-slate-400">{ui.loading}</p>
+  const handleCopyCode = (code: string) => {
+    navigator.clipboard.writeText(code)
+    setCopiedCode(code)
+    setTimeout(() => setCopiedCode(null), 2000)
+  }
+
+  const setMaxAmount = () => {
+    if (!selectedBalance || selectedBalance.balance <= 0) return
+    setAmountText((selectedBalance.balance / 100).toString())
+  }
 
   return (
-    <div className="mx-auto max-w-4xl space-y-6">
-      <div className="flex flex-wrap items-center justify-between gap-4">
+    <div className="flex flex-col w-full pb-space-lg gap-space-md">
+      {/* 1. Header Banner */}
+      <div className="flex items-center justify-between bg-surface-container-lowest p-space-md rounded-xl shadow-sm border border-outline-variant/30">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-white">{salesMessages.title}</h1>
-          <p className="text-xs text-slate-400">تعبئة رصيد فورية مع التحقق الذري المباشر</p>
+          <h1 className="font-headline-md text-headline-md text-on-surface font-bold font-cairo">
+            بيع فليكسي سريع
+          </h1>
+          <p className="font-body-sm text-body-sm text-on-surface-variant mt-0.5">
+            محطة التعبئة السريعة وإرسال الرصيد اللحظي عبر شرائح المبيعات
+          </p>
         </div>
-
-        {/* كارت آخر عملية مع زر الإلغاء للمالك */}
-        {session.data?.user.role === 'admin' && lastSale && (
-          <div className="flex items-center gap-3 rounded-2xl border border-slate-800 bg-slate-900/80 px-4 py-2 text-xs shadow-sm">
-            <span className="text-slate-400">{salesMessages.lastSale}</span>
-            <span className="font-semibold text-slate-200" dir="ltr">{lastSale.targetPhone}</span>
-            <span className="font-mono font-bold text-emerald-400">{formatDa(lastSale.amount)}</span>
-            {lastSale.voidedAt ? (
-              <span className="flex items-center gap-1 rounded-full bg-red-500/15 px-2 py-0.5 text-[10px] font-bold text-red-400">
-                <IconClose size={10} />
-                <span>ملغاة</span>
-              </span>
-            ) : (
-              canVoid && (
-                <button
-                  type="button"
-                  onClick={() => setShowVoidModal(true)}
-                  className="rounded-lg bg-red-950/80 px-2.5 py-1 text-[11px] font-semibold text-red-300 transition-colors hover:bg-red-900"
-                >
-                  {salesMessages.voidLastSale}
-                </button>
-              )
-            )}
-          </div>
-        )}
+        <button
+          type="button"
+          onClick={() => setShowUssdModal(true)}
+          className="flex items-center gap-space-xs px-space-md py-space-sm bg-surface-container-low hover:bg-surface-container text-primary font-bold rounded-lg text-body-md transition-colors cursor-pointer border border-outline-variant/40"
+        >
+          <span className="material-symbols-outlined text-[20px]">qr_code_2</span>
+          <span>معاينة كود الفليكسي السريع</span>
+        </button>
       </div>
 
-      {operators.data && operators.data.length === 0 ? (
-        <p className="rounded-2xl border border-amber-900/60 bg-amber-950/20 p-5 text-sm text-amber-300">
-          {salesMessages.noOperator}
-        </p>
-      ) : (
-        <form onSubmit={submit} className="space-y-6 rounded-3xl border border-slate-800/80 bg-slate-900/50 p-7 shadow-2xl backdrop-blur-xl">
-          {/* اختيار المتعامل — أزرار عريضة ملهمة بـ PRD-UX 4.3 */}
-          <div>
-            <div className="mb-2.5 flex items-center justify-between">
-              <span className="text-xs font-bold uppercase tracking-wider text-slate-400">
-                {salesMessages.operator}
+      {/* 2. Main 12-Column Grid */}
+      <div className="grid grid-cols-12 gap-space-md items-start">
+        {/* LEFT / CENTER (8 Columns): Operator Selection + Form Inputs */}
+        <div className="col-span-12 lg:col-span-8 flex flex-col gap-space-md">
+          {/* Card 1: 3-Carrier Quick Selector */}
+          <div className="bg-surface-container-lowest p-space-md rounded-xl shadow-sm border border-outline-variant/30 flex flex-col gap-space-sm">
+            <div className="flex items-center justify-between">
+              <span className="font-headline-sm text-headline-sm text-on-surface font-bold font-cairo">
+                1. اختيار شبكة المتعامل
               </span>
-              <span className="text-[11px] text-slate-400">اختصار: الأرقام 1 · 2 · 3</span>
+              <span className="text-body-sm text-on-surface-variant font-mono">
+                اختصار: [1] موبيليس · [2] جيزي · [3] أوريدو
+              </span>
             </div>
-            <div className="grid grid-cols-1 gap-3.5 sm:grid-cols-3">
+
+            <div className="grid grid-cols-3 gap-space-md">
               {operators.data?.map((op, idx) => {
                 const b = balances.data?.find((item) => item.operatorId === op.id)
                 const isSelected = op.id === operatorId
-                const isExhausted = b !== undefined && b.balance <= 0
-                const isLow = b !== undefined && b.balance > 0 && b.balance < op.lowBalanceAt
+                const brand = getOpBrand(op.name)
+                const isLow = b !== undefined && b.balance < op.lowBalanceAt
+                const balanceDa = b ? Math.floor(b.balance / 100) : 0
 
                 return (
                   <button
                     key={op.id}
                     type="button"
                     onClick={() => setOperatorId(op.id)}
-                    className={`group relative flex flex-col items-center justify-center gap-1.5 rounded-2xl border p-4 text-center transition-all ${
+                    className={`flex flex-col p-space-md rounded-xl border-2 transition-all cursor-pointer relative text-right ${
                       isSelected
-                        ? 'border-emerald-500 bg-emerald-950/30 text-emerald-200 ring-2 ring-emerald-500/40 glow-emerald'
-                        : 'border-slate-800/90 bg-slate-950/60 hover:border-slate-700 text-slate-300'
+                        ? 'bg-surface-container-lowest shadow-md'
+                        : 'bg-surface-container-low/60 hover:bg-surface-container-low border-outline-variant/30'
                     }`}
+                    style={
+                      isSelected
+                        ? {
+                            borderColor: brand.color,
+                            backgroundColor: `${brand.color}08`,
+                          }
+                        : {}
+                    }
                   >
-                    <span className="absolute top-2.5 right-2.5 flex h-5 w-5 items-center justify-center rounded-full bg-slate-800 text-[10px] font-black text-slate-400">
-                      {idx + 1}
-                    </span>
-                    <span className="text-base font-bold text-white">{op.name}</span>
-                    <div className="flex items-center gap-1 text-xs">
-                      <span className="text-slate-400">{salesMessages.balanceLabel}:</span>
+                    <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-center gap-space-xs">
+                        <span
+                          className="w-2.5 h-2.5 rounded-full"
+                          style={{ backgroundColor: brand.color }}
+                        />
+                        <span className="font-headline-sm text-headline-sm font-bold text-on-surface font-cairo">
+                          {op.name}
+                        </span>
+                      </div>
                       <span
-                        className={`font-mono font-bold ${
-                          isExhausted
-                            ? 'text-red-400'
-                            : isLow
-                              ? 'text-amber-400'
-                              : 'text-emerald-300'
-                        }`}
+                        className="font-mono text-label-sm font-bold px-1.5 py-0.5 rounded"
+                        style={{
+                          backgroundColor: `${brand.color}15`,
+                          color: brand.color,
+                        }}
+                        dir="ltr"
                       >
-                        {b ? formatDa(b.balance) : '—'}
+                        [ {idx + 1} ]
                       </span>
                     </div>
-                    {isLow && !isExhausted && (
-                      <span className="flex items-center gap-1 rounded-full bg-amber-500/15 px-2 py-0.5 text-[10px] font-bold text-amber-400">
-                        <IconAlert size={10} />
-                        <span>{salesMessages.lowBalance}</span>
+
+                    <div className="flex flex-col gap-0.5 mt-1">
+                      <span className="font-body-sm text-body-sm text-on-surface-variant">
+                        الرصيد المتاح للبيع:
                       </span>
-                    )}
-                    {isExhausted && (
-                      <span className="flex items-center gap-1 rounded-full bg-red-500/15 px-2 py-0.5 text-[10px] font-bold text-red-400">
-                        <IconAlert size={10} />
-                        <span>{salesMessages.zeroBalance}</span>
+                      <div className="flex items-center justify-between">
+                        <span
+                          className="font-currency-display text-label-lg font-bold font-mono"
+                          dir="ltr"
+                        >
+                          {balanceDa.toLocaleString()} DA
+                        </span>
+                        {isLow && (
+                          <span className="inline-flex items-center gap-0.5 text-[10px] font-bold text-amber-700 bg-amber-100 px-1.5 py-0.2 rounded">
+                            <span className="material-symbols-outlined text-[12px]">warning</span>
+                            <span>منخفض</span>
+                          </span>
+                        )}
+                      </div>
+                    </div>
+
+                    <div className="mt-2 pt-2 border-t border-outline-variant/20 flex items-center justify-between">
+                      <span className="text-[11px] font-mono text-on-surface-variant" dir="ltr">
+                        {brand.prefix}
                       </span>
-                    )}
+                      {isSelected && (
+                        <span
+                          className="material-symbols-outlined text-[18px]"
+                          style={{ color: brand.color }}
+                        >
+                          check_circle
+                        </span>
+                      )}
+                    </div>
                   </button>
                 )
               })}
             </div>
           </div>
 
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-            {/* رقم الهاتف */}
-            <div className="space-y-2">
-              <label htmlFor="sale-phone" className="block text-xs font-bold uppercase tracking-wider text-slate-400">
-                {salesMessages.phone}
-              </label>
-              <div className="relative">
-                <input
-                  id="sale-phone"
-                  ref={phoneInputRef}
-                  inputMode="numeric"
-                  dir="ltr"
-                  autoFocus
-                  placeholder="06xxxxxxxx"
-                  value={phone}
-                  onChange={(e) => setPhone(e.target.value.replace(/\D/g, '').slice(0, 10))}
-                  className={`w-full rounded-2xl border bg-slate-950 px-4 py-3.5 text-xl font-mono tracking-widest text-white outline-none transition-all ${
-                    phone.length === 10
-                      ? phoneOk
-                        ? 'border-emerald-500 focus:ring-2 focus:ring-emerald-500/30'
-                        : 'border-red-500 focus:ring-2 focus:ring-red-500/30'
-                      : 'border-slate-800 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/30'
-                  }`}
-                />
-                {phone.length === 10 && phoneOk && (
-                  <span className="absolute left-3.5 top-4 flex h-6 w-6 items-center justify-center rounded-full bg-emerald-500/20 text-emerald-400 font-bold">
-                    <IconCheck size={14} />
+          {/* Card 2: Phone Input, Amount Chips, Payment Method */}
+          <form
+            onSubmit={submit}
+            className="bg-surface-container-lowest p-space-md rounded-xl shadow-sm border border-outline-variant/30 flex flex-col gap-space-md"
+          >
+            {/* Phone Number Field */}
+            <div className="flex flex-col gap-1.5">
+              <div className="flex items-center justify-between">
+                <label
+                  htmlFor="pos-phone"
+                  className="font-headline-sm text-headline-sm text-on-surface font-bold font-cairo"
+                >
+                  2. رقم هاتف الزبون (MSISDN)*
+                </label>
+                {phone.length >= 2 && (
+                  <span
+                    className="font-label-sm text-label-sm font-bold px-2 py-0.5 rounded"
+                    style={{
+                      backgroundColor: `${currentOpBrand.color}15`,
+                      color: currentOpBrand.color,
+                    }}
+                  >
+                    شبكة: {currentOpBrand.nameAr}
                   </span>
                 )}
+              </div>
+
+              <div className="relative flex items-center">
+                <span className="absolute right-3.5 material-symbols-outlined text-outline text-[22px]">
+                  phone_iphone
+                </span>
+                <input
+                  id="pos-phone"
+                  ref={phoneInputRef}
+                  type="text"
+                  dir="ltr"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value.replace(/\D/g, '').slice(0, 10))}
+                  placeholder="06.. / 05.. / 07.."
+                  className="w-full h-13 pr-11 pl-12 rounded-lg bg-surface-container-low text-on-surface font-mono text-xl font-bold border border-outline-variant/40 focus:border-primary pos-focus tracking-wider"
+                  autoFocus
+                />
+                {phone && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setPhone('')
+                      phoneInputRef.current?.focus()
+                    }}
+                    className="absolute left-3 p-1 text-on-surface-variant hover:text-on-surface cursor-pointer"
+                  >
+                    <span className="material-symbols-outlined text-[20px]">backspace</span>
+                  </button>
+                )}
+              </div>
+              {phone && !phoneOk && (
+                <span className="text-body-sm text-red-600 font-medium">
+                  يجب أن يبدأ الرقم بـ 05 أو 06 أو 07 ويتكون من 10 أرقام
+                </span>
+              )}
+            </div>
+
+            {/* Flexy Amount Field & Quick Buttons */}
+            <div className="flex flex-col gap-1.5">
+              <div className="flex items-center justify-between">
+                <label
+                  htmlFor="pos-amount"
+                  className="font-headline-sm text-headline-sm text-on-surface font-bold font-cairo"
+                >
+                  3. مبلغ الفليكسي (بالدينار الجزائري)*
+                </label>
+                <button
+                  type="button"
+                  onClick={setMaxAmount}
+                  className="text-body-sm text-primary hover:underline font-bold cursor-pointer"
+                >
+                  تحديد أقصى رصيد متاح
+                </button>
+              </div>
+
+              <div className="relative flex items-center">
+                <input
+                  id="pos-amount"
+                  ref={amountInputRef}
+                  type="number"
+                  dir="ltr"
+                  value={amountText}
+                  onChange={(e) => setAmountText(e.target.value)}
+                  placeholder="0"
+                  className="w-full h-14 px-4 pl-16 rounded-lg bg-surface-container-low text-on-surface font-mono text-2xl font-bold border border-outline-variant/40 focus:border-primary pos-focus"
+                />
+                <span className="absolute left-4 font-cairo font-bold text-on-surface-variant text-base">
+                  د.ج / DA
+                </span>
+              </div>
+
+              {/* Quick Amount Buttons */}
+              <div className="grid grid-cols-6 gap-space-xs mt-1">
+                {QUICK_AMOUNTS.map((amt) => (
+                  <button
+                    key={amt}
+                    type="button"
+                    onClick={() => {
+                      setAmountText(amt.toString())
+                      amountInputRef.current?.focus()
+                    }}
+                    className={`h-10 rounded-lg font-mono font-bold text-sm border transition-all cursor-pointer ${
+                      amountText === amt.toString()
+                        ? 'bg-primary text-on-primary border-primary shadow-xs'
+                        : 'bg-surface-container-low hover:bg-surface-container text-on-surface border-outline-variant/30'
+                    }`}
+                  >
+                    {amt} DA
+                  </button>
+                ))}
+              </div>
+
+              {isExceedingBalance && (
+                <div className="flex items-center gap-1.5 p-2 rounded-lg bg-red-50 text-red-700 text-body-sm font-semibold border border-red-200">
+                  <span className="material-symbols-outlined text-[18px]">error</span>
+                  <span>المبلغ المطلوب أكبر من الرصيد المتوفر في الشريحة!</span>
+                </div>
+              )}
+            </div>
+
+            {/* 4. Manual Code Input / USSD Field */}
+            <div className="flex flex-col gap-2 pt-2 border-t border-outline-variant/20">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <label
+                    htmlFor="pos-manual-code"
+                    className="font-headline-sm text-headline-sm text-on-surface font-bold font-cairo"
+                  >
+                    4. كود الفليكسي / USSD
+                  </label>
+                  {isManualCode ? (
+                    <span className="inline-flex items-center gap-1 font-label-sm text-label-sm font-bold px-2 py-0.5 rounded bg-amber-100 text-amber-800 border border-amber-300">
+                      <span className="material-symbols-outlined text-[14px]">edit</span>
+                      <span>إدخال يدوي مخصص</span>
+                    </span>
+                  ) : (
+                    <span className="inline-flex items-center gap-1 font-label-sm text-label-sm font-bold px-2 py-0.5 rounded bg-primary/10 text-primary border border-primary/20">
+                      <span className="material-symbols-outlined text-[14px]">auto_awesome</span>
+                      <span>توليد تلقائي</span>
+                    </span>
+                  )}
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <span
+                    className="text-[11px] font-mono text-on-surface-variant font-bold px-1.5 py-0.5 rounded bg-surface-container-low border border-outline-variant/40"
+                    dir="ltr"
+                    title="اختصار التركيز على الكود"
+                  >
+                    [F8]
+                  </span>
+                  {isManualCode && (
+                    <button
+                      type="button"
+                      onClick={handleResetToAuto}
+                      className="text-body-sm text-primary hover:underline font-bold flex items-center gap-1 cursor-pointer"
+                    >
+                      <span className="material-symbols-outlined text-[16px]">restart_alt</span>
+                      <span>استعادة التلقائي</span>
+                    </button>
+                  )}
+                  <button
+                    type="button"
+                    onClick={() => handleCopyCode(manualCode)}
+                    className="text-body-sm text-on-surface-variant hover:text-on-surface font-bold flex items-center gap-1 cursor-pointer"
+                  >
+                    <span className="material-symbols-outlined text-[16px]">content_copy</span>
+                    <span>{copiedCode === manualCode ? 'تم النسخ!' : 'نسخ'}</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* Code Input Field */}
+              <div className="relative flex items-center">
+                <span className="absolute right-3.5 material-symbols-outlined text-outline text-[22px]">
+                  terminal
+                </span>
+                <input
+                  id="pos-manual-code"
+                  ref={codeRef}
+                  type="text"
+                  dir="ltr"
+                  spellCheck={false}
+                  value={manualCode}
+                  onChange={(e) => handleManualCodeChange(e.target.value)}
+                  placeholder="*600*1*06XXXXXXXX*0*0000#"
+                  className={`w-full h-12 pr-11 pl-12 rounded-lg font-mono text-lg font-bold border transition-colors pos-focus tracking-wider ${
+                    isManualCode
+                      ? 'bg-amber-50/50 text-amber-950 border-amber-300 focus:border-amber-500'
+                      : 'bg-surface-container-low text-on-surface border-outline-variant/40 focus:border-primary'
+                  }`}
+                />
+                {manualCode && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (isManualCode) {
+                        setManualCode('')
+                      } else {
+                        handleResetToAuto()
+                      }
+                      codeRef.current?.focus()
+                    }}
+                    title={isManualCode ? 'مسح الكود' : 'إعادة ضبط'}
+                    className="absolute left-3 p-1 text-on-surface-variant hover:text-on-surface cursor-pointer"
+                  >
+                    <span className="material-symbols-outlined text-[20px]">
+                      {isManualCode ? 'backspace' : 'refresh'}
+                    </span>
+                  </button>
+                )}
+              </div>
+
+              {/* Smart Extracted Data Banner */}
+              {canApplyParsed && (
+                <div className="flex items-center justify-between p-2.5 rounded-lg bg-emerald-50 border border-emerald-300 text-emerald-900 animate-fadeIn">
+                  <div className="flex items-center gap-2 text-body-sm">
+                    <span className="material-symbols-outlined text-emerald-600 text-[20px]">
+                      magic_button
+                    </span>
+                    <span>
+                      تم الكشف من الكود:{' '}
+                      {parsedUssd.operatorKey && (
+                        <strong className="font-cairo">
+                          شبكة{' '}
+                          {parsedUssd.operatorKey === 'mobilis'
+                            ? 'موبيليس'
+                            : parsedUssd.operatorKey === 'djezzy'
+                            ? 'جيزي'
+                            : 'أوريدو'}{' '}
+                          ·{' '}
+                        </strong>
+                      )}
+                      هاتف: <strong className="font-mono" dir="ltr">{parsedUssd.phone}</strong>
+                      {parsedUssd.amount && (
+                        <> · مبلغ: <strong className="font-mono">{parsedUssd.amount} DA</strong></>
+                      )}
+                    </span>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={handleApplyParsed}
+                    className="px-3 py-1 bg-emerald-700 hover:bg-emerald-800 text-white rounded-md font-bold text-body-sm flex items-center gap-1 cursor-pointer shadow-xs transition-colors"
+                  >
+                    <span className="material-symbols-outlined text-[16px]">done_all</span>
+                    <span>تطبيق على النموذج</span>
+                  </button>
+                </div>
+              )}
+            </div>
+
+            {/* Payment Method: Cash vs Debt */}
+            <div className="flex flex-col gap-2 pt-2 border-t border-outline-variant/20">
+              <span className="font-headline-sm text-headline-sm text-on-surface font-bold font-cairo">
+                5. طريقة الدفع وتحديد الحساب
+              </span>
+
+              <div className="grid grid-cols-2 gap-space-md">
+                <label
+                  className={`flex items-center gap-space-sm p-space-md rounded-xl border-2 cursor-pointer transition-all ${
+                    !isDebt
+                      ? 'border-primary bg-primary/5 shadow-xs'
+                      : 'border-outline-variant/30 bg-surface-container-low hover:bg-surface-container'
+                  }`}
+                >
+                  <input
+                    type="radio"
+                    name="pay-mode"
+                    checked={!isDebt}
+                    onChange={() => setIsDebt(false)}
+                    className="hidden"
+                  />
+                  <span className="material-symbols-outlined text-primary text-[24px]">
+                    payments
+                  </span>
+                  <div className="flex flex-col">
+                    <span className="font-headline-sm text-headline-sm font-bold text-on-surface font-cairo">
+                      دفع نقدي كامل (كاش)
+                    </span>
+                    <span className="font-body-sm text-body-sm text-on-surface-variant">
+                      تسليم المبلغ فوراً في الصندوق
+                    </span>
+                  </div>
+                </label>
+
+                <label
+                  className={`flex items-center gap-space-sm p-space-md rounded-xl border-2 cursor-pointer transition-all ${
+                    isDebt
+                      ? 'border-tertiary bg-tertiary/5 shadow-xs'
+                      : 'border-outline-variant/30 bg-surface-container-low hover:bg-surface-container'
+                  }`}
+                >
+                  <input
+                    type="radio"
+                    name="pay-mode"
+                    checked={isDebt}
+                    onChange={() => setIsDebt(true)}
+                    className="hidden"
+                  />
+                  <span className="material-symbols-outlined text-tertiary text-[24px]">
+                    account_balance_wallet
+                  </span>
+                  <div className="flex flex-col">
+                    <span className="font-headline-sm text-headline-sm font-bold text-on-surface font-cairo">
+                      تسجيل دين / جزئي (Crédit)
+                    </span>
+                    <span className="font-body-sm text-body-sm text-on-surface-variant">
+                      إدراج في دفتر حساب الزبون
+                    </span>
+                  </div>
+                </label>
+              </div>
+
+              {/* Debt Customer Selection & Inline Creation */}
+              {isDebt && (
+                <div className="mt-2 p-space-md rounded-xl bg-surface-container-low border border-outline-variant/40 flex flex-col gap-space-sm animate-fadeIn">
+                  <div className="flex items-center justify-between">
+                    <label className="font-body-md text-body-md font-bold text-on-surface">
+                      البحث عن زبون مسجل أو اختيار سريع:
+                    </label>
+                    <button
+                      type="button"
+                      onClick={() => setShowNewCustomerForm((v) => !v)}
+                      className="text-body-sm text-primary font-bold hover:underline flex items-center gap-1 cursor-pointer"
+                    >
+                      <span className="material-symbols-outlined text-[16px]">person_add</span>
+                      <span>إضافة زبون جديد (F7)</span>
+                    </button>
+                  </div>
+
+                  {/* Customer search input */}
+                  <div className="relative">
+                    <input
+                      type="text"
+                      value={customerSearchQuery}
+                      onChange={(e) => setCustomerSearchQuery(e.target.value)}
+                      placeholder="اكتب اسم الزبون أو رقم هاتفه..."
+                      className="w-full h-10 px-3 pr-9 rounded-lg bg-surface-container-lowest border border-outline-variant/40 focus:border-primary text-body-md font-tajawal"
+                    />
+                    <span className="material-symbols-outlined absolute right-2.5 top-2.5 text-on-surface-variant text-[18px]">
+                      search
+                    </span>
+
+                    {/* Search dropdown results */}
+                    {customerSearchResults.data &&
+                      customerSearchResults.data.length > 0 &&
+                      customerSearchQuery.trim() && (
+                        <div className="absolute top-11 right-0 left-0 bg-surface-container-lowest border border-outline-variant/40 rounded-lg shadow-lg z-20 overflow-hidden">
+                          {customerSearchResults.data.map((c) => (
+                            <button
+                              key={c.id}
+                              type="button"
+                              onClick={() => {
+                                setSelectedCustomer(c)
+                                setCustomerSearchQuery('')
+                              }}
+                              className="w-full px-3 py-2 text-right hover:bg-surface-container-low flex items-center justify-between border-b border-outline-variant/20 last:border-0"
+                            >
+                              <div className="flex flex-col">
+                                <span className="font-bold text-on-surface text-body-md">
+                                  {c.name}
+                                </span>
+                                {c.phone && (
+                                  <span className="text-body-sm text-on-surface-variant font-mono">
+                                    {c.phone}
+                                  </span>
+                                )}
+                              </div>
+                              <span className="material-symbols-outlined text-primary text-[18px]">
+                                check
+                              </span>
+                            </button>
+                          ))}
+                        </div>
+                      )}
+                  </div>
+
+                  {/* Selected Customer Card */}
+                  {selectedCustomer && (
+                    <div className="p-space-sm bg-surface-container-lowest rounded-lg border border-primary/30 flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <span className="material-symbols-outlined text-primary text-[20px]">
+                          person
+                        </span>
+                        <div>
+                          <span className="font-bold text-on-surface text-body-md">
+                            {selectedCustomer.name}
+                          </span>
+                          {selectedCustomer.phone && (
+                            <span className="text-body-sm text-on-surface-variant font-mono mr-2">
+                              ({selectedCustomer.phone})
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setSelectedCustomer(null)}
+                        className="text-on-surface-variant hover:text-red-600 p-1"
+                      >
+                        <span className="material-symbols-outlined text-[18px]">close</span>
+                      </button>
+                    </div>
+                  )}
+
+                  {/* Partial Paid Amount */}
+                  <div className="flex items-center justify-between gap-space-md pt-2">
+                    <div className="flex-1">
+                      <label className="font-body-sm text-body-sm text-on-surface-variant block mb-1">
+                        المبلغ المدفوع كاش الآن (اختياري):
+                      </label>
+                      <input
+                        type="number"
+                        dir="ltr"
+                        value={paidText}
+                        onChange={(e) => setPaidText(e.target.value)}
+                        placeholder="0"
+                        className="w-full h-10 px-3 rounded-lg bg-surface-container-lowest border border-outline-variant/40 font-mono text-body-md font-bold"
+                      />
+                    </div>
+                    <div className="flex-1 text-left">
+                      <span className="font-body-sm text-body-sm text-on-surface-variant block mb-1">
+                        الباقي كدين:
+                      </span>
+                      <span
+                        className="font-currency-display text-headline-sm font-bold text-tertiary font-mono"
+                        dir="ltr"
+                      >
+                        {formatDa(remainingDebt)}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Inline New Customer Form */}
+                  {showNewCustomerForm && (
+                    <div className="p-3 bg-surface-container-lowest rounded-lg border border-outline-variant/30 flex flex-col gap-2 mt-1">
+                      <span className="font-bold text-body-sm text-on-surface">
+                        إضافة زبون جديد:
+                      </span>
+                      <div className="grid grid-cols-2 gap-2">
+                        <input
+                          type="text"
+                          value={newCustName}
+                          onChange={(e) => setNewCustName(e.target.value)}
+                          placeholder="اسم الزبون *"
+                          className="h-9 px-3 rounded border border-outline-variant/40 text-body-sm"
+                        />
+                        <input
+                          type="text"
+                          value={newCustPhone}
+                          onChange={(e) => setNewCustPhone(e.target.value)}
+                          placeholder="رقم الهاتف"
+                          className="h-9 px-3 rounded border border-outline-variant/40 text-body-sm font-mono"
+                          dir="ltr"
+                        />
+                      </div>
+                      <div className="flex justify-end gap-2 mt-1">
+                        <button
+                          type="button"
+                          onClick={() => setShowNewCustomerForm(false)}
+                          className="px-3 py-1 text-body-sm text-on-surface-variant hover:bg-surface-container rounded"
+                        >
+                          إلغاء
+                        </button>
+                        <button
+                          type="button"
+                          onClick={handleCreateCustomer}
+                          disabled={!newCustName.trim() || createCustomerMutation.isPending}
+                          className="px-3 py-1 text-body-sm bg-primary text-on-primary rounded font-bold hover:bg-primary-container disabled:opacity-50"
+                        >
+                          حفظ واختيار
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+          </form>
+        </div>
+
+        {/* RIGHT (4 Columns): Transaction Summary & Execution Actions */}
+        <div className="col-span-12 lg:col-span-4 flex flex-col gap-space-md">
+          {/* Card 1: Summary Receipt & Confirmation Button */}
+          <div className="bg-surface-container-lowest p-space-md rounded-xl shadow-sm border border-outline-variant/30 flex flex-col gap-space-md">
+            <div className="flex items-center justify-between pb-2 border-b border-outline-variant/20">
+              <span className="font-headline-sm text-headline-sm font-bold text-on-surface font-cairo">
+                ملخص العملية وتأكيد الإرسال
+              </span>
+              <span className="material-symbols-outlined text-primary text-[20px]">
+                receipt_long
+              </span>
+            </div>
+
+            <div className="flex flex-col gap-space-sm text-body-md">
+              <div className="flex items-center justify-between">
+                <span className="text-on-surface-variant">الشبكة والمتعامل:</span>
+                <span
+                  className="font-bold px-2 py-0.5 rounded text-label-sm font-cairo"
+                  style={{
+                    backgroundColor: `${currentOpBrand.color}15`,
+                    color: currentOpBrand.color,
+                  }}
+                >
+                  {currentOpBrand.nameAr} ({currentOpBrand.nameEn})
+                </span>
+              </div>
+
+              <div className="flex items-center justify-between">
+                <span className="text-on-surface-variant">الرقم المستفيد:</span>
+                <span className="font-mono font-bold text-on-surface text-label-lg" dir="ltr">
+                  {phone || '----------'}
+                </span>
+              </div>
+
+              <div className="flex items-center justify-between">
+                <span className="text-on-surface-variant">مبلغ الشحن:</span>
+                <span className="font-mono font-bold text-on-surface text-label-lg" dir="ltr">
+                  {amountText ? `${Number(amountText).toLocaleString()} DA` : '0 DA'}
+                </span>
+              </div>
+
+              <div className="flex items-center justify-between">
+                <span className="text-on-surface-variant">حالة الدفع:</span>
+                <span
+                  className={`font-bold text-body-sm px-2 py-0.5 rounded ${
+                    isDebt
+                      ? 'bg-tertiary-fixed text-on-tertiary-fixed'
+                      : 'bg-emerald-100 text-emerald-800'
+                  }`}
+                >
+                  {isDebt
+                    ? `دين آجل ${selectedCustomer ? `(${selectedCustomer.name})` : ''}`
+                    : 'نقدي (كاش)'}
+                </span>
+              </div>
+
+              <div className="flex items-center justify-between pt-1 text-on-surface-variant text-body-sm">
+                <span>هامش الربح المتوقع:</span>
+                <span className="font-mono font-bold text-emerald-700" dir="ltr">
+                  +{formatDa(expectedProfitCentimes)}
+                </span>
+              </div>
+
+              <div className="mt-2 p-space-md rounded-xl bg-surface-container-low flex flex-col gap-0.5 border border-outline-variant/30">
+                <span className="text-body-sm text-on-surface-variant">
+                  المبلغ الإجمالي المطلوب من الزبون:
+                </span>
+                <span
+                  className="font-currency-display text-display-lg text-primary font-bold font-mono"
+                  dir="ltr"
+                >
+                  {amountText ? `${Number(amountText).toLocaleString()} DA` : '0 DA'}
+                </span>
               </div>
             </div>
 
-            {/* المبلغ */}
-            <div className="space-y-2">
-              <div className="flex items-center justify-between">
-                <label htmlFor="sale-amount" className="block text-xs font-bold uppercase tracking-wider text-slate-400">
-                  {salesMessages.amount}
-                </label>
-                {selectedBalance && (
-                  <span className="text-xs text-slate-400">
-                    الحد الأقصى: <strong className="text-slate-200">{formatDa(selectedBalance.balance)}</strong>
-                  </span>
-                )}
+            {/* Error Message if any */}
+            {create.isError && (
+              <div className="p-space-sm rounded-lg bg-red-50 text-red-700 text-body-sm font-semibold border border-red-200">
+                {translateSaleError(create.error)}
               </div>
-              <input
-                id="sale-amount"
-                inputMode="decimal"
-                dir="ltr"
-                placeholder="0"
-                value={amountText}
-                onChange={(e) => setAmountText(e.target.value)}
-                className={`w-full rounded-2xl border bg-slate-950 px-4 py-3.5 text-xl font-mono font-bold text-white outline-none transition-all ${
-                  isExceedingBalance
-                    ? 'border-red-500 bg-red-950/20 text-red-200 focus:ring-2 focus:ring-red-500/30'
-                    : 'border-slate-800 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/30'
-                }`}
-              />
-              {isExceedingBalance && (
-                <p className="flex items-center gap-1.5 text-xs font-semibold text-red-400">
-                  <IconAlert size={14} />
-                  <span>{salesMessages.exceedsBalance}</span>
-                </p>
+            )}
+
+            {/* Confirm & Send Button */}
+            <button
+              type="button"
+              onClick={submit}
+              disabled={!canSubmit || create.isPending}
+              className={`w-full h-13 rounded-xl flex items-center justify-center gap-space-sm font-headline-sm text-headline-sm text-on-primary font-bold font-cairo shadow-md transition-all cursor-pointer ${
+                canSubmit && !create.isPending
+                  ? 'bg-primary-container hover:bg-primary hover:shadow-lg'
+                  : 'bg-outline-variant text-on-surface-variant/60 cursor-not-allowed shadow-none'
+              }`}
+            >
+              <span className="material-symbols-outlined text-[22px]">send</span>
+              <span>{create.isPending ? 'جاري الإرسال...' : 'تأكيد البيع وإرسال [Enter ↵]'}</span>
+            </button>
+
+            {/* Secondary Actions */}
+            <div className="flex items-center gap-space-sm">
+              <button
+                type="button"
+                onClick={() => {
+                  setPhone('')
+                  setAmountText('')
+                  setPaidText('')
+                  setIsDebt(false)
+                  setSelectedCustomer(null)
+                  phoneInputRef.current?.focus()
+                }}
+                className="flex-1 py-2 px-space-sm rounded-lg bg-surface-container-low hover:bg-surface-container text-on-surface text-body-sm font-bold flex items-center justify-center gap-1 border border-outline-variant/30 cursor-pointer"
+              >
+                <span className="material-symbols-outlined text-[16px]">refresh</span>
+                <span>مسح (Esc)</span>
+              </button>
+
+              {canVoid && (
+                <button
+                  type="button"
+                  onClick={() => setShowVoidModal(true)}
+                  className="py-2 px-space-sm rounded-lg bg-red-50 hover:bg-red-100 text-red-700 text-body-sm font-bold flex items-center justify-center gap-1 border border-red-200 cursor-pointer"
+                >
+                  <span className="material-symbols-outlined text-[16px]">undo</span>
+                  <span>إلغاء آخر بيع</span>
+                </button>
               )}
             </div>
           </div>
 
-          {/* أزرار المبالغ السريعة */}
-          <div className="flex flex-wrap items-center gap-2">
-            <span className="text-xs font-medium text-slate-400">{salesMessages.quickAmounts}:</span>
-            {QUICK_AMOUNTS.map((v) => {
-              const disabled = selectedBalance !== undefined && v * 100 > selectedBalance.balance
-              return (
-                <button
-                  key={v}
-                  type="button"
-                  disabled={disabled}
-                  onClick={() => setAmountText(String(v))}
-                  className="rounded-xl border border-slate-800 bg-slate-950/80 px-3.5 py-1.5 font-mono text-xs font-semibold text-slate-200 transition-colors hover:border-emerald-500 hover:text-emerald-300 disabled:opacity-30 disabled:hover:border-slate-800"
-                >
-                  {v} دج
-                </button>
-              )
-            })}
-          </div>
-
-          {/* طريقة الدفع: كامل أو دين */}
-          <div className="rounded-2xl border border-slate-800/80 bg-slate-950/40 p-5 space-y-4">
-            <span className="block text-xs font-bold uppercase tracking-wider text-slate-400">
-              {salesMessages.paymentType}
-            </span>
-            <div className="flex items-center gap-6">
-              <label className="flex cursor-pointer items-center gap-2.5 text-sm text-slate-200">
-                <input
-                  type="radio"
-                  name="paymentMode"
-                  checked={!isDebt}
-                  onChange={() => {
-                    setIsDebt(false)
-                    setSelectedCustomer(null)
-                  }}
-                  className="h-4 w-4 accent-emerald-500"
-                />
-                <span>{salesMessages.paymentFull}</span>
-              </label>
-
-              <label className="flex cursor-pointer items-center gap-2.5 text-sm text-slate-200">
-                <input
-                  type="radio"
-                  name="paymentMode"
-                  checked={isDebt}
-                  onChange={() => setIsDebt(true)}
-                  className="h-4 w-4 accent-emerald-500"
-                />
-                <span className="text-amber-400 font-semibold">{salesMessages.paymentDebt}</span>
-              </label>
-            </div>
-
-            {/* تفاصيل البيع بالدين */}
-            {isDebt && (
-              <div className="space-y-4 border-t border-slate-800/80 pt-4">
-                <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
-                  {/* اختيار الزبون */}
-                  <div className="space-y-2">
-                    <label className="block text-xs font-bold text-slate-300">
-                      {salesMessages.customer} <span className="text-red-400">*</span>
-                    </label>
-
-                    {selectedCustomer ? (
-                      <div className="flex items-center justify-between rounded-xl border border-emerald-500/40 bg-emerald-950/20 p-3">
-                        <div className="flex items-center gap-2.5">
-                          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-900/40 text-emerald-300">
-                            <IconUser size={16} />
-                          </div>
-                          <div>
-                            <div className="font-bold text-emerald-200 text-xs">{selectedCustomer.name}</div>
-                            <div className="text-[11px] text-slate-400 font-mono" dir="ltr">
-                              {selectedCustomer.phone ?? '—'}
-                            </div>
-                          </div>
-                        </div>
-                        <button
-                          type="button"
-                          onClick={() => setSelectedCustomer(null)}
-                          className="rounded-lg bg-slate-800 px-2.5 py-1 text-xs text-slate-300 hover:bg-slate-700"
-                        >
-                          تغيير
-                        </button>
-                      </div>
-                    ) : (
-                      <div className="space-y-2">
-                        <div className="flex gap-2">
-                          <div className="relative flex-1">
-                            <input
-                              type="text"
-                              placeholder={salesMessages.searchCustomer}
-                              value={customerSearchQuery}
-                              onChange={(e) => setCustomerSearchQuery(e.target.value)}
-                              className="w-full rounded-xl border border-slate-800 bg-slate-950 px-3.5 py-2.5 text-xs text-white outline-none focus:border-emerald-500"
-                            />
-                            <span className="absolute left-3 top-3 text-slate-500">
-                              <IconSearch size={14} />
-                            </span>
-                          </div>
-                          <button
-                            type="button"
-                            onClick={() => setShowNewCustomerForm(true)}
-                            className="flex items-center gap-1.5 rounded-xl border border-slate-700 bg-slate-800 px-3 py-2 text-xs font-semibold text-slate-200 hover:border-emerald-500"
-                          >
-                            <IconPlus size={14} />
-                            <span>{salesMessages.newCustomer}</span>
-                          </button>
-                        </div>
-
-                        {/* نتائج البحث */}
-                        {customerSearchQuery.trim().length > 0 && customerSearchResults.data && (
-                          <div className="max-h-44 overflow-y-auto rounded-xl border border-slate-800 bg-slate-950 p-1.5 shadow-xl">
-                            {customerSearchResults.data.length === 0 ? (
-                              <div className="p-3 text-center text-xs text-slate-400">
-                                لم يُعثر على زبون بهذا الاسم.{' '}
-                                <button
-                                  type="button"
-                                  onClick={() => {
-                                    setNewCustName(customerSearchQuery)
-                                    setShowNewCustomerForm(true)
-                                  }}
-                                  className="text-emerald-400 underline font-semibold"
-                                >
-                                  إضافة كزبون جديد
-                                </button>
-                              </div>
-                            ) : (
-                              customerSearchResults.data.map((c) => (
-                                <button
-                                  key={c.id}
-                                  type="button"
-                                  onClick={() => {
-                                    setSelectedCustomer(c)
-                                    setCustomerSearchQuery('')
-                                  }}
-                                  className="flex w-full items-center justify-between rounded-lg p-2 text-right text-xs hover:bg-slate-800/60"
-                                >
-                                  <span className="font-semibold text-slate-200">{c.name}</span>
-                                  <span className="font-mono text-slate-400" dir="ltr">{c.phone}</span>
-                                </button>
-                              ))
-                            )}
-                          </div>
-                        )}
-                        {!selectedCustomer && (
-                          <p className="text-[11px] text-amber-400 font-medium">{salesMessages.customerRequired}</p>
-                        )}
-                      </div>
-                    )}
-                  </div>
-
-                  {/* المبلغ المدفوع الآن والمتبقي */}
-                  <div className="space-y-2">
-                    <label htmlFor="sale-paid-debt" className="block text-xs font-bold text-slate-300">
-                      {salesMessages.paidNow}
-                    </label>
-                    <input
-                      id="sale-paid-debt"
-                      inputMode="decimal"
-                      dir="ltr"
-                      placeholder="0"
-                      value={paidText}
-                      onChange={(e) => setPaidText(e.target.value)}
-                      className="w-full rounded-xl border border-slate-800 bg-slate-950 px-3.5 py-2.5 font-mono text-xs text-white outline-none focus:border-emerald-500"
-                    />
-                    <div className="flex items-center justify-between text-xs text-slate-400">
-                      <span>{salesMessages.remainingDebt}</span>
-                      <span className="font-mono font-bold text-red-400 text-sm">{formatDa(remainingDebt)}</span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* نموذج سريع لإضافة زبون */}
-                {showNewCustomerForm && (
-                  <div className="rounded-2xl border border-slate-700 bg-slate-900 p-4 space-y-3">
-                    <div className="text-xs font-bold text-slate-200">إضافة زبون جديد فوريًا</div>
-                    <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2">
-                      <input
-                        type="text"
-                        placeholder="اسم الزبون *"
-                        value={newCustName}
-                        onChange={(e) => setNewCustName(e.target.value)}
-                        className="rounded-xl border border-slate-700 bg-slate-950 px-3 py-2 text-xs text-white outline-none focus:border-emerald-500"
-                      />
-                      <input
-                        type="text"
-                        dir="ltr"
-                        placeholder="رقم الهاتف (اختياري)"
-                        value={newCustPhone}
-                        onChange={(e) => setNewCustPhone(e.target.value)}
-                        className="rounded-xl border border-slate-700 bg-slate-950 px-3 py-2 text-xs text-white outline-none focus:border-emerald-500"
-                      />
-                    </div>
-                    <div className="flex justify-end gap-2">
-                      <button
-                        type="button"
-                        onClick={() => setShowNewCustomerForm(false)}
-                        className="rounded-xl px-3 py-1.5 text-xs text-slate-400 hover:text-white"
-                      >
-                        إلغاء
-                      </button>
-                      <button
-                        type="button"
-                        disabled={!newCustName.trim() || createCustomerMutation.isPending}
-                        onClick={handleCreateCustomer}
-                        className="rounded-xl bg-emerald-600 px-4 py-1.5 text-xs font-bold text-white shadow-sm hover:bg-emerald-500 disabled:opacity-50"
-                      >
-                        حفظ واختيار
-                      </button>
-                    </div>
-                  </div>
+          {/* Card 2: Generated / Manual USSD Code Box */}
+          <div className="bg-surface-container-lowest p-space-md rounded-xl shadow-sm border border-outline-variant/30 flex flex-col gap-space-xs">
+            <div className="flex items-center justify-between mb-1">
+              <div className="flex items-center gap-1.5">
+                <span className="font-bold text-body-sm text-on-surface font-cairo">
+                  كود الـ USSD المعتمد:
+                </span>
+                {isManualCode ? (
+                  <span className="text-[10px] font-bold px-1.5 py-0.2 rounded bg-amber-100 text-amber-800">
+                    يدوي
+                  </span>
+                ) : (
+                  <span className="text-[10px] font-bold px-1.5 py-0.2 rounded bg-primary/10 text-primary">
+                    تلقائي
+                  </span>
                 )}
               </div>
-            )}
+              <div className="flex items-center gap-2">
+                {isManualCode && (
+                  <button
+                    type="button"
+                    onClick={handleResetToAuto}
+                    className="text-body-sm text-primary font-bold hover:underline flex items-center gap-1 cursor-pointer"
+                  >
+                    <span className="material-symbols-outlined text-[14px]">restart_alt</span>
+                    <span>تلقائي</span>
+                  </button>
+                )}
+                <button
+                  type="button"
+                  onClick={() => handleCopyCode(manualCode)}
+                  className="text-body-sm text-primary font-bold hover:underline flex items-center gap-1 cursor-pointer"
+                >
+                  <span className="material-symbols-outlined text-[16px]">content_copy</span>
+                  <span>{copiedCode === manualCode ? 'تم النسخ!' : 'نسخ الكود'}</span>
+                </button>
+              </div>
+            </div>
+            <div
+              className={`p-2.5 rounded-lg font-mono text-xs font-bold tracking-wider select-all border overflow-x-auto text-left ${
+                isManualCode
+                  ? 'bg-amber-50/50 text-amber-950 border-amber-200'
+                  : 'bg-surface-container-low text-on-surface border-outline-variant/30'
+              }`}
+              dir="ltr"
+            >
+              {manualCode}
+            </div>
           </div>
+        </div>
+      </div>
 
-          {/* التنبيهات والأخطاء */}
-          {create.isError && (
-            <p className="flex items-center gap-2 rounded-2xl border border-red-900/60 bg-red-950/30 p-3.5 text-xs text-red-300">
-              <IconAlert size={16} />
-              <span>{translateSaleError(create.error)}</span>
-            </p>
-          )}
-          {create.isSuccess && (
-            <p className="flex items-center gap-2 rounded-2xl border border-emerald-900/60 bg-emerald-950/30 p-3.5 text-xs text-emerald-300">
-              <IconCheck size={16} />
-              <span>{salesMessages.success}</span>
-            </p>
-          )}
+      {/* 3. Bottom Table: Live Recent Sales Stream */}
+      <div className="bg-surface-container-lowest p-space-md rounded-xl shadow-sm border border-outline-variant/30 flex flex-col gap-space-sm">
+        <div className="flex items-center justify-between pb-2 border-b border-outline-variant/20">
+          <div className="flex items-center gap-space-xs">
+            <span className="material-symbols-outlined text-primary text-[20px]">
+              history_toggle_off
+            </span>
+            <span className="font-headline-sm text-headline-sm font-bold text-on-surface font-cairo">
+              آخر العمليات المنفذة في هذه الجلسة
+            </span>
+          </div>
+          <span className="text-body-sm text-on-surface-variant font-mono">
+            {recentSales.data?.length ?? 0} عملية مسجلة
+          </span>
+        </div>
 
-          {/* زر التأكيد */}
-          <button
-            type="submit"
-            disabled={!canSubmit || create.isPending || isZeroBalance}
-            className="w-full rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-600 py-4 text-base font-bold text-white shadow-xl shadow-emerald-950/40 transition-all hover:from-emerald-500 hover:to-teal-500 disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            {create.isPending ? salesMessages.submitting : salesMessages.submit}
-          </button>
-        </form>
-      )}
+        <div className="overflow-x-auto">
+          <table className="w-full text-right text-body-sm border-collapse">
+            <thead>
+              <tr className="border-b border-outline-variant/30 text-on-surface-variant font-cairo text-[13px]">
+                <th className="py-2.5 px-3">الوقت</th>
+                <th className="py-2.5 px-3">المتعامل</th>
+                <th className="py-2.5 px-3">الرقم المستلم</th>
+                <th className="py-2.5 px-3">المبلغ</th>
+                <th className="py-2.5 px-3">طريقة الدفع</th>
+                <th className="py-2.5 px-3">الربح الصافي</th>
+                <th className="py-2.5 px-3">الحالة</th>
+                <th className="py-2.5 px-3 text-center">إجراءات</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-outline-variant/20 font-tajawal">
+              {recentSales.data && recentSales.data.length > 0 ? (
+                recentSales.data.map((sale) => {
+                  const op = operators.data?.find((o) => o.id === sale.operatorId)
+                  const opName = op?.name ?? 'غير محدد'
+                  const brand = getOpBrand(opName)
+                  const isVoided = Boolean(sale.voidedAt)
+                  const isSaleDebt = sale.paidAmount < sale.amount
 
-      {/* نافذة تأكيد إلغاء آخر عملية */}
-      {showVoidModal && lastSale && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-md p-4">
-          <div className="w-full max-w-sm rounded-3xl border border-slate-800 bg-slate-900 p-6 shadow-2xl space-y-4">
-            <h3 className="text-base font-bold text-red-400">{salesMessages.voidLastSale}</h3>
-            <p className="text-xs text-slate-300 leading-relaxed">{salesMessages.voidConfirm}</p>
+                  return (
+                    <tr
+                      key={sale.id}
+                      className={`hover:bg-surface-container-low/50 transition-colors ${
+                        isVoided ? 'opacity-50 line-through bg-gray-50' : ''
+                      }`}
+                    >
+                      <td
+                        className="py-2.5 px-3 font-mono text-[12px] text-on-surface-variant"
+                        dir="ltr"
+                      >
+                        {new Date(sale.createdAt).toLocaleTimeString('en-GB', {
+                          hour: '2-digit',
+                          minute: '2-digit',
+                        })}
+                      </td>
+                      <td className="py-2.5 px-3">
+                        <span
+                          className="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-bold font-cairo"
+                          style={{
+                            backgroundColor: `${brand.color}15`,
+                            color: brand.color,
+                          }}
+                        >
+                          {opName}
+                        </span>
+                      </td>
+                      <td className="py-2.5 px-3 font-mono font-bold text-on-surface" dir="ltr">
+                        {sale.targetPhone}
+                      </td>
+                      <td className="py-2.5 px-3 font-mono font-bold text-on-surface" dir="ltr">
+                        {formatDa(sale.amount)}
+                      </td>
+                      <td className="py-2.5 px-3">
+                        {isSaleDebt ? (
+                          <span className="text-[11px] font-bold text-tertiary bg-tertiary-fixed px-1.5 py-0.5 rounded">
+                            دين ({formatDa(sale.amount - sale.paidAmount)})
+                          </span>
+                        ) : (
+                          <span className="text-[11px] font-bold text-emerald-800 bg-emerald-100 px-1.5 py-0.5 rounded">
+                            نقدي كاش
+                          </span>
+                        )}
+                      </td>
+                      <td className="py-2.5 px-3 font-mono text-emerald-700 font-bold" dir="ltr">
+                        +{formatDa(sale.profit)}
+                      </td>
+                      <td className="py-2.5 px-3">
+                        {isVoided ? (
+                          <span className="text-[11px] font-bold text-red-700 bg-red-100 px-1.5 py-0.5 rounded">
+                            ملغاة
+                          </span>
+                        ) : (
+                          <span className="text-[11px] font-bold text-emerald-700 bg-emerald-100 px-1.5 py-0.5 rounded flex items-center gap-1 w-max">
+                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-600" />
+                            <span>مكتملة</span>
+                          </span>
+                        )}
+                      </td>
+                      <td className="py-2.5 px-3 text-center">
+                        <div className="flex items-center justify-center gap-1">
+                          <button
+                            type="button"
+                            onClick={() =>
+                              handleCopyCode(
+                                brand.ussdTemplate(
+                                  sale.targetPhone,
+                                  (sale.amount / 100).toString(),
+                                ),
+                              )
+                            }
+                            title="نسخ كود USSD"
+                            className="p-1 text-on-surface-variant hover:text-primary rounded hover:bg-surface-container"
+                          >
+                            <span className="material-symbols-outlined text-[16px]">
+                              content_copy
+                            </span>
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  )
+                })
+              ) : (
+                <tr>
+                  <td colSpan={8} className="py-8 text-center text-on-surface-variant">
+                    لا توجد عمليات بيع مسجلة بعد في هذه الجلسة
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+      </div>
 
-            <div className="rounded-2xl border border-slate-800 bg-slate-950 p-3 text-xs space-y-1.5 font-mono">
-              <div className="flex justify-between">
-                <span className="text-slate-400 font-sans">الهاتف:</span>
-                <span className="text-white" dir="ltr">{lastSale.targetPhone}</span>
+      {/* 4. Modals */}
+      {/* Modal 1: USSD Preview Modal */}
+      {showUssdModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-inverse-surface/40 backdrop-blur-xs p-4 animate-fadeIn">
+          <div className="bg-surface-container-lowest rounded-2xl shadow-xl border border-outline-variant/40 w-full max-w-lg p-space-lg flex flex-col gap-space-md">
+            <div className="flex items-center justify-between border-b border-outline-variant/20 pb-space-sm">
+              <div className="flex items-center gap-space-xs">
+                <span className="material-symbols-outlined text-primary text-[22px]">
+                  qr_code_2
+                </span>
+                <span className="font-headline-sm text-headline-sm font-bold text-on-surface font-cairo">
+                  معاينة كود USSD للإرسال
+                </span>
               </div>
-              <div className="flex justify-between">
-                <span className="text-slate-400 font-sans">المبلغ:</span>
-                <span className="font-bold text-emerald-400">{formatDa(lastSale.amount)}</span>
-              </div>
-            </div>
-
-            <div className="space-y-1">
-              <label htmlFor="void-reason" className="block text-[11px] text-slate-400">
-                {salesMessages.voidReason}
-              </label>
-              <input
-                id="void-reason"
-                type="text"
-                value={voidReason}
-                onChange={(e) => setVoidReason(e.target.value)}
-                className="w-full rounded-xl border border-slate-800 bg-slate-950 px-3 py-2 text-xs text-white outline-none focus:border-red-500"
-              />
-            </div>
-
-            <div className="flex justify-end gap-2 pt-2">
               <button
                 type="button"
-                onClick={() => setShowVoidModal(false)}
-                className="rounded-xl px-4 py-2 text-xs text-slate-400 hover:text-white"
+                onClick={() => setShowUssdModal(false)}
+                className="text-on-surface-variant hover:text-on-surface p-1 cursor-pointer"
               >
-                إلغاء
+                <span className="material-symbols-outlined text-[20px]">close</span>
+              </button>
+            </div>
+
+            <div className="flex flex-col gap-space-sm">
+              <div className="flex items-center justify-between">
+                <span className="text-body-sm text-on-surface-variant">
+                  الكود المعتمد لشبكة {currentOpBrand.nameAr}:
+                </span>
+                {isManualCode ? (
+                  <span className="text-[11px] font-bold px-2 py-0.5 rounded bg-amber-100 text-amber-800">
+                    تعديل يدوي مخصص
+                  </span>
+                ) : (
+                  <span className="text-[11px] font-bold px-2 py-0.5 rounded bg-primary/10 text-primary">
+                    توليد تلقائي
+                  </span>
+                )}
+              </div>
+              <input
+                type="text"
+                dir="ltr"
+                spellCheck={false}
+                value={manualCode}
+                onChange={(e) => handleManualCodeChange(e.target.value)}
+                className={`w-full p-space-md rounded-xl font-mono text-lg font-bold tracking-wider border text-left pos-focus ${
+                  isManualCode
+                    ? 'bg-amber-50/50 text-amber-950 border-amber-300'
+                    : 'bg-surface-container-low text-on-surface border-outline-variant/40'
+                }`}
+              />
+              {isManualCode && (
+                <div className="flex justify-end">
+                  <button
+                    type="button"
+                    onClick={handleResetToAuto}
+                    className="text-body-sm text-primary font-bold hover:underline flex items-center gap-1 cursor-pointer"
+                  >
+                    <span className="material-symbols-outlined text-[16px]">restart_alt</span>
+                    <span>استعادة الكود التلقائي</span>
+                  </button>
+                </div>
+              )}
+            </div>
+
+            <div className="flex items-center justify-end gap-space-sm pt-2">
+              <button
+                type="button"
+                onClick={() => setShowUssdModal(false)}
+                className="px-space-md py-2 rounded-lg bg-surface-container-low hover:bg-surface-container text-on-surface font-bold text-body-md cursor-pointer"
+              >
+                إغلاق
               </button>
               <button
                 type="button"
-                disabled={voidSale.isPending}
-                onClick={handleVoidSale}
-                className="rounded-xl bg-red-600 px-4 py-2 text-xs font-bold text-white hover:bg-red-500 disabled:opacity-50"
+                onClick={() => handleCopyCode(manualCode)}
+                className="flex items-center gap-1.5 px-space-md py-2 rounded-lg bg-primary text-on-primary font-bold text-body-md hover:bg-primary-container cursor-pointer shadow-sm"
               >
-                {voidSale.isPending ? salesMessages.voiding : 'تأكيد الإلغاء'}
+                <span className="material-symbols-outlined text-[18px]">content_copy</span>
+                <span>{copiedCode === manualCode ? 'تم النسخ!' : 'نسخ الكود'}</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Modal 2: Void Transaction Modal */}
+      {showVoidModal && lastSale && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-inverse-surface/40 backdrop-blur-xs p-4 animate-fadeIn">
+          <div className="bg-surface-container-lowest rounded-2xl shadow-xl border border-red-200 w-full max-w-md p-space-lg flex flex-col gap-space-md">
+            <div className="flex items-center gap-space-xs text-red-600">
+              <span className="material-symbols-outlined text-[24px]">warning</span>
+              <h3 className="font-headline-sm text-headline-sm font-bold font-cairo">
+                تأكيد إلغاء وتراجع عن آخر عملية
+              </h3>
+            </div>
+
+            <p className="text-body-md text-on-surface">
+              هل أنت متأكد من إلغاء عملية الفليكسي بمبلغ{' '}
+              <strong className="font-mono">{formatDa(lastSale.amount)}</strong> للرقم{' '}
+              <strong className="font-mono" dir="ltr">
+                {lastSale.targetPhone}
+              </strong>
+              ؟ سيتم إعادة الرصيد إلى الشريحة وإلغاء أي ديون مسجلة عليها.
+            </p>
+
+            <div className="flex flex-col gap-1">
+              <label className="text-body-sm font-bold text-on-surface">سبب الإلغاء:</label>
+              <input
+                type="text"
+                value={voidReason}
+                onChange={(e) => setVoidReason(e.target.value)}
+                placeholder="اكتب سبب الإلغاء..."
+                className="h-10 px-3 rounded-lg border border-outline-variant/40 text-body-md font-tajawal focus:border-primary"
+              />
+            </div>
+
+            <div className="flex items-center justify-end gap-space-sm pt-2">
+              <button
+                type="button"
+                onClick={() => setShowVoidModal(false)}
+                className="px-space-md py-2 rounded-lg bg-surface-container-low hover:bg-surface-container text-on-surface font-bold text-body-md cursor-pointer"
+              >
+                تراجع (إبقاء العملية)
+              </button>
+              <button
+                type="button"
+                onClick={handleVoidSale}
+                disabled={voidSale.isPending}
+                className="flex items-center gap-1.5 px-space-md py-2 rounded-lg bg-red-600 hover:bg-red-700 text-white font-bold text-body-md cursor-pointer shadow-sm"
+              >
+                <span className="material-symbols-outlined text-[18px]">check</span>
+                <span>{voidSale.isPending ? 'جاري الإلغاء...' : 'تأكيد الإلغاء فوراً'}</span>
               </button>
             </div>
           </div>
