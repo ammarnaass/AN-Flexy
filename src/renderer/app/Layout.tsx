@@ -84,11 +84,11 @@ export function Layout() {
   }, [navigate])
 
   const user = session.data?.user
-  const userName = user?.name ?? 'أمين بلقاسم'
+  const userName = user?.name ?? 'المشرف'
   const userRole = user?.role === 'admin' ? 'مالك' : 'كاشير'
 
   const shopName =
-    settingsList.data?.find((s) => s.key === 'shop_name')?.value || 'متجر الوفاء للاتصالات'
+    settingsList.data?.find((s) => s.key === 'shop_name')?.value || 'محطة AN-Flexy POS'
 
   const isSalePage = location.pathname === '/sale'
 

@@ -4,10 +4,10 @@ import { useBackups, useCreateBackup, useRestoreBackup } from '@renderer/feature
 import { ModemSettingsTab } from '@renderer/features/modem'
 import { playBeep } from '@renderer/shared/audio'
 
-type SettingsTab = 'modems' | 'printer' | 'sync' | 'security'
+type SettingsTab = 'store' | 'modems' | 'printer' | 'sync' | 'security'
 
 export function SettingsScreen() {
-  const [activeTab, setActiveTab] = useState<SettingsTab>('modems')
+  const [activeTab, setActiveTab] = useState<SettingsTab>('store')
   const [isScanning, setIsScanning] = useState(false)
   const [scanMessage, setScanMessage] = useState<string | null>(null)
   const [saveSuccess, setSaveSuccess] = useState(false)
@@ -276,22 +276,38 @@ export function SettingsScreen() {
         </div>
       )}
 
-      {/* Primary Tab Switcher (مطابق لـ _1/code.html) */}
-      <div className="flex items-center gap-2 p-1.5 bg-surface-container-low rounded-2xl shadow-xs border border-outline-variant/20">
+      {/* Primary Tab Switcher */}
+      <div className="flex items-center gap-2 p-1.5 bg-surface-container-low rounded-2xl shadow-xs border border-outline-variant/20 overflow-x-auto">
+        <button
+          type="button"
+          onClick={() => {
+            playBeep('click')
+            setActiveTab('store')
+          }}
+          className={`tab-button flex-1 flex items-center justify-center gap-2 py-2.5 px-space-md rounded-xl font-headline-sm text-body-md font-cairo transition-all cursor-pointer whitespace-nowrap ${
+            activeTab === 'store'
+              ? 'bg-surface-container-lowest text-primary shadow-xs font-bold'
+              : 'text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high'
+          }`}
+        >
+          <span className="material-symbols-outlined text-[20px]">storefront</span>
+          <span>إعدادات المتجر (بيانات المحل)</span>
+        </button>
+
         <button
           type="button"
           onClick={() => {
             playBeep('click')
             setActiveTab('modems')
           }}
-          className={`tab-button flex-1 flex items-center justify-center gap-2 py-2.5 px-space-md rounded-xl font-headline-sm text-body-md font-cairo transition-all cursor-pointer ${
+          className={`tab-button flex-1 flex items-center justify-center gap-2 py-2.5 px-space-md rounded-xl font-headline-sm text-body-md font-cairo transition-all cursor-pointer whitespace-nowrap ${
             activeTab === 'modems'
               ? 'bg-surface-container-lowest text-primary shadow-xs font-bold'
               : 'text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high'
           }`}
         >
           <span className="material-symbols-outlined text-[20px]">sim_card</span>
-          <span>منافذ وشرائح GSM (فليكسي)</span>
+          <span>منافذ الفليكسي (مودمات GSM)</span>
           <span className="w-2 h-2 rounded-full bg-primary-container" />
         </button>
 
@@ -301,7 +317,7 @@ export function SettingsScreen() {
             playBeep('click')
             setActiveTab('printer')
           }}
-          className={`tab-button flex-1 flex items-center justify-center gap-2 py-2.5 px-space-md rounded-xl font-headline-sm text-body-md font-cairo transition-all cursor-pointer ${
+          className={`tab-button flex-1 flex items-center justify-center gap-2 py-2.5 px-space-md rounded-xl font-headline-sm text-body-md font-cairo transition-all cursor-pointer whitespace-nowrap ${
             activeTab === 'printer'
               ? 'bg-surface-container-lowest text-primary shadow-xs font-bold'
               : 'text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high'
@@ -317,7 +333,7 @@ export function SettingsScreen() {
             playBeep('click')
             setActiveTab('sync')
           }}
-          className={`tab-button flex-1 flex items-center justify-center gap-2 py-2.5 px-space-md rounded-xl font-headline-sm text-body-md font-cairo transition-all cursor-pointer ${
+          className={`tab-button flex-1 flex items-center justify-center gap-2 py-2.5 px-space-md rounded-xl font-headline-sm text-body-md font-cairo transition-all cursor-pointer whitespace-nowrap ${
             activeTab === 'sync'
               ? 'bg-surface-container-lowest text-primary shadow-xs font-bold'
               : 'text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high'
@@ -336,7 +352,7 @@ export function SettingsScreen() {
             playBeep('click')
             setActiveTab('security')
           }}
-          className={`tab-button flex-1 flex items-center justify-center gap-2 py-2.5 px-space-md rounded-xl font-headline-sm text-body-md font-cairo transition-all cursor-pointer ${
+          className={`tab-button flex-1 flex items-center justify-center gap-2 py-2.5 px-space-md rounded-xl font-headline-sm text-body-md font-cairo transition-all cursor-pointer whitespace-nowrap ${
             activeTab === 'security'
               ? 'bg-surface-container-lowest text-primary shadow-xs font-bold'
               : 'text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high'
@@ -348,96 +364,34 @@ export function SettingsScreen() {
       </div>
 
       {/* ========================================================= */}
-      {/* TAB 1: MODEMS & GSM CHIPS (مطابق لـ _1 و gsm_ports) */}
+      {/* TAB 1: STORE & POS DETAILS (إعدادات المتجر والتذكرة) */}
       {/* ========================================================= */}
-      {activeTab === 'modems' && <ModemSettingsTab />}
-
-      {/* ========================================================= */}
-      {/* TAB 2: ESC/POS THERMAL PRINTER (مطابق لـ _1/code.html) */}
-      {/* ========================================================= */}
-      {activeTab === 'printer' && (
+      {activeTab === 'store' && (
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-space-lg">
-          {/* Left Form (7 cols) */}
+          {/* Left: Store Information Form (7 cols) */}
           <div className="lg:col-span-7 flex flex-col gap-space-md bg-surface-container-lowest p-space-lg rounded-2xl shadow-sm border border-outline-variant/30">
             <div className="flex items-center justify-between pb-space-sm border-b border-surface-container">
               <div className="flex items-center gap-2">
-                <span className="material-symbols-outlined text-primary text-[24px]">receipt_long</span>
-                <h2 className="font-headline-md text-headline-md text-on-surface font-bold font-cairo">
-                  تهيئة طابعة الإيصالات الحرارية
-                </h2>
+                <span className="material-symbols-outlined text-primary text-[24px]">storefront</span>
+                <div>
+                  <h2 className="font-headline-md text-headline-md text-on-surface font-bold font-cairo">
+                    بيانات ومعلومات المتجر ونقطة البيع
+                  </h2>
+                  <p className="font-body-sm text-body-sm text-on-surface-variant">
+                    تظهر هذه البيانات في رأس التذاكر والإيصالات الرسمية وعند تصدير التقارير
+                  </p>
+                </div>
               </div>
               <span className="font-label-sm text-label-sm bg-surface-container-high text-primary px-2.5 py-0.5 rounded-full font-mono font-bold">
-                ESC/POS USB Ready
+                POS Store Config
               </span>
             </div>
 
-            {/* Hardware Selectors */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-space-md">
-              <div className="flex flex-col gap-1">
-                <label className="font-label-sm text-label-sm text-on-surface-variant font-bold">
-                  الطابعة المثبتة
-                </label>
-                <select
-                  value={printerDevice}
-                  onChange={(e) => setPrinterDevice(e.target.value)}
-                  className="bg-surface-container-low text-on-surface font-body-md p-2.5 rounded-xl border border-outline-variant/20 focus:border-primary outline-none"
-                >
-                  <option value="Xprinter XP-N160II USB">Xprinter XP-N160II (USB Thermal)</option>
-                  <option value="Epson TM-T20III">Epson TM-T20III (USB/LAN)</option>
-                  <option value="POS-58C USB">POS-58C Mini Thermal</option>
-                  <option value="Generic POS 80mm">طابعة حرارية عامة (80mm Generic)</option>
-                </select>
-              </div>
-
-              <div className="flex flex-col gap-1">
-                <label className="font-label-sm text-label-sm text-on-surface-variant font-bold">
-                  عرض ورق الإيصال
-                </label>
-                <div className="grid grid-cols-2 gap-2">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      playBeep('click')
-                      setPaperWidth('80mm')
-                    }}
-                    className={`py-2 px-space-sm rounded-xl font-label-md text-label-md transition-all flex items-center justify-center gap-1 cursor-pointer ${
-                      paperWidth === '80mm'
-                        ? 'bg-primary-container text-on-primary font-bold shadow-xs'
-                        : 'bg-surface-container text-on-surface hover:bg-surface-container-high'
-                    }`}
-                  >
-                    {paperWidth === '80mm' && (
-                      <span className="material-symbols-outlined text-[16px]">check</span>
-                    )}
-                    <span>80 مم (قياسي)</span>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => {
-                      playBeep('click')
-                      setPaperWidth('58mm')
-                    }}
-                    className={`py-2 px-space-sm rounded-xl font-label-md text-label-md transition-all flex items-center justify-center gap-1 cursor-pointer ${
-                      paperWidth === '58mm'
-                        ? 'bg-primary-container text-on-primary font-bold shadow-xs'
-                        : 'bg-surface-container text-on-surface hover:bg-surface-container-high'
-                    }`}
-                  >
-                    {paperWidth === '58mm' && (
-                      <span className="material-symbols-outlined text-[16px]">check</span>
-                    )}
-                    <span>58 مم (مصغر)</span>
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            {/* Receipt Header Details */}
+            {/* Form Inputs */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-space-md pt-2">
               <div className="flex flex-col gap-1">
                 <label className="font-label-sm text-label-sm text-on-surface-variant font-bold">
-                  اسم المحل التجاري في الرأس
+                  اسم المحل التجاري في الرأس <span className="text-tertiary">*</span>
                 </label>
                 <input
                   type="text"
@@ -503,56 +457,19 @@ export function SettingsScreen() {
               />
             </div>
 
-            {/* Hardware Toggles */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-space-md pt-2">
-              <label className="flex items-center gap-3 p-space-sm rounded-xl bg-surface-container-low border border-outline-variant/20 cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={autoCut}
-                  onChange={(e) => setAutoCut(e.target.checked)}
-                  className="w-5 h-5 rounded text-primary focus:ring-primary"
-                />
-                <div className="flex flex-col">
-                  <div className="flex items-center gap-1 font-bold text-body-md">
-                    <span className="material-symbols-outlined text-[18px] text-primary">content_cut</span>
-                    <span>القطع التلقائي للورق (Auto-Cut)</span>
-                  </div>
-                  <span className="text-[11px] text-on-surface-variant">إرسال أمر GS V 66 عند انتهاء الطباعة</span>
-                </div>
-              </label>
-
-              <label className="flex items-center gap-3 p-space-sm rounded-xl bg-surface-container-low border border-outline-variant/20 cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={cashDrawerPulse}
-                  onChange={(e) => setCashDrawerPulse(e.target.checked)}
-                  className="w-5 h-5 rounded text-primary focus:ring-primary"
-                />
-                <div className="flex flex-col">
-                  <div className="flex items-center gap-1 font-bold text-body-md">
-                    <span className="material-symbols-outlined text-[18px] text-primary">point_of_sale</span>
-                    <span>فتح الكاسة آلياً (Cash Drawer Pulse)</span>
-                  </div>
-                  <span className="text-[11px] text-on-surface-variant">نبضة RJ11 لدرج النقود عند البيع نقداً</span>
-                </div>
-              </label>
+            <div className="pt-2 flex justify-end">
+              <button
+                type="button"
+                onClick={handleSaveAll}
+                className="flex items-center gap-2 px-space-lg py-2.5 rounded-xl bg-primary hover:bg-primary-container text-on-primary font-headline-sm text-body-md font-cairo font-bold transition-all shadow-sm cursor-pointer active:scale-95"
+              >
+                <span className="material-symbols-outlined text-[18px]">save</span>
+                <span>حفظ بيانات المتجر</span>
+              </button>
             </div>
-
-            {/* Print Test Action */}
-            <button
-              type="button"
-              onClick={handleTestPrint}
-              disabled={isPrintingTest}
-              className="mt-2 w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-primary hover:bg-primary-container text-on-primary font-headline-sm text-body-md font-cairo font-bold shadow-sm transition-all cursor-pointer disabled:opacity-50 active:scale-95"
-            >
-              <span className={`material-symbols-outlined text-[20px] ${isPrintingTest ? 'animate-bounce' : ''}`}>
-                receipt
-              </span>
-              <span>{isPrintingTest ? 'جاري إرسال أوامر الطباعة ESC/POS...' : 'إرسال أمر طباعة تجريبي (ESC/POS)'}</span>
-            </button>
           </div>
 
-          {/* Right Live Receipt Preview (5 cols) (مطابق لـ _1/code.html) */}
+          {/* Right Live Receipt Preview (5 cols) */}
           <div className="lg:col-span-5 flex flex-col items-center">
             <div className="w-full flex items-center justify-between pb-space-xs mb-space-xs">
               <div className="flex items-center gap-1.5 text-primary font-bold">
@@ -639,6 +556,173 @@ export function SettingsScreen() {
                 <div className="h-8 w-44 bg-[repeating-linear-gradient(90deg,#111,#111_2px,transparent_2px,transparent_4px,#111_4px,#111_7px,transparent_7px,transparent_9px)]" />
                 <span className="text-[9px] tracking-widest text-gray-500 mt-0.5">849200192841</span>
               </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ========================================================= */}
+      {/* TAB 2: MODEMS & FLEXY DONGLES (منافذ الفليكسي والمودمات) */}
+      {/* ========================================================= */}
+      {activeTab === 'modems' && <ModemSettingsTab />}
+
+      {/* ========================================================= */}
+      {/* TAB 3: ESC/POS THERMAL PRINTER (طابعة الفواتير والدرج) */}
+      {/* ========================================================= */}
+      {activeTab === 'printer' && (
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-space-lg">
+          {/* Thermal Printer Hardware Options */}
+          <div className="flex flex-col gap-space-md bg-surface-container-lowest p-space-lg rounded-2xl shadow-sm border border-outline-variant/30">
+            <div className="flex items-center justify-between pb-space-sm border-b border-surface-container">
+              <div className="flex items-center gap-2">
+                <span className="material-symbols-outlined text-primary text-[24px]">print</span>
+                <h2 className="font-headline-md text-headline-md text-on-surface font-bold font-cairo">
+                  تهيئة طابعة الإيصالات الحرارية (ESC/POS)
+                </h2>
+              </div>
+              <span className="font-label-sm text-label-sm bg-surface-container-high text-primary px-2.5 py-0.5 rounded-full font-mono font-bold">
+                Thermal USB
+              </span>
+            </div>
+
+            {/* Hardware Selectors */}
+            <div className="flex flex-col gap-space-md">
+              <div className="flex flex-col gap-1">
+                <label className="font-label-sm text-label-sm text-on-surface-variant font-bold">
+                  الطابعة المثبتة
+                </label>
+                <select
+                  value={printerDevice}
+                  onChange={(e) => setPrinterDevice(e.target.value)}
+                  className="bg-surface-container-low text-on-surface font-body-md p-2.5 rounded-xl border border-outline-variant/20 focus:border-primary outline-none"
+                >
+                  <option value="Xprinter XP-N160II USB">Xprinter XP-N160II (USB Thermal)</option>
+                  <option value="Epson TM-T20III">Epson TM-T20III (USB/LAN)</option>
+                  <option value="POS-58C USB">POS-58C Mini Thermal</option>
+                  <option value="Generic POS 80mm">طابعة حرارية عامة (80mm Generic)</option>
+                </select>
+              </div>
+
+              <div className="flex flex-col gap-1">
+                <label className="font-label-sm text-label-sm text-on-surface-variant font-bold">
+                  عرض ورق الإيصال
+                </label>
+                <div className="grid grid-cols-2 gap-2">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      playBeep('click')
+                      setPaperWidth('80mm')
+                    }}
+                    className={`py-2 px-space-sm rounded-xl font-label-md text-label-md transition-all flex items-center justify-center gap-1 cursor-pointer ${
+                      paperWidth === '80mm'
+                        ? 'bg-primary-container text-on-primary font-bold shadow-xs'
+                        : 'bg-surface-container text-on-surface hover:bg-surface-container-high'
+                    }`}
+                  >
+                    {paperWidth === '80mm' && (
+                      <span className="material-symbols-outlined text-[16px]">check</span>
+                    )}
+                    <span>80 مم (قياسي)</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      playBeep('click')
+                      setPaperWidth('58mm')
+                    }}
+                    className={`py-2 px-space-sm rounded-xl font-label-md text-label-md transition-all flex items-center justify-center gap-1 cursor-pointer ${
+                      paperWidth === '58mm'
+                        ? 'bg-primary-container text-on-primary font-bold shadow-xs'
+                        : 'bg-surface-container text-on-surface hover:bg-surface-container-high'
+                    }`}
+                  >
+                    {paperWidth === '58mm' && (
+                      <span className="material-symbols-outlined text-[16px]">check</span>
+                    )}
+                    <span>58 مم (مصغر)</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* Hardware Toggles */}
+              <div className="flex flex-col gap-space-sm pt-2">
+                <label className="flex items-center gap-3 p-space-sm rounded-xl bg-surface-container-low border border-outline-variant/20 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={autoCut}
+                    onChange={(e) => setAutoCut(e.target.checked)}
+                    className="w-5 h-5 rounded text-primary focus:ring-primary"
+                  />
+                  <div className="flex flex-col">
+                    <div className="flex items-center gap-1 font-bold text-body-md">
+                      <span className="material-symbols-outlined text-[18px] text-primary">content_cut</span>
+                      <span>القطع التلقائي للورق (Auto-Cut)</span>
+                    </div>
+                    <span className="text-[11px] text-on-surface-variant">إرسال أمر GS V 66 عند انتهاء الطباعة</span>
+                  </div>
+                </label>
+
+                <label className="flex items-center gap-3 p-space-sm rounded-xl bg-surface-container-low border border-outline-variant/20 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={cashDrawerPulse}
+                    onChange={(e) => setCashDrawerPulse(e.target.checked)}
+                    className="w-5 h-5 rounded text-primary focus:ring-primary"
+                  />
+                  <div className="flex flex-col">
+                    <div className="flex items-center gap-1 font-bold text-body-md">
+                      <span className="material-symbols-outlined text-[18px] text-primary">point_of_sale</span>
+                      <span>فتح الكاسة آلياً (Cash Drawer Pulse)</span>
+                    </div>
+                    <span className="text-[11px] text-on-surface-variant">نبضة RJ11 لدرج النقود عند البيع نقداً</span>
+                  </div>
+                </label>
+              </div>
+
+              {/* Print Test Action */}
+              <button
+                type="button"
+                onClick={handleTestPrint}
+                disabled={isPrintingTest}
+                className="mt-2 w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-primary hover:bg-primary-container text-on-primary font-headline-sm text-body-md font-cairo font-bold shadow-sm transition-all cursor-pointer disabled:opacity-50 active:scale-95"
+              >
+                <span className={`material-symbols-outlined text-[20px] ${isPrintingTest ? 'animate-bounce' : ''}`}>
+                  receipt
+                </span>
+                <span>{isPrintingTest ? 'جاري إرسال أوامر الطباعة ESC/POS...' : 'إرسال أمر طباعة تجريبي (ESC/POS)'}</span>
+              </button>
+            </div>
+          </div>
+
+          {/* Right Status Card */}
+          <div className="flex flex-col gap-space-md bg-surface-container-lowest p-space-lg rounded-2xl shadow-sm border border-outline-variant/30">
+            <div className="flex items-center gap-2 pb-space-sm border-b border-surface-container">
+              <span className="material-symbols-outlined text-primary text-[22px]">developer_board</span>
+              <h3 className="font-headline-sm text-headline-sm text-on-surface font-bold font-cairo">
+                معلومات التوصيل والبروتوكول الحراري
+              </h3>
+            </div>
+
+            <div className="flex flex-col gap-3 text-body-sm text-on-surface-variant">
+              <div className="p-space-sm rounded-xl bg-surface-container-low border border-outline-variant/15 flex items-center justify-between">
+                <span className="font-bold">بروتوكول الاتصال:</span>
+                <span className="font-mono text-primary font-bold">ESC/POS Standard (USB Direct)</span>
+              </div>
+              <div className="p-space-sm rounded-xl bg-surface-container-low border border-outline-variant/15 flex items-center justify-between">
+                <span className="font-bold">ترميز الحروف العربية:</span>
+                <span className="font-mono text-primary font-bold">CP864 / Windows-1256 (Arabic)</span>
+              </div>
+              <div className="p-space-sm rounded-xl bg-surface-container-low border border-outline-variant/15 flex items-center justify-between">
+                <span className="font-bold">منفذ الطابعة المكتشف:</span>
+                <span className="font-mono text-emerald-700 font-bold" dir="ltr">USB001 (Ready)</span>
+              </div>
+            </div>
+
+            <div className="mt-auto p-space-sm rounded-xl bg-surface-container text-on-surface-variant text-[12px] flex items-center gap-2">
+              <span className="material-symbols-outlined text-primary text-[18px]">info</span>
+              <span>لضبط اسم المتجر والعنوان والبيانات الضريبية الظاهرة على التذكرة، انتقل إلى تبويب <strong>إعدادات المتجر</strong>.</span>
             </div>
           </div>
         </div>
