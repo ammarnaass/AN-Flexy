@@ -838,7 +838,7 @@ function SetupForm() {
                       type="text"
                       value={username}
                       onChange={(e) => setUsername(e.target.value)}
-                      placeholder="admin أو اسم الدخول"
+                      placeholder="أدخل اسم الدخول"
                       required
                       className="w-full h-10 bg-transparent text-on-surface font-body-md outline-none font-mono"
                     />
