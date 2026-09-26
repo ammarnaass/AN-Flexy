@@ -2,11 +2,10 @@ import { useState, useEffect, useCallback, useRef } from 'react'
 import type { FormEvent, ReactNode } from 'react'
 import { useHasUsers, useLogin, useSetupOwner } from '../hooks'
 import { translateAuthError } from '../errors'
-import { authMessages } from '../messages.ar'
 import { ui } from '@renderer/shared/messages.ar'
 import { playBeep } from '@renderer/shared/audio'
 
-// شاشة الدخول والتسجيل: مطابقة لتصميم Stitch 7 (an_flexy_pos_1, _2, an_flexy_pos_2)
+// شاشة الدخول والتسجيل: مطابقة لتصميم Stitch 7 (خالية من أي بيانات وهمية أو تجريبية)
 export function LoginScreen() {
   const hasUsers = useHasUsers()
 
@@ -81,11 +80,11 @@ function AuthShell({ children }: { children: ReactNode }) {
                 AN-Flexy POS
               </span>
               <span className="px-1.5 py-0.2 rounded bg-surface-container-high text-primary font-mono text-[11px] font-bold">
-                NODE: ORN-014
+                v2.4.1
               </span>
             </div>
             <span className="font-label-sm text-label-sm text-on-surface-variant font-mono">
-              Algeria Telecom Hub
+              محطة البيع وإدارة نقاط الفليكسي
             </span>
           </div>
         </div>
@@ -112,10 +111,10 @@ function AuthShell({ children }: { children: ReactNode }) {
         <div className="flex items-center gap-space-md">
           <div className="flex items-center gap-space-xs font-mono">
             <span className="w-2 h-2 rounded-full bg-primary-container animate-pulse" />
-            <span dir="ltr">v2.4.1-PROD</span>
+            <span dir="ltr">PROD-ONLINE</span>
           </div>
           <div className="h-3 w-px bg-outline-variant/40" />
-          <span className="font-mono">POS Engine · Algeria Standard Time (UTC+1)</span>
+          <span className="font-mono">SQLite Local DB · Algeria Time (UTC+1)</span>
         </div>
         <div className="flex items-center gap-space-md">
           <div className="flex items-center gap-1.5">
@@ -126,15 +125,15 @@ function AuthShell({ children }: { children: ReactNode }) {
           </div>
           <div className="flex items-center gap-1.5">
             <span className="bg-surface-container px-1.5 py-0.5 rounded border border-outline-variant/30 font-mono font-bold text-primary" dir="ltr">
-              [F1]
+              [Esc]
             </span>
-            <span>تبديل المشغل</span>
+            <span>مسح الرمز</span>
           </div>
           <div className="flex items-center gap-1.5">
             <span className="bg-surface-container px-1.5 py-0.5 rounded border border-outline-variant/30 font-mono font-bold text-primary" dir="ltr">
-              [Esc]
+              [F2 / F3]
             </span>
-            <span>مسح</span>
+            <span>الوردية</span>
           </div>
         </div>
       </footer>
@@ -152,45 +151,22 @@ function ErrorBanner({ message }: { message: string }) {
 }
 
 // -------------------------------------------------------------
-// LOGIN FORM (مطابقة لتصميم stitch 7 _2/code.html و an_flexy_pos_1)
+// LOGIN FORM (خالية من البيانات الوهمية والتجريبية)
 // -------------------------------------------------------------
 const PRESET_CASH_AMOUNTS = [5000, 10000, 15000, 20000, 30000]
 
-interface CashierItem {
-  id: string
-  name: string
-  role: string
-  icon: string
-}
-
-const DEFAULT_CASHIERS: CashierItem[] = [
-  { id: 'admin', name: 'أمين بلقاسم', role: 'مشرف النظام (Admin)', icon: 'admin_panel_settings' },
-  { id: 'karim', name: 'كريم الزين', role: 'كاشير الوردية الصباحية', icon: 'person' },
-  { id: 'yacine', name: 'ياسين بوزيد', role: 'كاشير الوردية المسائية', icon: 'support_agent' },
-]
-
 function LoginForm() {
-  const [selectedCashier, setSelectedCashier] = useState<CashierItem>(DEFAULT_CASHIERS[0] as CashierItem)
-  const [customName, setCustomName] = useState((DEFAULT_CASHIERS[0] as CashierItem).name)
+  const [username, setUsername] = useState('')
   const [authTab, setAuthTab] = useState<'pin' | 'password'>('pin')
   const [pin, setPin] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
   const [capsLockActive, setCapsLockActive] = useState(false)
   const [shiftType, setShiftType] = useState<'morning' | 'evening'>('morning')
-  const [cashDrawerAmount, setCashDrawerAmount] = useState('15000')
-  const [loginSuccessSession, setLoginSuccessSession] = useState<string | null>(null)
+  const [cashDrawerAmount, setCashDrawerAmount] = useState('')
 
   const login = useLogin()
-  const customNameInputRef = useRef<HTMLInputElement>(null)
-
-  const handleCashierSelect = (c: CashierItem) => {
-    playBeep('click')
-    setSelectedCashier(c)
-    setCustomName(c.name)
-    setPin('')
-    setPassword('')
-  }
+  const usernameInputRef = useRef<HTMLInputElement>(null)
 
   const handleDigit = useCallback(
     (digit: string) => {
@@ -213,10 +189,16 @@ function LoginForm() {
   }, [])
 
   const submitLogin = useCallback(() => {
-    const finalName = customName.trim() || selectedCashier.name
+    const finalName = username.trim()
     const finalSecret = authTab === 'pin' ? pin : password
 
-    if (!finalName || finalSecret.length < 4) {
+    if (!finalName) {
+      playBeep('error')
+      usernameInputRef.current?.focus()
+      return
+    }
+
+    if (finalSecret.length < 4) {
       playBeep('error')
       return
     }
@@ -226,31 +208,17 @@ function LoginForm() {
       {
         onSuccess: () => {
           playBeep('success')
-          setLoginSuccessSession('#SES-202505-089')
         },
         onError: () => {
           playBeep('error')
         },
       },
     )
-  }, [customName, selectedCashier.name, authTab, pin, password, login])
+  }, [username, authTab, pin, password, login])
 
   // Global Keyboard shortcuts
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (loginSuccessSession) return
-
-      // F1: Switch Cashier
-      if (e.key === 'F1') {
-        e.preventDefault()
-        const nextIdx = (DEFAULT_CASHIERS.findIndex((c) => c.id === selectedCashier.id) + 1) % DEFAULT_CASHIERS.length
-        const nextCashier = DEFAULT_CASHIERS[nextIdx]
-        if (nextCashier) {
-          handleCashierSelect(nextCashier)
-        }
-        return
-      }
-
       // F2: Morning Shift
       if (e.key === 'F2') {
         e.preventDefault()
@@ -289,7 +257,7 @@ function LoginForm() {
 
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [selectedCashier, shiftType, authTab, loginSuccessSession, submitLogin, handleDigit, handleBackspace, handleClear])
+  }, [shiftType, authTab, submitLogin, handleDigit, handleBackspace, handleClear])
 
   const handlePasswordKey = (e: React.KeyboardEvent<HTMLInputElement>) => {
     setCapsLockActive(e.getModifierState('CapsLock'))
@@ -307,9 +275,8 @@ function LoginForm() {
             <div>
               <div className="flex items-center gap-2">
                 <span className="font-headline-sm text-headline-sm text-on-surface font-cairo font-bold">
-                  متجر الوفاء للاتصالات
+                  تسجيل الدخول وفتح الكاسة
                 </span>
-                <span className="text-[12px] text-on-surface-variant font-medium">فرع وهران وسط</span>
               </div>
               <p className="font-body-sm text-body-sm text-on-surface-variant">
                 محطة الكاشير المركزية • فتح جلسة بيع ووردية جديدة
@@ -325,454 +292,346 @@ function LoginForm() {
           </div>
         </div>
 
-        {/* Success Modal / Banner */}
-        {loginSuccessSession && (
-          <div className="p-space-xl bg-primary-fixed/20 border-b border-primary/20 flex flex-col items-center justify-center gap-space-md text-center animate-in fade-in zoom-in-95">
-            <div className="w-16 h-16 rounded-full bg-primary-container text-on-primary flex items-center justify-center shadow-md">
-              <span className="material-symbols-outlined text-[36px]">task_alt</span>
+        <div className="p-space-lg grid grid-cols-1 lg:grid-cols-12 gap-space-lg">
+          {/* RIGHT COLUMN (5 cols): Shift Parameters & Cash Drawer */}
+          <div className="lg:col-span-5 flex flex-col gap-space-md border-b lg:border-b-0 lg:border-s lg:ps-space-lg border-outline-variant/20">
+            {/* Shift Parameters Header */}
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <span className="material-symbols-outlined text-primary text-[20px]">schedule</span>
+                <h3 className="font-headline-sm text-headline-sm text-on-surface font-cairo font-bold">
+                  إعدادات الوردية والصندوق
+                </h3>
+              </div>
             </div>
-            <div>
-              <h2 className="font-headline-lg text-headline-lg text-primary font-cairo font-bold">
-                تم تسجيل الدخول بنجاح!
-              </h2>
-              <p className="font-body-md text-body-md text-on-surface-variant mt-1">
-                تم فتح كاسة <span className="font-bold text-on-surface">{customName}</span> برصيد افتتاحي{' '}
-                <span className="font-bold text-primary font-mono">{Number(cashDrawerAmount).toLocaleString()} DZD</span>
-              </p>
-              <span className="inline-block mt-2 font-mono text-label-md px-3 py-1 rounded-full bg-surface-container text-on-surface-variant">
-                رقم الجلسة: {loginSuccessSession}
-              </span>
-            </div>
-            <button
-              type="button"
-              onClick={() => {
-                // Reload or navigate to sale
-                window.location.href = '/'
-              }}
-              className="mt-2 flex items-center gap-2 px-space-xl py-3 rounded-xl bg-primary hover:bg-primary-container text-on-primary font-headline-sm text-headline-sm font-cairo font-bold shadow-md transition-all cursor-pointer"
-            >
-              <span>دخول شاشة المبيعات</span>
-              <span className="material-symbols-outlined text-[20px]">arrow_back</span>
-            </button>
-          </div>
-        )}
+            <p className="font-body-sm text-body-sm text-on-surface-variant text-[12px]">
+              حدد نوع ورديتك ومبلغ العهدة الافتتاحية لبدء المبيعات
+            </p>
 
-        {!loginSuccessSession && (
-          <div className="p-space-lg grid grid-cols-1 lg:grid-cols-12 gap-space-lg">
-            {/* RIGHT COLUMN (5 cols): Cashier Switcher & Cash Drawer Config */}
-            <div className="lg:col-span-5 flex flex-col gap-space-md border-b lg:border-b-0 lg:border-s lg:ps-space-lg border-outline-variant/20">
-              {/* Cashier Selection Header */}
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <span className="material-symbols-outlined text-primary text-[20px]">badge</span>
-                  <h3 className="font-headline-sm text-headline-sm text-on-surface font-cairo font-bold">
-                    اختر مستخدم الوردية
-                  </h3>
+            {/* Shift Selector */}
+            <div className="bg-surface-container-low p-space-md rounded-xl border border-outline-variant/20 flex flex-col gap-space-sm">
+              <div className="flex flex-col gap-1">
+                <span className="text-[11px] font-bold text-on-surface-variant">نوع الوردية الحالية:</span>
+                <div className="grid grid-cols-2 gap-2">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      playBeep('click')
+                      setShiftType('morning')
+                    }}
+                    className={`py-2 px-space-sm rounded-lg font-body-sm text-body-sm font-cairo font-bold transition-all flex items-center justify-center gap-1 cursor-pointer ${
+                      shiftType === 'morning'
+                        ? 'bg-primary-container text-on-primary shadow-xs'
+                        : 'bg-surface-container text-on-surface-variant hover:bg-surface-container-high'
+                    }`}
+                  >
+                    <span>الصباحية</span>
+                    <span className="font-mono text-[10px] opacity-80" dir="ltr">[F2]</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      playBeep('click')
+                      setShiftType('evening')
+                    }}
+                    className={`py-2 px-space-sm rounded-lg font-body-sm text-body-sm font-cairo font-bold transition-all flex items-center justify-center gap-1 cursor-pointer ${
+                      shiftType === 'evening'
+                        ? 'bg-primary-container text-on-primary shadow-xs'
+                        : 'bg-surface-container text-on-surface-variant hover:bg-surface-container-high'
+                    }`}
+                  >
+                    <span>المسائية</span>
+                    <span className="font-mono text-[10px] opacity-80" dir="ltr">[F3]</span>
+                  </button>
                 </div>
-                <span className="font-label-sm text-label-sm text-on-surface-variant font-mono bg-surface-container px-2 py-0.5 rounded">
-                  [F1] لتبديل الكاشير
-                </span>
-              </div>
-              <p className="font-body-sm text-body-sm text-on-surface-variant text-[12px]">
-                حدد حسابك للمتابعة السريعة وتسجيل عهدة الصندوق باسمك
-              </p>
-
-              {/* Cashier Cards */}
-              <div className="flex flex-col gap-2">
-                {DEFAULT_CASHIERS.map((cashier) => {
-                  const isSelected = selectedCashier.id === cashier.id
-                  return (
-                    <button
-                      key={cashier.id}
-                      type="button"
-                      onClick={() => handleCashierSelect(cashier)}
-                      className={`w-full flex items-center justify-between p-space-sm rounded-xl border text-right transition-all cursor-pointer ${
-                        isSelected
-                          ? 'bg-surface-container-high border-primary text-primary shadow-xs'
-                          : 'bg-surface-container-lowest border-outline-variant/30 hover:bg-surface-container-low text-on-surface'
-                      }`}
-                    >
-                      <div className="flex items-center gap-space-sm">
-                        <div
-                          className={`w-10 h-10 rounded-lg flex items-center justify-center ${
-                            isSelected
-                              ? 'bg-primary-container text-on-primary'
-                              : 'bg-surface-container text-on-surface-variant'
-                          }`}
-                        >
-                          <span className="material-symbols-outlined text-[20px]">{cashier.icon}</span>
-                        </div>
-                        <div className="flex flex-col">
-                          <span className="font-headline-sm text-body-md font-cairo font-bold">
-                            {cashier.name}
-                          </span>
-                          <span className="font-body-sm text-[12px] text-on-surface-variant">
-                            {cashier.role}
-                          </span>
-                        </div>
-                      </div>
-                      {isSelected && (
-                        <span className="material-symbols-outlined text-primary text-[20px]">check_circle</span>
-                      )}
-                    </button>
-                  )
-                })}
               </div>
 
-              {/* Opening Cash Drawer (Fond de Caisse) */}
-              <div className="mt-space-xs bg-surface-container-low p-space-md rounded-xl border border-outline-variant/20 flex flex-col gap-space-sm">
+              {/* Opening Cash Input (Fond de Caisse) */}
+              <div className="flex flex-col gap-1 mt-1">
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-1.5">
-                    <span className="material-symbols-outlined text-primary text-[18px]">account_balance_wallet</span>
-                    <span className="font-label-sm text-label-sm font-bold text-on-surface font-cairo">
-                      بيانات الصندوق الافتتاحي (Fond de Caisse)
-                    </span>
-                  </div>
+                  <label className="text-[11px] font-bold text-on-surface-variant">
+                    رصيد بداية الكاسة (Fond de Caisse):
+                  </label>
                   <span className="font-label-sm text-label-sm text-on-surface-variant font-mono">DZD</span>
                 </div>
-
-                {/* Shift Selector */}
-                <div className="flex flex-col gap-1">
-                  <span className="text-[11px] font-bold text-on-surface-variant">نوع الوردية الحالية:</span>
-                  <div className="grid grid-cols-2 gap-2">
-                    <button
-                      type="button"
-                      onClick={() => {
-                        playBeep('click')
-                        setShiftType('morning')
-                      }}
-                      className={`py-1.5 px-space-sm rounded-lg font-body-sm text-body-sm font-cairo font-bold transition-all flex items-center justify-center gap-1 cursor-pointer ${
-                        shiftType === 'morning'
-                          ? 'bg-primary-container text-on-primary shadow-xs'
-                          : 'bg-surface-container text-on-surface-variant hover:bg-surface-container-high'
-                      }`}
-                    >
-                      <span>الصباحية</span>
-                      <span className="font-mono text-[10px] opacity-80" dir="ltr">[F2]</span>
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        playBeep('click')
-                        setShiftType('evening')
-                      }}
-                      className={`py-1.5 px-space-sm rounded-lg font-body-sm text-body-sm font-cairo font-bold transition-all flex items-center justify-center gap-1 cursor-pointer ${
-                        shiftType === 'evening'
-                          ? 'bg-primary-container text-on-primary shadow-xs'
-                          : 'bg-surface-container text-on-surface-variant hover:bg-surface-container-high'
-                      }`}
-                    >
-                      <span>المسائية</span>
-                      <span className="font-mono text-[10px] opacity-80" dir="ltr">[F3]</span>
-                    </button>
-                  </div>
+                <div className="flex items-center bg-surface-container-lowest rounded-lg px-space-sm border border-outline-variant/30">
+                  <input
+                    type="number"
+                    value={cashDrawerAmount}
+                    onChange={(e) => setCashDrawerAmount(e.target.value)}
+                    placeholder="0"
+                    className="w-full h-10 bg-transparent text-primary font-currency-display text-label-lg font-bold outline-none font-mono"
+                    dir="ltr"
+                  />
+                  <span className="font-label-sm text-label-sm text-on-surface-variant font-bold mr-1">د.ج</span>
                 </div>
+              </div>
 
-                {/* Opening Cash Input */}
-                <div className="flex flex-col gap-1">
-                  <label className="text-[11px] font-bold text-on-surface-variant">
-                    رصيد بداية الكاسة (DA):
-                  </label>
-                  <div className="flex items-center bg-surface-container-lowest rounded-lg px-space-sm border border-outline-variant/30">
-                    <input
-                      type="number"
-                      value={cashDrawerAmount}
-                      onChange={(e) => setCashDrawerAmount(e.target.value)}
-                      className="w-full h-10 bg-transparent text-primary font-currency-display text-label-lg font-bold outline-none font-mono"
-                      dir="ltr"
-                    />
-                    <span className="font-label-sm text-label-sm text-on-surface-variant font-bold mr-1">د.ج</span>
-                  </div>
-                </div>
+              {/* Preset Chips */}
+              <div className="flex flex-wrap gap-1.5">
+                <span className="text-[10px] text-on-surface-variant self-center">مبالغ شائعة:</span>
+                {PRESET_CASH_AMOUNTS.map((amt) => (
+                  <button
+                    key={amt}
+                    type="button"
+                    onClick={() => {
+                      playBeep('click')
+                      setCashDrawerAmount(String(amt))
+                    }}
+                    className={`px-2 py-0.5 rounded text-[11px] font-mono transition-colors cursor-pointer ${
+                      cashDrawerAmount === String(amt)
+                        ? 'bg-primary text-on-primary font-bold'
+                        : 'bg-surface-container text-on-surface hover:bg-surface-container-high'
+                    }`}
+                    dir="ltr"
+                  >
+                    {amt.toLocaleString()} DA
+                  </button>
+                ))}
+              </div>
 
-                {/* Preset Chips */}
-                <div className="flex flex-wrap gap-1.5">
-                  <span className="text-[10px] text-on-surface-variant self-center">مبالغ شائعة:</span>
-                  {PRESET_CASH_AMOUNTS.map((amt) => (
-                    <button
-                      key={amt}
-                      type="button"
-                      onClick={() => {
-                        playBeep('click')
-                        setCashDrawerAmount(String(amt))
-                      }}
-                      className={`px-2 py-0.5 rounded text-[11px] font-mono transition-colors cursor-pointer ${
-                        cashDrawerAmount === String(amt)
-                          ? 'bg-primary text-on-primary font-bold'
-                          : 'bg-surface-container text-on-surface hover:bg-surface-container-high'
-                      }`}
-                      dir="ltr"
-                    >
-                      {amt.toLocaleString()} DA
-                    </button>
-                  ))}
-                </div>
-
-                {/* Gateway readiness status */}
-                <div className="pt-2 border-t border-outline-variant/15 flex items-center justify-between text-[11px]">
-                  <span className="text-on-surface-variant flex items-center gap-1">
-                    <span className="material-symbols-outlined text-[14px] text-primary">cell_tower</span>
-                    <span>جاهزية بوابات الـ Flexy:</span>
-                  </span>
-                  <div className="flex items-center gap-1.5 font-mono">
-                    <span className="text-primary font-bold">موبيليس (06) OK</span>
-                    <span className="text-secondary font-bold">جازي (07) OK</span>
-                    <span className="text-tertiary font-bold">أوريدو (05) OK</span>
-                  </div>
+              {/* Readiness status */}
+              <div className="pt-2 border-t border-outline-variant/15 flex items-center justify-between text-[11px]">
+                <span className="text-on-surface-variant flex items-center gap-1">
+                  <span className="material-symbols-outlined text-[14px] text-primary">cell_tower</span>
+                  <span>بوابات الـ Flexy:</span>
+                </span>
+                <div className="flex items-center gap-1.5 font-mono">
+                  <span className="text-primary font-bold">موبيليس</span>
+                  <span className="text-secondary font-bold">جيزي</span>
+                  <span className="text-tertiary font-bold">أوريدو</span>
                 </div>
               </div>
             </div>
+          </div>
 
-            {/* LEFT COLUMN (7 cols): Dual Auth Mode (PIN Numpad vs Username & Password) */}
-            <div className="lg:col-span-7 flex flex-col justify-between gap-space-md">
-              <div>
-                {/* Auth Mode Switcher */}
-                <div className="flex items-center gap-2 p-1 bg-surface-container-low rounded-xl mb-space-md border border-outline-variant/20">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      playBeep('click')
-                      setAuthTab('pin')
-                    }}
-                    className={`flex-1 flex items-center justify-center gap-2 py-2 px-space-sm rounded-lg font-headline-sm text-body-md font-cairo font-bold transition-all cursor-pointer ${
-                      authTab === 'pin'
-                        ? 'bg-surface-container-lowest text-primary shadow-xs'
-                        : 'text-on-surface-variant hover:text-on-surface'
-                    }`}
-                  >
-                    <span className="material-symbols-outlined text-[18px]">pin</span>
-                    <span>رمز PIN السريع</span>
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      playBeep('click')
-                      setAuthTab('password')
-                    }}
-                    className={`flex-1 flex items-center justify-center gap-2 py-2 px-space-sm rounded-lg font-headline-sm text-body-md font-cairo font-bold transition-all cursor-pointer ${
-                      authTab === 'password'
-                        ? 'bg-surface-container-lowest text-primary shadow-xs'
-                        : 'text-on-surface-variant hover:text-on-surface'
-                    }`}
-                  >
-                    <span className="material-symbols-outlined text-[18px]">key</span>
-                    <span>دخول المشرف (كلمة السر)</span>
-                  </button>
+          {/* LEFT COLUMN (7 cols): Credentials Entry (Username + PIN / Password) */}
+          <div className="lg:col-span-7 flex flex-col justify-between gap-space-md">
+            <div>
+              {/* Username Input Field */}
+              <div className="flex flex-col gap-1.5 mb-space-md">
+                <label className="font-label-sm text-label-sm text-on-surface-variant font-bold">
+                  اسم المستخدم (Username)
+                </label>
+                <div className="flex items-center gap-space-xs bg-surface-container-low rounded-xl px-space-sm border border-outline-variant/30 focus-within:border-primary transition-colors">
+                  <span className="material-symbols-outlined text-[20px] text-primary">person</span>
+                  <input
+                    ref={usernameInputRef}
+                    type="text"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    placeholder="أدخل اسم المستخدم..."
+                    autoFocus
+                    className="flex-1 h-11 bg-transparent text-on-surface font-body-md text-body-md outline-none"
+                  />
+                  {username && (
+                    <button
+                      type="button"
+                      onClick={() => setUsername('')}
+                      className="text-on-surface-variant hover:text-on-surface p-1"
+                    >
+                      <span className="material-symbols-outlined text-[16px]">close</span>
+                    </button>
+                  )}
                 </div>
+              </div>
 
-                {/* TAB 1: PIN NUMPAD */}
-                {authTab === 'pin' && (
-                  <div className="flex flex-col items-center">
-                    <div className="w-full flex items-center justify-between pb-space-xs mb-space-xs">
-                      <div className="flex items-center gap-2">
-                        <span className="material-symbols-outlined text-primary text-[20px]">account_circle</span>
-                        <span className="font-headline-sm text-headline-sm text-on-surface font-bold font-cairo">
-                          {selectedCashier.name}
-                        </span>
-                        <span className="text-on-surface-variant text-[12px]">({selectedCashier.role})</span>
-                      </div>
-                      <span className="font-label-sm text-label-sm text-primary font-mono font-bold">
-                        أدخل 4-6 أرقام
-                      </span>
-                    </div>
+              {/* Auth Mode Switcher */}
+              <div className="flex items-center gap-2 p-1 bg-surface-container-low rounded-xl mb-space-md border border-outline-variant/20">
+                <button
+                  type="button"
+                  onClick={() => {
+                    playBeep('click')
+                    setAuthTab('pin')
+                  }}
+                  className={`flex-1 flex items-center justify-center gap-2 py-2 px-space-sm rounded-lg font-headline-sm text-body-md font-cairo font-bold transition-all cursor-pointer ${
+                    authTab === 'pin'
+                      ? 'bg-surface-container-lowest text-primary shadow-xs'
+                      : 'text-on-surface-variant hover:text-on-surface'
+                  }`}
+                >
+                  <span className="material-symbols-outlined text-[18px]">pin</span>
+                  <span>رمز PIN السريع</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    playBeep('click')
+                    setAuthTab('password')
+                  }}
+                  className={`flex-1 flex items-center justify-center gap-2 py-2 px-space-sm rounded-lg font-headline-sm text-body-md font-cairo font-bold transition-all cursor-pointer ${
+                    authTab === 'password'
+                      ? 'bg-surface-container-lowest text-primary shadow-xs'
+                      : 'text-on-surface-variant hover:text-on-surface'
+                  }`}
+                >
+                  <span className="material-symbols-outlined text-[18px]">key</span>
+                  <span>كلمة المرور</span>
+                </button>
+              </div>
 
-                    {/* PIN Display Dots */}
-                    <div className="w-full flex items-center justify-center gap-3 py-space-md my-space-xs bg-surface-container-low rounded-xl border border-outline-variant/20">
-                      {Array.from({ length: 6 }).map((_, i) => (
-                        <div
-                          key={i}
-                          className={`w-4 h-4 rounded-full transition-all duration-150 ${
-                            i < pin.length
-                              ? 'bg-primary-container scale-110 shadow-sm'
-                              : 'bg-surface-container-highest border border-outline-variant/30'
-                          }`}
-                        />
-                      ))}
-                    </div>
-                    <p className="text-center font-body-sm text-body-sm text-on-surface-variant mb-space-sm text-[12px]">
-                      اضغط على لوحة الأرقام أو اكتب مباشرة من لوحة المفاتيح
-                    </p>
-
-                    {/* Numpad Grid */}
-                    <div className="grid grid-cols-3 gap-2 w-full max-w-xs">
-                      {['1', '2', '3', '4', '5', '6', '7', '8', '9'].map((digit) => (
-                        <button
-                          key={digit}
-                          type="button"
-                          onClick={() => handleDigit(digit)}
-                          className="h-12 rounded-xl bg-surface-container-lowest border border-outline-variant/30 hover:bg-surface-container-low hover:border-primary/40 text-on-surface font-headline-md text-headline-md font-cairo font-bold transition-all cursor-pointer shadow-xs active:scale-95"
-                        >
-                          {digit}
-                        </button>
-                      ))}
-
-                      {/* Clear */}
+              {/* TAB 1: PIN NUMPAD */}
+              {authTab === 'pin' && (
+                <div className="flex flex-col items-center">
+                  <div className="w-full flex items-center justify-between pb-space-xs mb-space-xs">
+                    <span className="font-label-sm text-label-sm text-on-surface-variant font-bold">
+                      أدخل رمز الدخول (4-6 أرقام)
+                    </span>
+                    {pin.length > 0 && (
                       <button
                         type="button"
                         onClick={handleClear}
-                        className="h-12 rounded-xl bg-surface-container-low hover:bg-tertiary-fixed/40 text-tertiary font-body-sm text-body-sm font-cairo font-bold transition-all cursor-pointer active:scale-95 flex items-center justify-center gap-1"
+                        className="text-[11px] text-primary font-bold hover:underline cursor-pointer"
                       >
-                        <span className="font-label-md font-mono font-bold">C</span>
-                        <span className="text-[11px]">[Esc]</span>
+                        مسح [Esc]
                       </button>
+                    )}
+                  </div>
 
-                      {/* Zero */}
+                  {/* PIN Display Dots */}
+                  <div className="w-full flex items-center justify-center gap-3 py-space-md my-space-xs bg-surface-container-low rounded-xl border border-outline-variant/20">
+                    {Array.from({ length: 6 }).map((_, i) => (
+                      <div
+                        key={i}
+                        className={`w-4 h-4 rounded-full transition-all duration-150 ${
+                          i < pin.length
+                            ? 'bg-primary-container scale-110 shadow-sm'
+                            : 'bg-surface-container-highest border border-outline-variant/30'
+                        }`}
+                      />
+                    ))}
+                  </div>
+                  <p className="text-center font-body-sm text-body-sm text-on-surface-variant mb-space-sm text-[12px]">
+                    اضغط على لوحة الأرقام أو اكتب مباشرة من لوحة المفاتيح
+                  </p>
+
+                  {/* Numpad Grid */}
+                  <div className="grid grid-cols-3 gap-2 w-full max-w-xs">
+                    {['1', '2', '3', '4', '5', '6', '7', '8', '9'].map((digit) => (
                       <button
+                        key={digit}
                         type="button"
-                        onClick={() => handleDigit('0')}
-                        className="h-12 rounded-xl bg-surface-container-lowest border border-outline-variant/30 hover:bg-surface-container-low hover:border-primary/40 text-on-surface font-headline-md text-headline-md font-cairo font-bold transition-all cursor-pointer shadow-xs active:scale-95"
+                        onClick={() => handleDigit(digit)}
+                        className="h-12 rounded-xl bg-surface-container-low hover:bg-surface-container active:scale-95 text-on-surface font-currency-display text-headline-sm font-bold shadow-2xs flex items-center justify-center transition-all cursor-pointer border border-outline-variant/20"
                       >
-                        0
+                        {digit}
                       </button>
-
-                      {/* Backspace */}
-                      <button
-                        type="button"
-                        onClick={handleBackspace}
-                        className="h-12 rounded-xl bg-surface-container-low hover:bg-surface-container text-on-surface transition-all cursor-pointer active:scale-95 flex items-center justify-center gap-1"
-                      >
-                        <span className="material-symbols-outlined text-[18px]">backspace</span>
-                      </button>
-                    </div>
-                  </div>
-                )}
-
-                {/* TAB 2: USERNAME & PASSWORD */}
-                {authTab === 'password' && (
-                  <div className="flex flex-col gap-space-md py-space-sm">
-                    {/* Username Field */}
-                    <div className="flex flex-col gap-1.5">
-                      <label className="font-label-sm text-label-sm text-on-surface-variant font-bold">
-                        اسم المستخدم أو رقم الهاتف
-                      </label>
-                      <div className="flex items-center gap-space-xs bg-surface-container-low rounded-lg px-space-sm border border-outline-variant/30 pos-focus">
-                        <span className="material-symbols-outlined text-[18px] text-on-surface-variant">person</span>
-                        <input
-                          ref={customNameInputRef}
-                          type="text"
-                          value={customName}
-                          onChange={(e) => setCustomName(e.target.value)}
-                          placeholder="اسم الكاشير أو المشرف"
-                          className="flex-1 h-11 bg-transparent text-on-surface font-body-md text-body-md outline-none"
-                        />
-                      </div>
-                    </div>
-
-                    {/* Password Field */}
-                    <div className="flex flex-col gap-1.5">
-                      <div className="flex items-center justify-between">
-                        <label className="font-label-sm text-label-sm text-on-surface-variant font-bold">
-                          كلمة المرور الإدارية
-                        </label>
-                        {capsLockActive && (
-                          <span className="text-tertiary font-label-sm text-[11px] flex items-center gap-1">
-                            <span className="material-symbols-outlined text-[14px]">warning</span>
-                            <span>زر Caps Lock مفعل!</span>
-                          </span>
-                        )}
-                      </div>
-                      <div className="flex items-center gap-space-xs bg-surface-container-low rounded-lg px-space-sm border border-outline-variant/30 pos-focus">
-                        <span className="material-symbols-outlined text-[18px] text-on-surface-variant">lock</span>
-                        <input
-                          type={showPassword ? 'text' : 'password'}
-                          value={password}
-                          onChange={(e) => setPassword(e.target.value)}
-                          onKeyDown={handlePasswordKey}
-                          placeholder="••••••••"
-                          className="flex-1 h-11 bg-transparent text-on-surface font-body-md text-body-md outline-none"
-                        />
-                        <button
-                          type="button"
-                          onClick={() => setShowPassword(!showPassword)}
-                          className="text-on-surface-variant hover:text-on-surface p-1 cursor-pointer"
-                        >
-                          <span className="material-symbols-outlined text-[18px]">
-                            {showPassword ? 'visibility_off' : 'visibility'}
-                          </span>
-                        </button>
-                      </div>
-                      <p className="font-body-sm text-[12px] text-on-surface-variant">
-                        يرجى كتابة كلمة المرور للدخول إلى الصندوق بصلاحيات المشرف.
-                      </p>
-                    </div>
-
-                    {/* Quick Demo Credentials Tip */}
-                    <div className="bg-surface-container-low p-2.5 rounded-lg border border-outline-variant/20 flex items-center justify-between text-[11px]">
-                      <span className="text-on-surface-variant flex items-center gap-1">
-                        <span className="material-symbols-outlined text-[14px] text-primary">info</span>
-                        <span>بيانات تجريبية جاهزة:</span>
-                      </span>
-                      <div className="flex items-center gap-2 font-mono" dir="ltr">
-                        <span className="bg-surface-container-lowest px-1.5 py-0.5 rounded text-primary font-bold">
-                          user: admin
-                        </span>
-                        <span className="bg-surface-container-lowest px-1.5 py-0.5 rounded text-primary font-bold">
-                          pass: flexy2025
-                        </span>
-                      </div>
-                    </div>
-
-                    <div className="flex items-center gap-1.5 text-primary text-[12px]">
-                      <span className="material-symbols-outlined text-[16px]">verified_user</span>
-                      <span>صلاحيات كاملة لتعديل أرصدة المودمات والتقارير المالية وإدارة الكاسة.</span>
-                    </div>
-                  </div>
-                )}
-
-                {/* Error Banner */}
-                {login.isError && (
-                  <div className="mt-space-sm">
-                    <ErrorBanner message={translateAuthError(login.error)} />
-                  </div>
-                )}
-              </div>
-
-              {/* Submit Button & Footer Record */}
-              <div className="flex flex-col gap-space-sm mt-space-md pt-space-xs border-t border-outline-variant/20">
-                <button
-                  type="button"
-                  onClick={submitLogin}
-                  disabled={login.isPending || (authTab === 'pin' ? pin.length < 4 : password.length < 4)}
-                  className="w-full h-13 flex items-center justify-center gap-2 rounded-xl bg-primary hover:bg-primary-container text-on-primary font-headline-sm text-headline-sm font-cairo font-bold shadow-sm transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed active:scale-95"
-                >
-                  <span className="material-symbols-outlined text-[22px]">lock_open</span>
-                  <span>{login.isPending ? authMessages.signingIn : 'فتح الكاسة وبدء العمل'}</span>
-                  <span className="bg-on-primary-container text-on-primary-fixed font-label-sm text-label-sm px-1.5 py-0.5 rounded font-mono font-bold" dir="ltr">
-                    [Enter]
-                  </span>
-                </button>
-
-                {/* Recent Shift Closure Info */}
-                <div className="bg-surface-container-low/60 p-2.5 rounded-lg border border-outline-variant/15 flex flex-wrap items-center justify-between text-[11px] text-on-surface-variant">
-                  <div className="flex items-center gap-1">
-                    <span className="material-symbols-outlined text-[14px] text-primary">history</span>
-                    <span>آخر إغلاق كاسة مسجل: أمس 22:30 بواسطة كريم الزين</span>
-                    <span>•</span>
-                    <span>المبلغ المرحل: <strong className="font-mono text-on-surface">15,000.00 DZD</strong></span>
-                  </div>
-                  <div className="flex items-center gap-1 text-primary font-bold">
-                    <span className="material-symbols-outlined text-[14px]">verified</span>
-                    <span>حالة قاعدة البيانات: متطابقة ومعتمدة بدون فروقات</span>
+                    ))}
+                    <button
+                      type="button"
+                      onClick={handleClear}
+                      className="h-12 rounded-xl bg-error-container/40 hover:bg-error-container text-on-error-container font-label-md text-label-sm font-bold shadow-2xs flex items-center justify-center transition-all cursor-pointer border border-error/20"
+                    >
+                      <span>C [Esc]</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => handleDigit('0')}
+                      className="h-12 rounded-xl bg-surface-container-low hover:bg-surface-container active:scale-95 text-on-surface font-currency-display text-headline-sm font-bold shadow-2xs flex items-center justify-center transition-all cursor-pointer border border-outline-variant/20"
+                    >
+                      0
+                    </button>
+                    <button
+                      type="button"
+                      onClick={handleBackspace}
+                      className="h-12 rounded-xl bg-surface-container-high hover:bg-surface-variant active:scale-95 text-on-surface font-label-md shadow-2xs flex items-center justify-center transition-all cursor-pointer border border-outline-variant/20"
+                      title="حذف آخر رقم"
+                    >
+                      <span className="material-symbols-outlined text-[20px]">backspace</span>
+                    </button>
                   </div>
                 </div>
-              </div>
+              )}
+
+              {/* TAB 2: USERNAME & PASSWORD */}
+              {authTab === 'password' && (
+                <div className="flex flex-col gap-space-md py-space-sm">
+                  {/* Password Field */}
+                  <div className="flex flex-col gap-1.5">
+                    <div className="flex items-center justify-between">
+                      <label className="font-label-sm text-label-sm text-on-surface-variant font-bold">
+                        كلمة المرور
+                      </label>
+                      {capsLockActive && (
+                        <span className="text-tertiary font-label-sm text-[11px] flex items-center gap-1">
+                          <span className="material-symbols-outlined text-[14px]">warning</span>
+                          <span>زر Caps Lock مفعل!</span>
+                        </span>
+                      )}
+                    </div>
+                    <div className="flex items-center gap-space-xs bg-surface-container-low rounded-xl px-space-sm border border-outline-variant/30 focus-within:border-primary transition-colors">
+                      <span className="material-symbols-outlined text-[18px] text-on-surface-variant">lock</span>
+                      <input
+                        type={showPassword ? 'text' : 'password'}
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        onKeyDown={handlePasswordKey}
+                        placeholder="••••••••"
+                        className="flex-1 h-11 bg-transparent text-on-surface font-body-md text-body-md outline-none"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowPassword(!showPassword)}
+                        className="text-on-surface-variant hover:text-on-surface p-1 cursor-pointer"
+                      >
+                        <span className="material-symbols-outlined text-[18px]">
+                          {showPassword ? 'visibility_off' : 'visibility'}
+                        </span>
+                      </button>
+                    </div>
+                    <p className="font-body-sm text-[12px] text-on-surface-variant">
+                      يرجى كتابة رمز الدخول أو كلمة المرور للمتابعة.
+                    </p>
+                  </div>
+                </div>
+              )}
+
+              {/* Error Banner */}
+              {login.isError && (
+                <div className="mt-space-sm">
+                  <ErrorBanner message={translateAuthError(login.error)} />
+                </div>
+              )}
             </div>
+
+            {/* Primary Submit Action */}
+            <button
+              type="button"
+              onClick={submitLogin}
+              disabled={login.isPending || !username.trim() || (authTab === 'pin' ? pin.length < 4 : password.length < 4)}
+              className="w-full py-3.5 rounded-xl bg-primary hover:bg-primary-container text-on-primary font-headline-sm text-headline-sm font-cairo font-bold shadow-md hover:shadow-lg transition-all duration-200 flex items-center justify-center gap-space-sm active:scale-[0.99] cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed mt-2"
+            >
+              {login.isPending ? (
+                <span className="material-symbols-outlined text-[22px] animate-spin">progress_activity</span>
+              ) : (
+                <span className="material-symbols-outlined text-[22px]">lock_open</span>
+              )}
+              <span>تسجيل الدخول وفتح الكاسة</span>
+              <span className="bg-on-primary-container text-on-primary-fixed font-label-sm text-label-sm px-2 py-0.5 rounded-full font-mono font-bold" dir="ltr">
+                [Enter]
+              </span>
+            </button>
           </div>
-        )}
+        </div>
       </div>
     </AuthShell>
   )
 }
 
 // -------------------------------------------------------------
-// SETUP FORM (معالج إعداد المحطة وتسجيل نقطة البيع الأولية - an_flexy_pos_2)
+// SETUP FORM (معالج إعداد المحطة وتسجيل نقطة البيع الأولية)
 // -------------------------------------------------------------
 const WILAYAS = [
-  'وهران - 31 (وهران وسط - حي السلام)',
-  'الجزائر العاصمة - 16 (باب الزوار - المركز التجاري)',
-  'قسنطينة - 25 (الكدية - وسط المدينة)',
-  'سطيف - 19 (حي 1014 مسكن)',
-  'البليدة - 09 (أولاد يعيش)',
+  '01 - أدرار', '02 - الشلف', '03 - الأغواط', '04 - أم البواقي', '05 - باتنة',
+  '06 - بجاية', '07 - بسكرة', '08 - بشار', '09 - البليدة', '10 - البويرة',
+  '11 - تمنراست', '12 - تبسة', '13 - تلمسان', '14 - تيارت', '15 - تيزي وزو',
+  '16 - الجزائر العاصمة', '17 - الجلفة', '18 - جيجل', '19 - سطيف', '20 - سعيدة',
+  '21 - سكيكدة', '22 - سيدي بلعباس', '23 - عنابة', '24 - قالمة', '25 - قسنطينة',
+  '26 - المدية', '27 - مستغانم', '28 - المسيلة', '29 - معسكر', '30 - ورقلة',
+  '31 - وهران', '32 - البيض', '33 - إليزي', '34 - برج بوعريريج', '35 - بومرداس',
+  '36 - الطارف', '37 - تندوف', '38 - تسمسيلت', '39 - الوادي', '40 - خنشلة',
+  '41 - سوق أهراس', '42 - تيبازة', '43 - ميلة', '44 - عين الدفلى', '45 - النعامة',
+  '46 - عين تموشنت', '47 - غرداية', '48 - غليزان'
 ]
 
 function SetupForm() {
@@ -780,14 +639,14 @@ function SetupForm() {
   const [fullName, setFullName] = useState('')
   const [username, setUsername] = useState('')
   const [phone, setPhone] = useState('')
-  const [wilaya, setWilaya] = useState(WILAYAS[0])
+  const [wilaya, setWilaya] = useState('31 - وهران')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
   const [pin, setPin] = useState('')
   const [termsAgreed, setTermsAgreed] = useState(true)
-  const [storeName, setStoreName] = useState('متجر الوفاء للاتصالات')
+  const [storeName, setStoreName] = useState('')
   const [storeNif, setStoreNif] = useState('')
-  const [startingCash, setStartingCash] = useState('15000')
+  const [startingCash, setStartingCash] = useState('')
   const [isDone, setIsDone] = useState(false)
 
   const setup = useSetupOwner()
@@ -838,12 +697,12 @@ function SetupForm() {
                 إعداد المحطة وتسجيل نقطة البيع
               </h1>
               <p className="font-body-sm text-body-sm text-on-surface-variant">
-                التهيئة الأولية لنظام الاتصالات AN-Flexy v4.2 Pro المعتمد
+                التهيئة الأولية لنظام AN-Flexy POS المعتمد
               </p>
             </div>
           </div>
           <span className="px-2.5 py-1 rounded-full bg-surface-container-high text-primary font-mono text-[11px] font-bold">
-            SQLITE LOCAL ENCRYPTED • SYNC ACTIVE
+            SQLITE LOCAL ENCRYPTED
           </span>
         </div>
 
@@ -888,7 +747,7 @@ function SetupForm() {
               تم إنشاء حساب المحطة بنجاح!
             </h2>
             <p className="font-body-md text-body-md text-on-surface-variant">
-              جاري مزامنة منافذ COM وتحضير شاشة الفليكسي السريعة...
+              جاري فتح شاشة الفليكسي السريعة...
             </p>
           </div>
         ) : (
@@ -896,21 +755,18 @@ function SetupForm() {
             {/* Left 7 cols: Form fields */}
             <div className="lg:col-span-7 flex flex-col gap-space-md">
               <div>
-                <span className="text-[11px] font-mono text-primary font-bold tracking-wider">
-                  REGISTRATION GATEWAY
-                </span>
                 <h2 className="font-headline-md text-headline-md text-on-surface font-cairo font-bold">
-                  إنشاء حساب جديد للمتجر
+                  إنشاء حساب المسؤول الرئيسي
                 </h2>
                 <p className="font-body-sm text-body-sm text-on-surface-variant">
-                  سجل بيانات الإدارة للوصول الفوري إلى وحدة التحكم، أرصدة المشغلين، وموازنة الصندوق اليومي.
+                  سجل بيانات الإدارة للوصول إلى لوحة التحكم وأرصدة المشغلين والصندوق.
                 </p>
               </div>
 
               {/* Role Selector */}
               <div className="flex flex-col gap-1.5">
                 <label className="text-[12px] font-bold text-on-surface-variant">
-                  نوع الحساب والصلاحيات الأساسية
+                  نوع الحساب والصلاحيات
                 </label>
                 <div className="grid grid-cols-2 gap-space-sm">
                   <button
@@ -929,7 +785,7 @@ function SetupForm() {
                       <span className="material-symbols-outlined text-[20px]">admin_panel_settings</span>
                       <span className="font-headline-sm text-body-md font-cairo font-bold">مسؤول متجر كامل</span>
                     </div>
-                    <p className="text-[11px] text-on-surface-variant mt-1">إشراف، تقارير Z، وسحب أرباح</p>
+                    <p className="text-[11px] text-on-surface-variant mt-1">إشراف، تقارير، وإدارة عامة</p>
                   </button>
 
                   <button
@@ -965,7 +821,7 @@ function SetupForm() {
                       type="text"
                       value={fullName}
                       onChange={(e) => setFullName(e.target.value)}
-                      placeholder="أمين بلقاسم"
+                      placeholder="الاسم واللقب"
                       required
                       className="w-full h-10 bg-transparent text-on-surface font-body-md outline-none"
                     />
@@ -974,7 +830,7 @@ function SetupForm() {
 
                 <div className="flex flex-col gap-1">
                   <label className="text-[12px] font-bold text-on-surface-variant">
-                    اسم الدخول للمحطة <span className="text-tertiary">*</span>
+                    اسم المستخدم (Username) <span className="text-tertiary">*</span>
                   </label>
                   <div className="flex items-center gap-2 bg-surface-container-low rounded-lg px-3 border border-outline-variant/30 pos-focus">
                     <span className="material-symbols-outlined text-[18px] text-on-surface-variant">alternate_email</span>
@@ -982,7 +838,7 @@ function SetupForm() {
                       type="text"
                       value={username}
                       onChange={(e) => setUsername(e.target.value)}
-                      placeholder="amin.belkacem"
+                      placeholder="admin أو اسم الدخول"
                       required
                       className="w-full h-10 bg-transparent text-on-surface font-body-md outline-none font-mono"
                     />
@@ -994,7 +850,7 @@ function SetupForm() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-space-sm">
                 <div className="flex flex-col gap-1">
                   <label className="text-[12px] font-bold text-on-surface-variant">
-                    رقم هاتف الإشعار والفليكسي <span className="text-tertiary">*</span>
+                    رقم هاتف الإشعار والفليكسي
                   </label>
                   <div className="flex items-center bg-surface-container-low rounded-lg px-2 border border-outline-variant/30 pos-focus" dir="ltr">
                     <span className="text-[14px] mr-1">🇩🇿 +213</span>
@@ -1002,7 +858,7 @@ function SetupForm() {
                       type="tel"
                       value={phone}
                       onChange={(e) => setPhone(e.target.value.replace(/\D/g, '').slice(0, 10))}
-                      placeholder="0550 12 34 56"
+                      placeholder="05 / 06 / 07..."
                       className="w-full h-10 bg-transparent text-on-surface font-mono outline-none text-left"
                     />
                     {detectedOperator && (
@@ -1014,7 +870,7 @@ function SetupForm() {
                 </div>
 
                 <div className="flex flex-col gap-1">
-                  <label className="text-[12px] font-bold text-on-surface-variant">الولاية والبلدية</label>
+                  <label className="text-[12px] font-bold text-on-surface-variant">الولاية</label>
                   <div className="flex items-center bg-surface-container-low rounded-lg px-2 border border-outline-variant/30">
                     <span className="material-symbols-outlined text-[18px] text-on-surface-variant ml-1">location_on</span>
                     <select
@@ -1039,7 +895,6 @@ function SetupForm() {
                     <label className="text-[12px] font-bold text-on-surface-variant">
                       كلمة المرور الرئيسية <span className="text-tertiary">*</span>
                     </label>
-                    <span className="text-[10px] font-bold text-primary">قوية (Strong)</span>
                   </div>
                   <div className="flex items-center bg-surface-container-low rounded-lg px-2 border border-outline-variant/30 pos-focus">
                     <span className="material-symbols-outlined text-[18px] text-on-surface-variant ml-1">lock</span>
@@ -1067,7 +922,6 @@ function SetupForm() {
                     <label className="text-[12px] font-bold text-on-surface-variant">
                       رمز PIN سريع للكاشير (4 أرقام) <span className="text-tertiary">*</span>
                     </label>
-                    <span className="text-[10px] text-on-surface-variant font-mono">LOCK-PIN</span>
                   </div>
                   <div className="flex items-center bg-surface-container-low rounded-lg px-2 border border-outline-variant/30 pos-focus">
                     <span className="material-symbols-outlined text-[18px] text-primary ml-1">dialpad</span>
@@ -1082,7 +936,7 @@ function SetupForm() {
                     />
                   </div>
                   <span className="text-[11px] text-on-surface-variant">
-                    يستخدم للتبديل السريع بين المستخدمين أثناء طابور الزبائن
+                    يستخدم للتبديل والدخول السريع من شاشة اللمس
                   </span>
                 </div>
               </div>
@@ -1096,7 +950,7 @@ function SetupForm() {
                   className="mt-1 rounded text-primary focus:ring-primary"
                 />
                 <span className="text-[11px] text-on-surface-variant leading-relaxed">
-                  أوافق على سياسة تشفير المعاملات المحلية وحفظ السجلات في قاعدة بيانات المحطة المشفرة وفق نظام البريد والمواصلات السلكية واللاسلكية الجزائري.
+                  أوافق على سياسة تشفير المعاملات المحلية وحفظ السجلات في قاعدة بيانات المحطة المشفرة.
                 </span>
               </label>
 
@@ -1114,9 +968,8 @@ function SetupForm() {
               </button>
             </div>
 
-            {/* Right 5 cols: Station Settings & Hardware Detection Cards */}
+            {/* Right 5 cols: Station Settings */}
             <div className="lg:col-span-5 flex flex-col gap-space-md border-t lg:border-t-0 lg:border-s lg:ps-space-lg border-outline-variant/20">
-              {/* Station Settings Preview */}
               <div className="bg-surface-container-low p-space-md rounded-xl border border-outline-variant/20 flex flex-col gap-space-sm">
                 <div className="flex items-center justify-between pb-space-xs border-b border-outline-variant/20">
                   <div className="flex items-center gap-2">
@@ -1125,7 +978,6 @@ function SetupForm() {
                       إعدادات نقطة البيع
                     </h3>
                   </div>
-                  <span className="font-mono text-[11px] font-bold text-primary">STATION #01</span>
                 </div>
 
                 <div className="flex flex-col gap-1">
@@ -1134,6 +986,7 @@ function SetupForm() {
                     type="text"
                     value={storeName}
                     onChange={(e) => setStoreName(e.target.value)}
+                    placeholder="اسم المحل أو نقطة البيع"
                     className="h-9 px-2 bg-surface-container-lowest rounded-lg border border-outline-variant/30 text-on-surface font-body-sm text-[12px] outline-none"
                   />
                 </div>
@@ -1146,40 +999,27 @@ function SetupForm() {
                     type="text"
                     value={storeNif}
                     onChange={(e) => setStoreNif(e.target.value)}
-                    placeholder="RC: 16/00-1284560B21"
+                    placeholder="رقم السجل أو التعريف الجبائي"
                     className="h-9 px-2 bg-surface-container-lowest rounded-lg border border-outline-variant/30 text-on-surface font-mono text-[12px] outline-none"
                     dir="ltr"
                   />
                 </div>
 
-                {/* Operators Status */}
-                <div className="flex flex-col gap-1 pt-1">
-                  <span className="text-[11px] font-bold text-on-surface-variant">
-                    المشغلون المفعلون فورياً بالبوابة:
-                  </span>
-                  <div className="grid grid-cols-3 gap-1 text-[11px] font-cairo font-bold text-center">
-                    <div className="bg-surface-container-lowest p-1 rounded border border-outline-variant/20 text-primary">
-                      <span>موبيليس Mobilis</span>
-                      <span className="block text-[9px] font-mono text-on-surface-variant">06 SIM READY</span>
-                    </div>
-                    <div className="bg-surface-container-lowest p-1 rounded border border-outline-variant/20 text-secondary">
-                      <span>جيزي Djezzy</span>
-                      <span className="block text-[9px] font-mono text-on-surface-variant">07 SIM READY</span>
-                    </div>
-                    <div className="bg-surface-container-lowest p-1 rounded border border-outline-variant/20 text-tertiary">
-                      <span>أوريدو Ooredoo</span>
-                      <span className="block text-[9px] font-mono text-on-surface-variant">05 SIM READY</span>
-                    </div>
-                  </div>
-                </div>
-
                 {/* Starting Cash Preset Chips */}
                 <div className="flex flex-col gap-1 pt-1">
-                  <span className="text-[11px] font-bold text-on-surface-variant">
+                  <label className="text-[11px] font-bold text-on-surface-variant">
                     رصيد الصندوق الافتتاحي (DZD):
-                  </span>
-                  <div className="flex items-center gap-1.5">
-                    {['5000', '15000', '30000'].map((amt) => (
+                  </label>
+                  <input
+                    type="number"
+                    value={startingCash}
+                    onChange={(e) => setStartingCash(e.target.value)}
+                    placeholder="0"
+                    className="h-9 px-2 bg-surface-container-lowest rounded-lg border border-outline-variant/30 text-primary font-mono font-bold text-[13px] outline-none"
+                    dir="ltr"
+                  />
+                  <div className="flex items-center gap-1.5 mt-1">
+                    {['5000', '10000', '20000'].map((amt) => (
                       <button
                         key={amt}
                         type="button"
@@ -1201,31 +1041,23 @@ function SetupForm() {
                 </div>
               </div>
 
-              {/* Hardware & Modem Detection Card */}
+              {/* Hardware & System Summary Card */}
               <div className="bg-surface-container-low p-space-md rounded-xl border border-outline-variant/20 flex flex-col gap-space-xs text-[11px]">
                 <div className="flex items-center gap-2 pb-1 border-b border-outline-variant/20 font-bold text-on-surface">
                   <span className="material-symbols-outlined text-primary text-[18px]">developer_board</span>
-                  <span>كاشف العتاد والاتصال</span>
+                  <span>حالة النظام والعتاد</span>
                 </div>
                 <div className="flex items-center justify-between pt-1">
-                  <span className="text-on-surface-variant">تشفير التخزين:</span>
-                  <span className="font-mono font-bold text-primary">AES-256 GCM</span>
+                  <span className="text-on-surface-variant">قاعدة البيانات:</span>
+                  <span className="font-mono font-bold text-primary">SQLite Local WAL</span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-on-surface-variant">مودمات USB:</span>
-                  <span className="font-mono font-bold text-primary">3x DETECTED</span>
+                  <span className="text-on-surface-variant">منافذ الفلاشة:</span>
+                  <span className="font-mono font-bold text-primary">3G / GSM Ready</span>
                 </div>
-                <div className="flex items-center justify-between text-[10px] text-on-surface-variant font-mono" dir="ltr">
-                  <span>COM3 (Huawei E3372)</span>
-                  <span className="text-primary font-bold">ONLINE</span>
-                </div>
-                <div className="flex items-center justify-between text-[10px] text-on-surface-variant font-mono" dir="ltr">
-                  <span>COM4 (ZTE MF79U)</span>
-                  <span className="text-secondary font-bold">ONLINE</span>
-                </div>
-                <div className="flex items-center justify-between text-[10px] text-on-surface-variant font-mono" dir="ltr">
-                  <span>COM5 (Thermal 80mm)</span>
-                  <span className="text-primary font-bold">READY</span>
+                <div className="flex items-center justify-between">
+                  <span className="text-on-surface-variant">الطابعات المدعومة:</span>
+                  <span className="font-mono font-bold text-primary">ESC/POS 80mm / 58mm</span>
                 </div>
                 <div className="mt-1 pt-1 border-t border-outline-variant/15 flex items-center gap-1 text-primary">
                   <span className="material-symbols-outlined text-[14px]">verified</span>
