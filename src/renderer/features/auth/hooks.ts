@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient, type QueryClient } from '@tanstack/react-query'
 import { authApi } from './api'
-import type { LoginInput, SetupOwnerInput } from '@shared/contracts/auth'
+import type { LoginInput, RegisterInput, SetupOwnerInput } from '@shared/contracts/auth'
 
 // حالة الخادم عبر TanStack Query (RULES 10.3). مفتاح الجلسة هو مصدر الحقيقة في الواجهة.
 export const sessionKey = ['auth', 'session'] as const
@@ -35,6 +35,17 @@ export function useSetupOwner() {
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: (input: SetupOwnerInput) => authApi.setupOwner(input),
+    onSuccess: (data) => {
+      resetFeatureCaches(queryClient)
+      queryClient.setQueryData(sessionKey, data)
+    },
+  })
+}
+
+export function useRegister() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: (input: RegisterInput) => authApi.register(input),
     onSuccess: (data) => {
       resetFeatureCaches(queryClient)
       queryClient.setQueryData(sessionKey, data)

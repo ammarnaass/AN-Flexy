@@ -1,13 +1,14 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
 import type { FormEvent, ReactNode } from 'react'
-import { useHasUsers, useLogin, useSetupOwner } from '../hooks'
+import { useHasUsers, useLogin, useRegister } from '../hooks'
 import { translateAuthError } from '../errors'
 import { ui } from '@renderer/shared/messages.ar'
 import { playBeep } from '@renderer/shared/audio'
 
-// شاشة الدخول والتسجيل: مطابقة لتصميم Stitch 7 (خالية من أي بيانات وهمية أو تجريبية)
+// شاشة الدخول والتسجيل: مطابقة لتصميم Stitch 7 (مركزة ونظيفة، خالية من إعدادات الوديعة والصندوق)
 export function LoginScreen() {
   const hasUsers = useHasUsers()
+  const [view, setView] = useState<'login' | 'register' | null>(null)
 
   if (hasUsers.isLoading) {
     return (
@@ -20,7 +21,14 @@ export function LoginScreen() {
     )
   }
 
-  return hasUsers.data && !hasUsers.data.hasUsers ? <SetupForm /> : <LoginForm />
+  const isFirstTime = Boolean(hasUsers.data && !hasUsers.data.hasUsers)
+  const currentView = view ?? (isFirstTime ? 'register' : 'login')
+
+  return currentView === 'register' ? (
+    <SetupForm onNavigateToLogin={!isFirstTime ? () => setView('login') : undefined} />
+  ) : (
+    <LoginForm onNavigateToRegister={() => setView('register')} />
+  )
 }
 
 // Live clock hook
@@ -129,12 +137,6 @@ function AuthShell({ children }: { children: ReactNode }) {
             </span>
             <span>مسح الرمز</span>
           </div>
-          <div className="flex items-center gap-1.5">
-            <span className="bg-surface-container px-1.5 py-0.5 rounded border border-outline-variant/30 font-mono font-bold text-primary" dir="ltr">
-              [F2 / F3]
-            </span>
-            <span>الوردية</span>
-          </div>
         </div>
       </footer>
     </div>
@@ -151,19 +153,15 @@ function ErrorBanner({ message }: { message: string }) {
 }
 
 // -------------------------------------------------------------
-// LOGIN FORM (خالية من البيانات الوهمية والتجريبية)
+// LOGIN FORM (مركزة ونظيفة، خالية من إعدادات الوديعة والصندوق)
 // -------------------------------------------------------------
-const PRESET_CASH_AMOUNTS = [5000, 10000, 15000, 20000, 30000]
-
-function LoginForm() {
+function LoginForm({ onNavigateToRegister }: { onNavigateToRegister: () => void }) {
   const [username, setUsername] = useState('')
   const [authTab, setAuthTab] = useState<'pin' | 'password'>('pin')
   const [pin, setPin] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
   const [capsLockActive, setCapsLockActive] = useState(false)
-  const [shiftType, setShiftType] = useState<'morning' | 'evening'>('morning')
-  const [cashDrawerAmount, setCashDrawerAmount] = useState('')
 
   const login = useLogin()
   const usernameInputRef = useRef<HTMLInputElement>(null)
@@ -219,22 +217,6 @@ function LoginForm() {
   // Global Keyboard shortcuts
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      // F2: Morning Shift
-      if (e.key === 'F2') {
-        e.preventDefault()
-        setShiftType('morning')
-        playBeep('click')
-        return
-      }
-
-      // F3: Evening Shift
-      if (e.key === 'F3') {
-        e.preventDefault()
-        setShiftType('evening')
-        playBeep('click')
-        return
-      }
-
       const target = e.target as HTMLElement
       const isInput = target.tagName === 'INPUT'
 
@@ -257,7 +239,7 @@ function LoginForm() {
 
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [shiftType, authTab, submitLogin, handleDigit, handleBackspace, handleClear])
+  }, [authTab, submitLogin, handleDigit, handleBackspace, handleClear])
 
   const handlePasswordKey = (e: React.KeyboardEvent<HTMLInputElement>) => {
     setCapsLockActive(e.getModifierState('CapsLock'))
@@ -265,351 +247,242 @@ function LoginForm() {
 
   return (
     <AuthShell>
-      <div className="bg-surface-container-lowest rounded-2xl shadow-xl overflow-hidden border border-outline-variant/30 flex flex-col">
+      <div className="bg-surface-container-lowest rounded-2xl shadow-xl overflow-hidden border border-outline-variant/30 flex flex-col max-w-lg w-full mx-auto">
         {/* Top Store Info Bar */}
-        <div className="bg-surface-container-low px-space-lg py-space-sm flex flex-wrap items-center justify-between gap-space-md border-b border-outline-variant/20">
+        <div className="bg-surface-container-low px-space-lg py-space-md flex items-center justify-between border-b border-outline-variant/20">
           <div className="flex items-center gap-space-sm">
-            <div className="w-9 h-9 rounded-xl bg-primary-container text-on-primary flex items-center justify-center shadow-xs">
-              <span className="material-symbols-outlined text-[20px]">storefront</span>
+            <div className="w-10 h-10 rounded-xl bg-primary-container text-on-primary flex items-center justify-center shadow-xs">
+              <span className="material-symbols-outlined text-[22px]">point_of_sale</span>
             </div>
             <div>
-              <div className="flex items-center gap-2">
-                <span className="font-headline-sm text-headline-sm text-on-surface font-cairo font-bold">
-                  تسجيل الدخول وفتح الكاسة
-                </span>
-              </div>
+              <span className="font-headline-sm text-headline-sm text-on-surface font-cairo font-bold">
+                تسجيل الدخول
+              </span>
               <p className="font-body-sm text-body-sm text-on-surface-variant">
-                محطة الكاشير المركزية • فتح جلسة بيع ووردية جديدة
+                محطة نقاط البيع وإدارة الفليكسي
               </p>
             </div>
           </div>
 
-          <div className="flex items-center gap-space-sm">
-            <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-surface-container-high text-primary font-label-sm text-label-sm font-bold">
-              <span className="w-2 h-2 rounded-full bg-primary-container animate-pulse" />
-              <span>نظام محلي متزامن (SQLite Offline)</span>
-            </div>
+          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-surface-container-high text-primary font-label-sm text-label-sm font-bold">
+            <span className="w-2 h-2 rounded-full bg-primary-container animate-pulse" />
+            <span>نظام محلي متزامن (SQLite Offline)</span>
           </div>
         </div>
 
-        <div className="p-space-lg grid grid-cols-1 lg:grid-cols-12 gap-space-lg">
-          {/* RIGHT COLUMN (5 cols): Shift Parameters & Cash Drawer */}
-          <div className="lg:col-span-5 flex flex-col gap-space-md border-b lg:border-b-0 lg:border-s lg:ps-space-lg border-outline-variant/20">
-            {/* Shift Parameters Header */}
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <span className="material-symbols-outlined text-primary text-[20px]">schedule</span>
-                <h3 className="font-headline-sm text-headline-sm text-on-surface font-cairo font-bold">
-                  إعدادات الوردية والصندوق
-                </h3>
-              </div>
-            </div>
-            <p className="font-body-sm text-body-sm text-on-surface-variant text-[12px]">
-              حدد نوع ورديتك ومبلغ العهدة الافتتاحية لبدء المبيعات
-            </p>
-
-            {/* Shift Selector */}
-            <div className="bg-surface-container-low p-space-md rounded-xl border border-outline-variant/20 flex flex-col gap-space-sm">
-              <div className="flex flex-col gap-1">
-                <span className="text-[11px] font-bold text-on-surface-variant">نوع الوردية الحالية:</span>
-                <div className="grid grid-cols-2 gap-2">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      playBeep('click')
-                      setShiftType('morning')
-                    }}
-                    className={`py-2 px-space-sm rounded-lg font-body-sm text-body-sm font-cairo font-bold transition-all flex items-center justify-center gap-1 cursor-pointer ${
-                      shiftType === 'morning'
-                        ? 'bg-primary-container text-on-primary shadow-xs'
-                        : 'bg-surface-container text-on-surface-variant hover:bg-surface-container-high'
-                    }`}
-                  >
-                    <span>الصباحية</span>
-                    <span className="font-mono text-[10px] opacity-80" dir="ltr">[F2]</span>
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      playBeep('click')
-                      setShiftType('evening')
-                    }}
-                    className={`py-2 px-space-sm rounded-lg font-body-sm text-body-sm font-cairo font-bold transition-all flex items-center justify-center gap-1 cursor-pointer ${
-                      shiftType === 'evening'
-                        ? 'bg-primary-container text-on-primary shadow-xs'
-                        : 'bg-surface-container text-on-surface-variant hover:bg-surface-container-high'
-                    }`}
-                  >
-                    <span>المسائية</span>
-                    <span className="font-mono text-[10px] opacity-80" dir="ltr">[F3]</span>
-                  </button>
-                </div>
-              </div>
-
-              {/* Opening Cash Input (Fond de Caisse) */}
-              <div className="flex flex-col gap-1 mt-1">
-                <div className="flex items-center justify-between">
-                  <label className="text-[11px] font-bold text-on-surface-variant">
-                    رصيد بداية الكاسة (Fond de Caisse):
-                  </label>
-                  <span className="font-label-sm text-label-sm text-on-surface-variant font-mono">DZD</span>
-                </div>
-                <div className="flex items-center bg-surface-container-lowest rounded-lg px-space-sm border border-outline-variant/30">
-                  <input
-                    type="number"
-                    value={cashDrawerAmount}
-                    onChange={(e) => setCashDrawerAmount(e.target.value)}
-                    placeholder="0"
-                    className="w-full h-10 bg-transparent text-primary font-currency-display text-label-lg font-bold outline-none font-mono"
-                    dir="ltr"
-                  />
-                  <span className="font-label-sm text-label-sm text-on-surface-variant font-bold mr-1">د.ج</span>
-                </div>
-              </div>
-
-              {/* Preset Chips */}
-              <div className="flex flex-wrap gap-1.5">
-                <span className="text-[10px] text-on-surface-variant self-center">مبالغ شائعة:</span>
-                {PRESET_CASH_AMOUNTS.map((amt) => (
-                  <button
-                    key={amt}
-                    type="button"
-                    onClick={() => {
-                      playBeep('click')
-                      setCashDrawerAmount(String(amt))
-                    }}
-                    className={`px-2 py-0.5 rounded text-[11px] font-mono transition-colors cursor-pointer ${
-                      cashDrawerAmount === String(amt)
-                        ? 'bg-primary text-on-primary font-bold'
-                        : 'bg-surface-container text-on-surface hover:bg-surface-container-high'
-                    }`}
-                    dir="ltr"
-                  >
-                    {amt.toLocaleString()} DA
-                  </button>
-                ))}
-              </div>
-
-              {/* Readiness status */}
-              <div className="pt-2 border-t border-outline-variant/15 flex items-center justify-between text-[11px]">
-                <span className="text-on-surface-variant flex items-center gap-1">
-                  <span className="material-symbols-outlined text-[14px] text-primary">cell_tower</span>
-                  <span>بوابات الـ Flexy:</span>
-                </span>
-                <div className="flex items-center gap-1.5 font-mono">
-                  <span className="text-primary font-bold">موبيليس</span>
-                  <span className="text-secondary font-bold">جيزي</span>
-                  <span className="text-tertiary font-bold">أوريدو</span>
-                </div>
-              </div>
+        <div className="p-space-lg flex flex-col gap-space-md">
+          {/* Username Input Field */}
+          <div className="flex flex-col gap-1.5">
+            <label className="font-label-sm text-label-sm text-on-surface-variant font-bold">
+              اسم المستخدم (Username)
+            </label>
+            <div className="flex items-center gap-space-xs bg-surface-container-low rounded-xl px-space-sm border border-outline-variant/30 focus-within:border-primary transition-colors">
+              <span className="material-symbols-outlined text-[20px] text-primary">person</span>
+              <input
+                ref={usernameInputRef}
+                type="text"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                placeholder="أدخل اسم المستخدم..."
+                autoFocus
+                className="flex-1 h-11 bg-transparent text-on-surface font-body-md text-body-md outline-none"
+              />
+              {username && (
+                <button
+                  type="button"
+                  onClick={() => setUsername('')}
+                  className="text-on-surface-variant hover:text-on-surface p-1 cursor-pointer"
+                >
+                  <span className="material-symbols-outlined text-[16px]">close</span>
+                </button>
+              )}
             </div>
           </div>
 
-          {/* LEFT COLUMN (7 cols): Credentials Entry (Username + PIN / Password) */}
-          <div className="lg:col-span-7 flex flex-col justify-between gap-space-md">
-            <div>
-              {/* Username Input Field */}
-              <div className="flex flex-col gap-1.5 mb-space-md">
-                <label className="font-label-sm text-label-sm text-on-surface-variant font-bold">
-                  اسم المستخدم (Username)
-                </label>
-                <div className="flex items-center gap-space-xs bg-surface-container-low rounded-xl px-space-sm border border-outline-variant/30 focus-within:border-primary transition-colors">
-                  <span className="material-symbols-outlined text-[20px] text-primary">person</span>
-                  <input
-                    ref={usernameInputRef}
-                    type="text"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                    placeholder="أدخل اسم المستخدم..."
-                    autoFocus
-                    className="flex-1 h-11 bg-transparent text-on-surface font-body-md text-body-md outline-none"
-                  />
-                  {username && (
-                    <button
-                      type="button"
-                      onClick={() => setUsername('')}
-                      className="text-on-surface-variant hover:text-on-surface p-1"
-                    >
-                      <span className="material-symbols-outlined text-[16px]">close</span>
-                    </button>
-                  )}
-                </div>
-              </div>
-
-              {/* Auth Mode Switcher */}
-              <div className="flex items-center gap-2 p-1 bg-surface-container-low rounded-xl mb-space-md border border-outline-variant/20">
-                <button
-                  type="button"
-                  onClick={() => {
-                    playBeep('click')
-                    setAuthTab('pin')
-                  }}
-                  className={`flex-1 flex items-center justify-center gap-2 py-2 px-space-sm rounded-lg font-headline-sm text-body-md font-cairo font-bold transition-all cursor-pointer ${
-                    authTab === 'pin'
-                      ? 'bg-surface-container-lowest text-primary shadow-xs'
-                      : 'text-on-surface-variant hover:text-on-surface'
-                  }`}
-                >
-                  <span className="material-symbols-outlined text-[18px]">pin</span>
-                  <span>رمز PIN السريع</span>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => {
-                    playBeep('click')
-                    setAuthTab('password')
-                  }}
-                  className={`flex-1 flex items-center justify-center gap-2 py-2 px-space-sm rounded-lg font-headline-sm text-body-md font-cairo font-bold transition-all cursor-pointer ${
-                    authTab === 'password'
-                      ? 'bg-surface-container-lowest text-primary shadow-xs'
-                      : 'text-on-surface-variant hover:text-on-surface'
-                  }`}
-                >
-                  <span className="material-symbols-outlined text-[18px]">key</span>
-                  <span>كلمة المرور</span>
-                </button>
-              </div>
-
-              {/* TAB 1: PIN NUMPAD */}
-              {authTab === 'pin' && (
-                <div className="flex flex-col items-center">
-                  <div className="w-full flex items-center justify-between pb-space-xs mb-space-xs">
-                    <span className="font-label-sm text-label-sm text-on-surface-variant font-bold">
-                      أدخل رمز الدخول (4-6 أرقام)
-                    </span>
-                    {pin.length > 0 && (
-                      <button
-                        type="button"
-                        onClick={handleClear}
-                        className="text-[11px] text-primary font-bold hover:underline cursor-pointer"
-                      >
-                        مسح [Esc]
-                      </button>
-                    )}
-                  </div>
-
-                  {/* PIN Display Dots */}
-                  <div className="w-full flex items-center justify-center gap-3 py-space-md my-space-xs bg-surface-container-low rounded-xl border border-outline-variant/20">
-                    {Array.from({ length: 6 }).map((_, i) => (
-                      <div
-                        key={i}
-                        className={`w-4 h-4 rounded-full transition-all duration-150 ${
-                          i < pin.length
-                            ? 'bg-primary-container scale-110 shadow-sm'
-                            : 'bg-surface-container-highest border border-outline-variant/30'
-                        }`}
-                      />
-                    ))}
-                  </div>
-                  <p className="text-center font-body-sm text-body-sm text-on-surface-variant mb-space-sm text-[12px]">
-                    اضغط على لوحة الأرقام أو اكتب مباشرة من لوحة المفاتيح
-                  </p>
-
-                  {/* Numpad Grid */}
-                  <div className="grid grid-cols-3 gap-2 w-full max-w-xs">
-                    {['1', '2', '3', '4', '5', '6', '7', '8', '9'].map((digit) => (
-                      <button
-                        key={digit}
-                        type="button"
-                        onClick={() => handleDigit(digit)}
-                        className="h-12 rounded-xl bg-surface-container-low hover:bg-surface-container active:scale-95 text-on-surface font-currency-display text-headline-sm font-bold shadow-2xs flex items-center justify-center transition-all cursor-pointer border border-outline-variant/20"
-                      >
-                        {digit}
-                      </button>
-                    ))}
-                    <button
-                      type="button"
-                      onClick={handleClear}
-                      className="h-12 rounded-xl bg-error-container/40 hover:bg-error-container text-on-error-container font-label-md text-label-sm font-bold shadow-2xs flex items-center justify-center transition-all cursor-pointer border border-error/20"
-                    >
-                      <span>C [Esc]</span>
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => handleDigit('0')}
-                      className="h-12 rounded-xl bg-surface-container-low hover:bg-surface-container active:scale-95 text-on-surface font-currency-display text-headline-sm font-bold shadow-2xs flex items-center justify-center transition-all cursor-pointer border border-outline-variant/20"
-                    >
-                      0
-                    </button>
-                    <button
-                      type="button"
-                      onClick={handleBackspace}
-                      className="h-12 rounded-xl bg-surface-container-high hover:bg-surface-variant active:scale-95 text-on-surface font-label-md shadow-2xs flex items-center justify-center transition-all cursor-pointer border border-outline-variant/20"
-                      title="حذف آخر رقم"
-                    >
-                      <span className="material-symbols-outlined text-[20px]">backspace</span>
-                    </button>
-                  </div>
-                </div>
-              )}
-
-              {/* TAB 2: USERNAME & PASSWORD */}
-              {authTab === 'password' && (
-                <div className="flex flex-col gap-space-md py-space-sm">
-                  {/* Password Field */}
-                  <div className="flex flex-col gap-1.5">
-                    <div className="flex items-center justify-between">
-                      <label className="font-label-sm text-label-sm text-on-surface-variant font-bold">
-                        كلمة المرور
-                      </label>
-                      {capsLockActive && (
-                        <span className="text-tertiary font-label-sm text-[11px] flex items-center gap-1">
-                          <span className="material-symbols-outlined text-[14px]">warning</span>
-                          <span>زر Caps Lock مفعل!</span>
-                        </span>
-                      )}
-                    </div>
-                    <div className="flex items-center gap-space-xs bg-surface-container-low rounded-xl px-space-sm border border-outline-variant/30 focus-within:border-primary transition-colors">
-                      <span className="material-symbols-outlined text-[18px] text-on-surface-variant">lock</span>
-                      <input
-                        type={showPassword ? 'text' : 'password'}
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        onKeyDown={handlePasswordKey}
-                        placeholder="••••••••"
-                        className="flex-1 h-11 bg-transparent text-on-surface font-body-md text-body-md outline-none"
-                      />
-                      <button
-                        type="button"
-                        onClick={() => setShowPassword(!showPassword)}
-                        className="text-on-surface-variant hover:text-on-surface p-1 cursor-pointer"
-                      >
-                        <span className="material-symbols-outlined text-[18px]">
-                          {showPassword ? 'visibility_off' : 'visibility'}
-                        </span>
-                      </button>
-                    </div>
-                    <p className="font-body-sm text-[12px] text-on-surface-variant">
-                      يرجى كتابة رمز الدخول أو كلمة المرور للمتابعة.
-                    </p>
-                  </div>
-                </div>
-              )}
-
-              {/* Error Banner */}
-              {login.isError && (
-                <div className="mt-space-sm">
-                  <ErrorBanner message={translateAuthError(login.error)} />
-                </div>
-              )}
-            </div>
-
-            {/* Primary Submit Action */}
+          {/* Auth Mode Switcher */}
+          <div className="flex items-center gap-2 p-1 bg-surface-container-low rounded-xl border border-outline-variant/20">
             <button
               type="button"
-              onClick={submitLogin}
-              disabled={login.isPending || !username.trim() || (authTab === 'pin' ? pin.length < 4 : password.length < 4)}
-              className="w-full py-3.5 rounded-xl bg-primary hover:bg-primary-container text-on-primary font-headline-sm text-headline-sm font-cairo font-bold shadow-md hover:shadow-lg transition-all duration-200 flex items-center justify-center gap-space-sm active:scale-[0.99] cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed mt-2"
+              onClick={() => {
+                playBeep('click')
+                setAuthTab('pin')
+              }}
+              className={`flex-1 flex items-center justify-center gap-2 py-2 px-space-sm rounded-lg font-headline-sm text-body-md font-cairo font-bold transition-all cursor-pointer ${
+                authTab === 'pin'
+                  ? 'bg-surface-container-lowest text-primary shadow-xs'
+                  : 'text-on-surface-variant hover:text-on-surface'
+              }`}
             >
-              {login.isPending ? (
-                <span className="material-symbols-outlined text-[22px] animate-spin">progress_activity</span>
-              ) : (
-                <span className="material-symbols-outlined text-[22px]">lock_open</span>
-              )}
-              <span>تسجيل الدخول وفتح الكاسة</span>
-              <span className="bg-on-primary-container text-on-primary-fixed font-label-sm text-label-sm px-2 py-0.5 rounded-full font-mono font-bold" dir="ltr">
-                [Enter]
-              </span>
+              <span className="material-symbols-outlined text-[18px]">pin</span>
+              <span>رمز PIN السريع</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                playBeep('click')
+                setAuthTab('password')
+              }}
+              className={`flex-1 flex items-center justify-center gap-2 py-2 px-space-sm rounded-lg font-headline-sm text-body-md font-cairo font-bold transition-all cursor-pointer ${
+                authTab === 'password'
+                  ? 'bg-surface-container-lowest text-primary shadow-xs'
+                  : 'text-on-surface-variant hover:text-on-surface'
+              }`}
+            >
+              <span className="material-symbols-outlined text-[18px]">key</span>
+              <span>كلمة المرور</span>
+            </button>
+          </div>
+
+          {/* TAB 1: PIN NUMPAD */}
+          {authTab === 'pin' && (
+            <div className="flex flex-col items-center">
+              <div className="w-full flex items-center justify-between pb-space-xs mb-space-xs">
+                <span className="font-label-sm text-label-sm text-on-surface-variant font-bold">
+                  أدخل رمز الدخول (4-6 أرقام)
+                </span>
+                {pin.length > 0 && (
+                  <button
+                    type="button"
+                    onClick={handleClear}
+                    className="text-[11px] text-primary font-bold hover:underline cursor-pointer"
+                  >
+                    مسح [Esc]
+                  </button>
+                )}
+              </div>
+
+              {/* PIN Display Dots */}
+              <div className="w-full flex items-center justify-center gap-3 py-space-md my-space-xs bg-surface-container-low rounded-xl border border-outline-variant/20">
+                {Array.from({ length: 6 }).map((_, i) => (
+                  <div
+                    key={i}
+                    className={`w-4 h-4 rounded-full transition-all duration-150 ${
+                      i < pin.length
+                        ? 'bg-primary-container scale-110 shadow-sm'
+                        : 'bg-surface-container-highest border border-outline-variant/30'
+                    }`}
+                  />
+                ))}
+              </div>
+              <p className="text-center font-body-sm text-body-sm text-on-surface-variant mb-space-sm text-[12px]">
+                اضغط على لوحة الأرقام أو اكتب مباشرة من لوحة المفاتيح
+              </p>
+
+              {/* Numpad Grid */}
+              <div className="grid grid-cols-3 gap-2 w-full max-w-xs">
+                {['1', '2', '3', '4', '5', '6', '7', '8', '9'].map((digit) => (
+                  <button
+                    key={digit}
+                    type="button"
+                    onClick={() => handleDigit(digit)}
+                    className="h-12 rounded-xl bg-surface-container-low hover:bg-surface-container active:scale-95 text-on-surface font-currency-display text-headline-sm font-bold shadow-2xs flex items-center justify-center transition-all cursor-pointer border border-outline-variant/20"
+                  >
+                    {digit}
+                  </button>
+                ))}
+                <button
+                  type="button"
+                  onClick={handleClear}
+                  className="h-12 rounded-xl bg-error-container/40 hover:bg-error-container text-on-error-container font-label-md text-label-sm font-bold shadow-2xs flex items-center justify-center transition-all cursor-pointer border border-error/20"
+                >
+                  <span>C [Esc]</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleDigit('0')}
+                  className="h-12 rounded-xl bg-surface-container-low hover:bg-surface-container active:scale-95 text-on-surface font-currency-display text-headline-sm font-bold shadow-2xs flex items-center justify-center transition-all cursor-pointer border border-outline-variant/20"
+                >
+                  0
+                </button>
+                <button
+                  type="button"
+                  onClick={handleBackspace}
+                  className="h-12 rounded-xl bg-surface-container-high hover:bg-surface-variant active:scale-95 text-on-surface font-label-md shadow-2xs flex items-center justify-center transition-all cursor-pointer border border-outline-variant/20"
+                  title="حذف آخر رقم"
+                >
+                  <span className="material-symbols-outlined text-[20px]">backspace</span>
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* TAB 2: USERNAME & PASSWORD */}
+          {authTab === 'password' && (
+            <div className="flex flex-col gap-space-md py-space-sm">
+              <div className="flex flex-col gap-1.5">
+                <div className="flex items-center justify-between">
+                  <label className="font-label-sm text-label-sm text-on-surface-variant font-bold">
+                    كلمة المرور
+                  </label>
+                  {capsLockActive && (
+                    <span className="text-tertiary font-label-sm text-[11px] flex items-center gap-1">
+                      <span className="material-symbols-outlined text-[14px]">warning</span>
+                      <span>زر Caps Lock مفعل!</span>
+                    </span>
+                  )}
+                </div>
+                <div className="flex items-center gap-space-xs bg-surface-container-low rounded-xl px-space-sm border border-outline-variant/30 focus-within:border-primary transition-colors">
+                  <span className="material-symbols-outlined text-[18px] text-on-surface-variant">lock</span>
+                  <input
+                    type={showPassword ? 'text' : 'password'}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    onKeyDown={handlePasswordKey}
+                    placeholder="••••••••"
+                    className="flex-1 h-11 bg-transparent text-on-surface font-body-md text-body-md outline-none"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="text-on-surface-variant hover:text-on-surface p-1 cursor-pointer"
+                  >
+                    <span className="material-symbols-outlined text-[18px]">
+                      {showPassword ? 'visibility_off' : 'visibility'}
+                    </span>
+                  </button>
+                </div>
+                <p className="font-body-sm text-[12px] text-on-surface-variant">
+                  يرجى كتابة رمز الدخول أو كلمة المرور للمتابعة.
+                </p>
+              </div>
+            </div>
+          )}
+
+          {/* Error Banner */}
+          {login.isError && (
+            <ErrorBanner message={translateAuthError(login.error)} />
+          )}
+
+          {/* Primary Submit Action */}
+          <button
+            type="button"
+            onClick={submitLogin}
+            disabled={login.isPending || !username.trim() || (authTab === 'pin' ? pin.length < 4 : password.length < 4)}
+            className="w-full py-3.5 rounded-xl bg-primary hover:bg-primary-container text-on-primary font-headline-sm text-headline-sm font-cairo font-bold shadow-md hover:shadow-lg transition-all duration-200 flex items-center justify-center gap-space-sm active:scale-[0.99] cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed mt-2"
+          >
+            {login.isPending ? (
+              <span className="material-symbols-outlined text-[22px] animate-spin">progress_activity</span>
+            ) : (
+              <span className="material-symbols-outlined text-[22px]">login</span>
+            )}
+            <span>تسجيل الدخول</span>
+            <span className="bg-on-primary-container text-on-primary-fixed font-label-sm text-label-sm px-2 py-0.5 rounded-full font-mono font-bold" dir="ltr">
+              [Enter]
+            </span>
+          </button>
+
+          {/* Create Account Action */}
+          <div className="pt-space-sm border-t border-outline-variant/20 flex flex-col items-center">
+            <button
+              type="button"
+              onClick={() => {
+                playBeep('click')
+                onNavigateToRegister()
+              }}
+              className="w-full py-2.5 px-space-md rounded-xl bg-surface-container hover:bg-surface-container-high text-primary font-headline-sm text-body-md font-cairo font-bold transition-all duration-150 flex items-center justify-center gap-2 cursor-pointer border border-outline-variant/30"
+            >
+              <span className="material-symbols-outlined text-[20px]">person_add</span>
+              <span>إنشاء حساب جديد</span>
             </button>
           </div>
         </div>
@@ -634,7 +507,7 @@ const WILAYAS = [
   '46 - عين تموشنت', '47 - غرداية', '48 - غليزان'
 ]
 
-function SetupForm() {
+function SetupForm({ onNavigateToLogin }: { onNavigateToLogin?: () => void }) {
   const [role, setRole] = useState<'admin' | 'cashier'>('admin')
   const [fullName, setFullName] = useState('')
   const [username, setUsername] = useState('')
@@ -646,10 +519,9 @@ function SetupForm() {
   const [termsAgreed, setTermsAgreed] = useState(true)
   const [storeName, setStoreName] = useState('')
   const [storeNif, setStoreNif] = useState('')
-  const [startingCash, setStartingCash] = useState('')
   const [isDone, setIsDone] = useState(false)
 
-  const setup = useSetupOwner()
+  const register = useRegister()
 
   const detectedOperator = phone.startsWith('05')
     ? 'Ooredoo'
@@ -666,15 +538,15 @@ function SetupForm() {
       return
     }
 
-    setup.mutate(
-      { name: username.trim(), pin },
+    register.mutate(
+      { name: username.trim(), pin, role },
       {
         onSuccess: () => {
           playBeep('success')
           setIsDone(true)
           setTimeout(() => {
             window.location.reload()
-          }, 2000)
+          }, 1500)
         },
         onError: () => {
           playBeep('error')
@@ -954,10 +826,17 @@ function SetupForm() {
                 </span>
               </label>
 
+              {/* Error Banner */}
+              {register.isError && (
+                <div className="pt-2">
+                  <ErrorBanner message={translateAuthError(register.error)} />
+                </div>
+              )}
+
               {/* Submit Button */}
               <button
                 type="submit"
-                disabled={setup.isPending || !termsAgreed || !fullName || !username || pin.length < 4}
+                disabled={register.isPending || !termsAgreed || !fullName || !username || pin.length < 4}
                 className="w-full h-12 flex items-center justify-center gap-2 rounded-xl bg-primary hover:bg-primary-container text-on-primary font-headline-sm text-headline-sm font-cairo font-bold shadow-md transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed active:scale-95"
               >
                 <span>إنشاء الحساب وتفعيل المحطة</span>
@@ -966,6 +845,20 @@ function SetupForm() {
                   [Enter]
                 </span>
               </button>
+
+              {onNavigateToLogin && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    playBeep('click')
+                    onNavigateToLogin()
+                  }}
+                  className="w-full py-2.5 text-center text-primary hover:text-primary-container font-headline-sm text-body-md font-cairo font-bold transition-colors cursor-pointer flex items-center justify-center gap-1.5 border border-outline-variant/30 rounded-xl bg-surface-container-low hover:bg-surface-container"
+                >
+                  <span className="material-symbols-outlined text-[18px]">login</span>
+                  <span>لديك حساب بالفعل؟ تسجيل الدخول</span>
+                </button>
+              )}
             </div>
 
             {/* Right 5 cols: Station Settings */}
@@ -1003,41 +896,6 @@ function SetupForm() {
                     className="h-9 px-2 bg-surface-container-lowest rounded-lg border border-outline-variant/30 text-on-surface font-mono text-[12px] outline-none"
                     dir="ltr"
                   />
-                </div>
-
-                {/* Starting Cash Preset Chips */}
-                <div className="flex flex-col gap-1 pt-1">
-                  <label className="text-[11px] font-bold text-on-surface-variant">
-                    رصيد الصندوق الافتتاحي (DZD):
-                  </label>
-                  <input
-                    type="number"
-                    value={startingCash}
-                    onChange={(e) => setStartingCash(e.target.value)}
-                    placeholder="0"
-                    className="h-9 px-2 bg-surface-container-lowest rounded-lg border border-outline-variant/30 text-primary font-mono font-bold text-[13px] outline-none"
-                    dir="ltr"
-                  />
-                  <div className="flex items-center gap-1.5 mt-1">
-                    {['5000', '10000', '20000'].map((amt) => (
-                      <button
-                        key={amt}
-                        type="button"
-                        onClick={() => {
-                          playBeep('click')
-                          setStartingCash(amt)
-                        }}
-                        className={`flex-1 py-1 rounded text-[11px] font-mono font-bold transition-all cursor-pointer ${
-                          startingCash === amt
-                            ? 'bg-primary text-on-primary'
-                            : 'bg-surface-container-lowest text-on-surface border border-outline-variant/20'
-                        }`}
-                        dir="ltr"
-                      >
-                        {Number(amt).toLocaleString()}
-                      </button>
-                    ))}
-                  </div>
                 </div>
               </div>
 

@@ -3,6 +3,7 @@ import {
   emptyInput,
   loginInput,
   loginResult,
+  registerInput,
   setupOwnerInput,
 } from '@shared/contracts/auth'
 import { COMMON_ERRORS } from '@shared/errors'
@@ -23,6 +24,12 @@ export function registerAuthIpc(ipc: IpcRegistry, auth: AuthApi): void {
     input: setupOwnerInput,
     permission: 'public',
     run: async (input) => loginResult.parse(await auth.setupOwner(input)),
+  })
+
+  ipc.handle(authChannels.register, {
+    input: registerInput,
+    permission: 'public',
+    run: async (input) => loginResult.parse(await auth.register(input)),
   })
 
   ipc.handle(authChannels.login, {

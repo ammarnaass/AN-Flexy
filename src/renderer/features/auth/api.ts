@@ -1,5 +1,5 @@
 import { authChannels } from '@shared/contracts/auth'
-import type { LoginInput, LoginResult, SetupOwnerInput } from '@shared/contracts/auth'
+import type { LoginInput, LoginResult, RegisterInput, SetupOwnerInput } from '@shared/contracts/auth'
 import { invoke } from '@renderer/shared/api'
 
 // طبقة الوصول إلى IPC للدخول — أنواعها من العقود المشتركة (RULES 3.2).
@@ -12,6 +12,8 @@ export const authApi = {
     invoke<LoginResult>(authChannels.login, input),
   setupOwner: (input: SetupOwnerInput): Promise<LoginResult> =>
     invoke<LoginResult>(authChannels.setupOwner, input),
+  register: (input: RegisterInput): Promise<LoginResult> =>
+    invoke<LoginResult>(authChannels.register, input),
   session: (): Promise<SessionResult> => invoke<SessionResult>(authChannels.session),
   logout: (): Promise<null> => invoke<null>(authChannels.logout),
   listUsers: (): Promise<

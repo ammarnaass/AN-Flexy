@@ -4,6 +4,7 @@ import { z } from 'zod'
 export const authChannels = {
   hasUsers: 'auth:hasUsers',
   setupOwner: 'auth:setupOwner',
+  register: 'auth:register',
   login: 'auth:login',
   logout: 'auth:logout',
   session: 'auth:session',
@@ -14,6 +15,7 @@ export const AUTH_ERRORS = {
   INVALID_CREDENTIALS: 'INVALID_CREDENTIALS',
   AUTH_LOCKED: 'AUTH_LOCKED',
   SETUP_ALREADY_DONE: 'SETUP_ALREADY_DONE',
+  USERNAME_TAKEN: 'USERNAME_TAKEN',
 } as const
 
 export const pinSchema = z.string().regex(/^\d{4,6}$/)
@@ -33,6 +35,13 @@ export const setupOwnerInput = z.object({
   pin: pinSchema,
 })
 export type SetupOwnerInput = z.infer<typeof setupOwnerInput>
+
+export const registerInput = z.object({
+  name: userNameSchema,
+  pin: pinSchema,
+  role: z.enum(['admin', 'cashier']).optional(),
+})
+export type RegisterInput = z.infer<typeof registerInput>
 
 export type SessionUser = {
   id: number

@@ -108,4 +108,22 @@ describe('auth.service', () => {
     expect(auth.sessionFor(other)).toBeNull()
     expect(auth.sessionFor(null)).toBeNull()
   })
+
+  it('register ينشئ أول مستخدم كمسؤول، ثم ينشئ كاشير، ويرفض تكرار الاسم', async () => {
+    // 1. First user registers as admin
+    const admin = await auth.register({ name: 'admin_user', pin: '1111' })
+    expect(admin.user.role).toBe('admin')
+    expect(auth.hasUsers()).toBe(true)
+
+    // 2. Second user registers as cashier
+    const cashier = await auth.register({ name: 'cashier_user', pin: '2222', role: 'cashier' })
+    expect(cashier.user.role).toBe('cashier')
+    expect(session.get()?.id).toBe(cashier.user.id)
+
+    // 3. Duplicate name throws USERNAME_TAKEN
+    const dupErr = await expectAppError(() =>
+      auth.register({ name: 'cashier_user', pin: '3333' }),
+    )
+    expect(dupErr.code).toBe(AUTH_ERRORS.USERNAME_TAKEN)
+  })
 })

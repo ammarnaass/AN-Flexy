@@ -18,5 +18,6 @@ export const authMessages = {
     INVALID_CREDENTIALS: 'اسم المستخدم أو الرمز غير صحيح.',
     AUTH_LOCKED: 'تم القفل مؤقتًا بعد محاولات خاطئة متكررة. انتظر قليلًا ثم أعد المحاولة.',
     SETUP_ALREADY_DONE: 'تم إنشاء حساب المالك مسبقًا.',
+    USERNAME_TAKEN: 'اسم المستخدم مسجل مسبقًا، يرجى اختيار اسم آخر.',
   } as Record<string, string>,
 } as const

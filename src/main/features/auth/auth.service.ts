@@ -6,7 +6,7 @@ import type { Audit } from '@main/core/audit'
 import type { Session } from '@main/core/session'
 import { AppError } from '@main/core/errors'
 import { AUTH_ERRORS } from '@shared/contracts/auth'
-import type { LoginInput, SessionUser, SetupOwnerInput } from '@shared/contracts/auth'
+import type { LoginInput, RegisterInput, SessionUser, SetupOwnerInput } from '@shared/contracts/auth'
 
 const SCRYPT_KEYLEN = 32
 const MAX_FAILED_ATTEMPTS = 5
@@ -50,6 +50,8 @@ export type AuthApi = {
   hasUsers(): boolean
   /** ينشئ حساب المالك (أول تشغيل) ويشغّل onFirstSetup لذرع البيانات الأولية. */
   setupOwner(input: SetupOwnerInput): Promise<LoginOutcome>
+  /** ينشئ حساب مستخدم جديد (سواء كان المالك الأول أو مستخدم/كاشير إضافي). */
+  register(input: RegisterInput): Promise<LoginOutcome>
   login(input: LoginInput): Promise<LoginOutcome>
   logout(): void
   currentUser(): SessionUser | null
@@ -98,6 +100,31 @@ export function createAuthService(deps: AuthDeps): AuthApi {
       audit.log(db, { userId: owner.id, action: 'auth.owner_created', details: { name: owner.name } })
       deps.onFirstSetup?.()
       const user = toSessionUser(owner)
+      session.set(user)
+      return { user, mustChangePin: false }
+    },
+
+    async register(input) {
+      const existing = db.select({ id: users.id }).from(users).where(eq(users.name, input.name)).get()
+      if (existing) throw new AppError(AUTH_ERRORS.USERNAME_TAKEN)
+
+      const isFirst = !api.hasUsers()
+      const role = isFirst ? 'admin' : (input.role ?? 'cashier')
+      const pinHash = await hashPin(input.pin)
+      const row = db
+        .insert(users)
+        .values({ name: input.name, role, pinHash })
+        .returning()
+        .get()
+
+      if (isFirst) {
+        audit.log(db, { userId: row.id, action: 'auth.owner_created', details: { name: row.name } })
+        deps.onFirstSetup?.()
+      } else {
+        audit.log(db, { userId: row.id, action: 'auth.user_created', details: { name: row.name, role } })
+      }
+
+      const user = toSessionUser(row)
       session.set(user)
       return { user, mustChangePin: false }
     },
